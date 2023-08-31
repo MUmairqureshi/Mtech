@@ -23,6 +23,7 @@
 .authImage img {
     width: 100%;
     max-width: 100%;
+    height: 100%;
 }
 
 .authFormWrapper {
@@ -32,6 +33,9 @@
     height: 100%;
 }
 
+.authImage {
+    height: 100%;
+}
 .authForm {
     border-radius: 0px;
     padding: 2rem 3rem;
@@ -49,7 +53,7 @@
 
 .authFormHeader {
     text-align: center;
-    margin: 2rem 0;
+    margin: 1rem 0;
 }
 
 .authTitle {

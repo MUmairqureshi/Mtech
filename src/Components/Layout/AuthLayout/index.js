@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLeftLong } from "@fortawesome/free-solid-svg-icons";
 
-import { authImage, logo } from "../../../Assets/images";
+import { mtech, logo, authImage } from "../../../Assets/images";
 import "./style.css";
 
 export const AuthLayout = (props) => {
@@ -16,8 +16,9 @@ export const AuthLayout = (props) => {
                         <div className="col-lg-6">
                             <div className="authFormWrapper">
                                 <div className="authForm">
-                                    <div className="w-100 siteLogo text-center">
-                                        <h1>Project <span>Camp</span></h1>
+                                    <div className="m-auto siteLogo text-center">
+                                        <img src={mtech} className="mw-100" />
+                                        {/* <h1>Project <span>Camp</span></h1> */}
                                     </div>
                                     <div className="authFormHeader">
                                         <h2 className="authTitle text-black">{props?.authTitle}</h2>
@@ -35,7 +36,7 @@ export const AuthLayout = (props) => {
                         </div>
                         <div className="col-lg-6 d-none d-lg-block">
                             <div className='authImage'>
-                                <img src={authImage} alt="authImage" />
+                                <img src={authImage} alt="authImage" className="h-100" />
                             </div>
                         </div>
                     </div>

@@ -1,26 +1,16 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-
-import { userData, paymentLog } from "../../Config/Data";
-
 import { DashboardLayout } from "../../Components/Layout/DashboardLayout";
 import BackButton from "../../Components/BackButton";
 import CustomModal from "../../Components/CustomModal";
-import UseTableControls from "../../Config/UseTableControls";
 
 const UserManagementDetail = () => {
 
   const { id } = useParams();
 
-  UseTableControls();
 
 
   const [profileData, setProfileData] = useState({});
-  const [paymentData, setPaymentData] = useState([]);
-  const singleData = []
-
-  console.log(paymentData)
-
 
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
@@ -37,25 +27,28 @@ const UserManagementDetail = () => {
   }
 
   useEffect(() => {
-    userData.forEach((item) => {
-      if (item.id == id) {
-        setProfileData(item);
+    const LogoutData = localStorage.getItem('login');
+    fetch(`https://custom.mystagingserver.site/parcel_safe_app/public/api/admin/get-user/${id}`,
+      {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${LogoutData}`
+        },
       }
-    });
-  }, []);
-
-  useEffect(() => {
-    document.title = 'Project Camp | User Details';
-
-    paymentLog.filter(((item) => {
-      if (profileData) {
-        if (profileData.id == item.male.id) {
-          singleData.push(item);
-        }
-      }
-    }))
-    setPaymentData(singleData)
-  }, [profileData])
+    )
+      .then((response) => {
+        return response.json()
+      })
+      .then((data) => {
+        setProfileData(data.users)
+        console.log(data)
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  }, [id]);
 
 
   return (
@@ -72,17 +65,12 @@ const UserManagementDetail = () => {
           </div>
           <div className="row mb-3">
             <div className="col-12">
-              <div className="row mb-3 justify-content-between">
-                <div className="col-lg-4  order-2 order-lg-1 mb-3">
-                  <div className="profileImage">
-                    <img src={profileData.image} alt="User" />
-                  </div>
-                </div>
+              <div className="row mb-3 justify-content-end">
                 <div className="col-lg-4 text-end order-1 order-lg-2 mb-3">
                   <button onClick={() => {
                     profileData.status ? setShowModal(true) : setShowModal3(true)
                   }} className="notButton primaryColor fw-bold text-decoration-underline">Mark as {profileData.status ? 'Inactive' : 'Active'}</button>
-                  <span className={`statusBadge ${profileData.status ? 'statusBadgeActive' : 'statusBadgeInactive'}`}>{profileData.status ? 'Active' : 'Inactive'}</span>
+                  <span className={`statusBadge ${profileData.status == 1 ? 'statusBadgeActive' : 'statusBadgeInactive'}`}>{profileData.status == 1 ? 'Active' : 'Inactive'}</span>
                 </div>
               </div>
               <div className="row">
@@ -93,36 +81,34 @@ const UserManagementDetail = () => {
                       <p className="secondaryText">{profileData.name}</p>
                     </div>
                     <div className="col-xl-6 col-md-6 mb-3">
-                      <h4 className="secondaryLabel">Username</h4>
-                      <p className="secondaryText">{profileData.username}</p>
-                    </div>
-                    <div className="col-xl-6 col-md-6 mb-3">
                       <h4 className="secondaryLabel">Email Address</h4>
                       <p className="secondaryText">{profileData.email}</p>
                     </div>
                     <div className="col-xl-6 col-md-6 mb-3">
                       <h4 className="secondaryLabel">Phone Number</h4>
-                      <p className="secondaryText">{profileData.phone}</p>
+                      <p className="secondaryText">{profileData.number}</p>
                     </div>
                     <div className="col-xl-6 col-md-6 mb-3">
-                      <h4 className="secondaryLabel">Location</h4>
-                      <p className="secondaryText">{profileData.location}</p>
+                      <h4 className="secondaryLabel">Country</h4>
+                      <p className="secondaryText">{profileData.country}</p>
                     </div>
                     <div className="col-xl-6 col-md-6 mb-3">
-                      <h4 className="secondaryLabel">Age</h4>
-                      <p className="secondaryText">{profileData.age}</p>
+                      <h4 className="secondaryLabel">Postal Code</h4>
+                      <p className="secondaryText">{profileData.postal_code}</p>
+                    </div>
+                    <div className="col-xl-6 col-md-6 mb-3">
+                      <h4 className="secondaryLabel">City</h4>
+                      <p className="secondaryText">{profileData.city}</p>
                     </div>
                     <div className="col-xl-6 mb-3">
-                      <h4 className="secondaryLabel">Abour Yourself</h4>
-                      <p className="secondaryText">{profileData.about}</p>
+                      <h4 className="secondaryLabel">Address 1</h4>
+                      <p className="secondaryText">{profileData.address_1}</p>
                     </div>
-                    <div className="col-xl-6 col-md-6 mb-3">
-                      <h4 className="secondaryLabel">Interests and Hobbies</h4>
-                      {profileData.interest ? profileData.interest.map((item) => (
-                        <p className="secondaryText">{item}</p>
-                      )) :
-                        ''}
+                    <div className="col-xl-6 mb-3">
+                      <h4 className="secondaryLabel">Address 2</h4>
+                      <p className="secondaryText">{profileData?.address_2}</p>
                     </div>
+
                   </div>
                 </div>
               </div>

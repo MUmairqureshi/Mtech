@@ -6,19 +6,17 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsisV, faEye, faCheck, faTimes, faFilter } from "@fortawesome/free-solid-svg-icons";
 
 import { DashboardLayout } from "../../Components/Layout/DashboardLayout";
-import CustomTable from "./../../Components/CustomTable";
+import CustomTable from "../../Components/CustomTable";
 import CustomModal from "../../Components/CustomModal";
 
 import CustomPagination from "../../Components/CustomPagination"
 import CustomInput from "../../Components/CustomInput";
 import CustomButton from "../../Components/CustomButton";
 
-import { userData } from "./../../Config/Data";
 
 import "./style.css";
 
-export const UserManagement = () => {
-
+export const LeadListing = () => {
 
   const [data, setData] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -48,7 +46,7 @@ export const UserManagement = () => {
   }
 
   const filterData = data.filter(item =>
-  item.name.toLowerCase().includes(inputValue.toLowerCase())
+    item.name.toLowerCase().includes(inputValue.toLowerCase())
   );
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -58,9 +56,32 @@ export const UserManagement = () => {
 
 
   useEffect(() => {
-    document.title = 'Project Camp | User Management';
+    document.title = 'Parcel Safe | User Management';
+    const LogoutData = localStorage.getItem('login');
 
-    setData(userData);
+    fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/leads-listing',
+      {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${LogoutData}`
+        },
+      }
+    )
+
+      .then(response =>
+        response.json()
+      )
+      .then((data) => {
+        console.log(data)
+        setData(data.leads);
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+
+
   }, []);
 
   const maleHeaders = [
@@ -69,38 +90,47 @@ export const UserManagement = () => {
       title: "S.No",
     },
     {
-      key: "name",
-      title: "Name",
-    },
-    {
       key: "username",
-      title: "Username",
+      title: "Name",
     },
     {
       key: "email",
       title: "Email Address",
     },
     {
-      key: "registered",
-      title: "Registered On",
+      key: "number",
+      title: "Phone",
     },
     {
-      key: "status",
-      title: "Status",
+      key: "tamout",
+      title: "Total Amount",
     },
     {
-      key: "actions",
-      title: "Actions",
+      key: "product",
+      title: "Product",
+    },
+    {
+      key: "amountPaid",
+      title: "Amount Paid",
+    },
+    {
+      key: "unit",
+      title: "Unit",
+    },
+    {
+      key: "brand",
+      title: "Brand",
+    },
+    {
+      key: "description",
+      title: "Description",
+    },
+    {
+      key: "source",
+      title: "Source",
     },
   ];
-  
-  const removeUser = ((itemRemove) => {
-    console.log(userData);
-    const dupArray = [...userData]
-    dupArray.splice(itemRemove, 1);
-    setData(dupArray)
-    console.log(dupArray);
-  })
+
 
   return (
     <>
@@ -111,12 +141,11 @@ export const UserManagement = () => {
               <div className="dashCard">
                 <div className="row mb-3 justify-content-between">
                   <div className="col-md-6 mb-2">
-                    <h2 className="mainTitle">User Management</h2>
+                    <h2 className="mainTitle">Lead Management</h2>
                   </div>
                   <div className="col-md-6 mb-2">
                     <div className="addUser">
-                      <CustomButton type="button" text="Add User" className="primaryButton" />
-                      <CustomInput type="text" placeholder="Search Here..." value={inputValue} inputClass="mainInput"  onChange={handleChange} />
+                      <CustomInput type="text" placeholder="Search Here..." value={inputValue} inputClass="mainInput" onChange={handleChange} />
                     </div>
                   </div>
                 </div>
@@ -124,37 +153,39 @@ export const UserManagement = () => {
                   <div className="col-12">
                     <CustomTable
                       headers={maleHeaders}
-                     
+
                     >
                       <tbody>
                         {currentItems.map((item, index) => (
                           <tr key={index}>
                             <td>{index + 1}</td>
                             <td className="text-capitalize">
-                              <img
-                                src={item.image}
-                                alt="thumbnail"
-                                className="thumbnail"
-                              />
                               {item.name}
                             </td>
-                            <td>{item.username}</td>
+                            {/* <td>{item.username}</td> */}
                             <td>{item.email}</td>
-                            <td>{item.registered}</td>
-                            <td className={item.status ? 'greenColor' : "redColor"}>{item.status ? 'Active' : "Inactive"}</td>
-                            <td>
+                            <td>{item.phone}</td>
+                            <td>{`$ ${item.amount}`}</td>
+                            <td>{item.product}</td>
+                            <td>{`$ ${item.received}`}</td>
+                            <td>{`Unit ${item.getbrand.name}`}</td>
+                            <td>{item.getbrand.name}</td>
+                            <td>{item.description}</td>
+                            <td>{item.source}</td>
+                            {/* <td className={item.status == 1 ? 'greenColor' : "redColor"}>{item.status == 1 ? 'Active' : "Inactive"}</td> */}
+                            {/* <td>
                               <Dropdown className="tableDropdown">
                                 <Dropdown.Toggle variant="transparent" className="notButton classicToggle">
                                   <FontAwesomeIcon icon={faEllipsisV} />
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu align="end" className="tableDropdownMenu">
-                                  <button onClick={() => removeUser(index)} className="tableAction"><FontAwesomeIcon icon={faEye} className="tableActionIcon" />Remove</button>
+                                  <Link to={`/user-management/user-detail/${item.id}`} className="tableAction"><FontAwesomeIcon icon={faEye} className="tableActionIcon" />View</Link>
                                   <button onClick={() => {
                                     item.status ? setShowModal(true) : setShowModal3(true)
                                   }} className="tableAction">{item.status ? <FontAwesomeIcon icon={faTimes} className="tableActionIcon" /> : <FontAwesomeIcon icon={faCheck} className="tableActionIcon" />}{item.status ? 'Inactive' : "Active"}</button>
                                 </Dropdown.Menu>
                               </Dropdown>
-                            </td>
+                            </td> */}
                           </tr>
                         ))}
                       </tbody>

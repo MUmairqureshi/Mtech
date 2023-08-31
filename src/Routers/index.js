@@ -6,9 +6,11 @@ import ForgetPassword2 from "../Screens/Auth/ForgetPassword2";
 import ForgetPassword3 from "../Screens/Auth/ForgetPassword3";
 import { Dashboard } from "../Screens/Dashboard";
 
-import { DepartmentManagement } from "../Screens/DepartmentManagement";
-import DepartDetails from "../Screens/DepartmentManagement/DepartDetails";
-import { UserManagement } from "../Screens/UserManagement";
+import { LeadListing } from "../Screens/LeadListing";
+// import DepartDetails from "../Screens/LeadListing/DepartDetails";
+import { UnitListing } from "../Screens/UnitListing";
+import { BrandListing } from "../Screens/BrandListing";
+import { Roles } from "../Screens/Roles";
 import Profile from "../Screens/Profile";
 import EditProfile from "../Screens/Profile/EditProfile";
 import ChangePassword from "../Screens/Profile/ChangePassword";
@@ -28,10 +30,12 @@ export default function AdminRouter() {
 
         <Route path="/dashboard" element={ <ProtectedRoutes Components={Dashboard}  />} />
 
-        <Route path="/user-management" element={<ProtectedRoutes Components={UserManagement} />} />
+        <Route path="/role-management" element={<ProtectedRoutes Components={Roles} />} />
 
-        <Route path="/department-management" element={<ProtectedRoutes Components={DepartmentManagement} />} />
-        <Route path="/department-management/depart-details/:id" element={<ProtectedRoutes Components={DepartDetails} />} />
+        <Route path="/lead-listing" element={<ProtectedRoutes Components={LeadListing} />} />
+        <Route path="/unit-listing" element={<ProtectedRoutes Components={UnitListing} />} />
+        <Route path="/brand-listing" element={<ProtectedRoutes Components={BrandListing} />} />
+        {/* <Route path="/department-management/depart-details/:id" element={<ProtectedRoutes Components={DepartDetails} />} /> */}
 
         <Route path="/profile" element={<ProtectedRoutes Components={Profile} />} />
         <Route path="/profile/edit-profile" element={<ProtectedRoutes Components={EditProfile} />} />

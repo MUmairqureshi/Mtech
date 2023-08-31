@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { logo, userImage } from './../../../Assets/images/'
+import { logo, userImage, mtech } from './../../../Assets/images/'
 
 import { Navbar, Container, Nav, Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -51,7 +51,8 @@ export const Header = (props) => {
       <Navbar className="customHeader" expand="md">
         <Container fluid>
           <Link to={"/dashboard"} className="siteLogo order-2 order-lg-3 text-decoration-none">
-            <h1>Project <span>Camp</span></h1>
+            {/* <h1>Project <span>Camp</span></h1> */}
+            <img src={mtech} className="mw-100" />
           </Link>
           <Navbar.Toggle className="order-4 order-lg-2 notButton">
             <FontAwesomeIcon className="bell-icon" icon={faEllipsisV} />

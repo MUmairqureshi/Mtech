@@ -28,38 +28,38 @@ export const Sidebar = (props) => {
             <span className="sideLinkText">Dashboard</span>
           </Link>
         </li>
-        {/* <li className="sidebar-li">
-          <Link className={`sideLink ${location.pathname.includes('/roles-management') ? 'active' : ''}`} to="/roles-management">
-            <span className="sideIcon">
-              <FontAwesomeIcon icon={faUser} />
-            </span>
-            <span className="sideLinkText">Roles Management</span>
-          </Link>
-        </li> */}
         <li className="sidebar-li">
-          <Link className={`sideLink ${location.pathname.includes('/department-management') ? 'active' : ''}`} to="/department-management">
-            <span className="sideIcon">
-              <FontAwesomeIcon icon={faEye} />
-            </span>
-            <span className="sideLinkText">Data</span>
-          </Link>
-        </li>
-        <li className="sidebar-li">
-          <Link className={`sideLink ${location.pathname.includes('/user-management') ? 'active' : ''}`} to="/user-management">
+          <Link className={`sideLink ${location.pathname.includes('/role-management') ? 'active' : ''}`} to="/role-management">
             <span className="sideIcon">
               <FontAwesomeIcon icon={faMessage} />
             </span>
-            <span className="sideLinkText">User Management</span>
+            <span className="sideLinkText">Roles Management</span>
           </Link>
         </li>
-        {/* <li className="sidebar-li">
-          <Link className={`sideLink ${location.pathname.includes('/task-view') ? 'active' : ''}`} to="/task-view">
+        <li className="sidebar-li">
+          <Link className={`sideLink ${location.pathname.includes('/lead-listing') ? 'active' : ''}`} to="/lead-listing">
             <span className="sideIcon">
-              <FontAwesomeIcon icon={faTasks} />
+              <FontAwesomeIcon icon={faEye} />
             </span>
-            <span className="sideLinkText">Task View</span>
+            <span className="sideLinkText">Lead Management</span>
           </Link>
-        </li> */}
+        </li>
+        <li className="sidebar-li">
+          <Link className={`sideLink ${location.pathname.includes('/brand-listing') ? 'active' : ''}`} to="/brand-listing">
+            <span className="sideIcon">
+              <FontAwesomeIcon icon={faEye} />
+            </span>
+            <span className="sideLinkText">Brand Management</span>
+          </Link>
+        </li>
+        <li className="sidebar-li">
+          <Link className={`sideLink ${location.pathname.includes('/unit-listing') ? 'active' : ''}`} to="/unit-listing">
+            <span className="sideIcon">
+              <FontAwesomeIcon icon={faEye} />
+            </span>
+            <span className="sideLinkText">Unit Management</span>
+          </Link>
+        </li>
       </ul>
     </div>
   );

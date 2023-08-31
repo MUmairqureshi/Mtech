@@ -32,7 +32,7 @@ const AdminLogin = () => {
         formDataMethod.append('password', formData.password);
         console.log(formData)
 
-        const apiUrl = 'https://custom.mystagingserver.site/taskmanager/public/api/login';
+        const apiUrl = 'https://custom.mystagingserver.site/mtrecords/public/api/auth/login';
 
 
         try {
@@ -44,7 +44,7 @@ const AdminLogin = () => {
             if (response.ok) {
                
                 const responseData = await response.json();
-                localStorage.setItem('login', true);
+                localStorage.setItem('login', responseData.data.token);
                 console.log('Login Response:', responseData);
                 navigate('/dashboard')
                 

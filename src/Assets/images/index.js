@@ -1,6 +1,6 @@
 import authBg from './authBg.png'
 import logo from './logo.png'
-import authImage from './authImage.png'
+import authImage from './authImage.jpg'
 import bell from './bell.png'
 import check from './check.png'
 import error from './error.png'
@@ -17,6 +17,7 @@ import stats1 from './stats1.png'
 import stats2 from './stats2.png'
 import stats3 from './stats3.png'
 import userImage from './userImage.png'
+import mtech from './mtech.png'
 
 
 export {
@@ -38,4 +39,5 @@ export {
     stats2,
     stats3,
     userImage,
+    mtech
 }

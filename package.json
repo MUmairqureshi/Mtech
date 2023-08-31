@@ -1,6 +1,6 @@
 {
-  "name": "project-camp",
-  "homepage": "project-camp",
+  "name": "customProject",
+  "homepage": "customProject",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
