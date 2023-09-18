@@ -21,42 +21,25 @@ export const Roles = () => {
 
   const [data, setData] = useState([]);
   const [userForm, setUserFrom] = useState(false);
-  const [showModal, setShowModal] = useState(false);
-  const [showModal2, setShowModal2] = useState(false);
-  const [showModal3, setShowModal3] = useState(false);
-  const [showModal4, setShowModal4] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(8);
   const [inputValue, setInputValue] = useState('');
-
+  const [addUser, setUser] = useState(false);
+  const [editUser, setEditUser] = useState(false);
+  const [idUser, setIdUser] = useState(0);
+  const [formData, setFormData] = useState({
+    name: '',
+    status: '1'
+  });
 
   const optionData = [
     {
-      name: "Developer",
-      code: "dev"
+      name: "Active",
+      code: "1"
     },
     {
-      name: "QA",
-      code: "qa"
-    },
-    {
-      name: "Sales Agent",
-      code: "saleagent"
-    },
-  ]
-
-  const departData = [
-    {
-      name: "Web & App",
-      code: "webandapp"
-    },
-    {
-      name: "Sales",
-      code: "sales"
-    },
-    {
-      name: "SEO",
-      code: "seo"
+      name: "Inactive",
+      code: "0"
     },
   ]
 
@@ -64,15 +47,6 @@ export const Roles = () => {
     setCurrentPage(pageNumber);
   };
 
-
-  const inActive = () => {
-    setShowModal(false)
-    setShowModal2(true)
-  }
-  const ActiveMale = () => {
-    setShowModal3(false)
-    setShowModal4(true)
-  }
 
   const handleChange = (e) => {
     setInputValue(e.target.value);
@@ -89,7 +63,13 @@ export const Roles = () => {
 
 
   useEffect(() => {
-    document.title = 'Parcel Safe | User Management';
+    document.title = 'Mt Records | Role Management';
+    fetchData();
+
+  }, []);
+
+
+  const fetchData = () => {
     const LogoutData = localStorage.getItem('login');
 
     fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/role-listing',
@@ -113,9 +93,108 @@ export const Roles = () => {
       .catch((error) => {
         console.log(error)
       })
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    console.log(formData)
+
+    const LogoutData = localStorage.getItem('login');
+    fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/role-add-edit`,
+      {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${LogoutData}`
+        },
+        body: JSON.stringify(formData)
+      },
+    )
+      .then((response) => {
+        return response.json()
+      })
+      .then((data) => {
+        console.log(data)
+        setUser(false)
+        setFormData({
+          name: ''
+        })
+        fetchData()
+
+      })
+      .catch((error) => {
+        document.querySelector('.loaderBox').classList.add("d-none");
+        console.log(error);
+      })
+  }
+
+  const editUnit = (unitID) => {
+    const LogoutData = localStorage.getItem('login');
+    fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/view-role/${unitID}`,
+      {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${LogoutData}`
+        },
+      },
+    )
+      .then((response) => {
+        return response.json()
+      })
+      .then((data) => {
+        console.log(data)
+        setIdUser(unitID)
+        setFormData({
+          ...formData,
+          name: data.roles.name,
+          status: data.status
+        });
+        setEditUser(true)
+
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  }
+
+  const handleEditSubmit = (event) => {
+    event.preventDefault();
+    console.log(formData)
+
+    const LogoutData = localStorage.getItem('login');
+    fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/role-add-edit/${idUser}`,
+      {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${LogoutData}`
+        },
+        body: JSON.stringify(formData)
+      },
+    )
+      .then((response) => {
+        return response.json()
+      })
+      .then((data) => {
+        console.log(data)
+        setFormData({
+          name: ''
+        })
+        fetchData()
+        setEditUser(false)
 
 
-  }, []);
+      })
+      .catch((error) => {
+        document.querySelector('.loaderBox').classList.add("d-none");
+        console.log(error);
+      })
+  }
 
   const maleHeaders = [
     {
@@ -150,6 +229,9 @@ export const Roles = () => {
                   </div>
                   <div className="col-md-6 mb-2">
                     <div className="addUser">
+                      <CustomButton text="Add Role" variant='primaryButton' onClick={() => {
+                        setUser(true)
+                      }} />
                       <CustomInput type="text" placeholder="Search Here..." value={inputValue} inputClass="mainInput" onChange={handleChange} />
                     </div>
                   </div>
@@ -175,6 +257,7 @@ export const Roles = () => {
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu align="end" className="tableDropdownMenu">
                                   <button onClick={() => {
+                                    editUnit(item.id)
                                     setUserFrom(true)
                                   }} className="tableAction"><FontAwesomeIcon icon={faTimes} className="tableActionIcon" />Edit</button>
                                 </Dropdown.Menu>
@@ -195,40 +278,57 @@ export const Roles = () => {
               </div>
             </div>
           </div>
+          {/* add roles  */}
 
-          <CustomModal show={showModal} close={() => { setShowModal(false) }} action={inActive} heading='Are you sure you want to mark this user as inactive?' >Hello World</CustomModal>
-          <CustomModal show={showModal2} close={() => { setShowModal2(false) }} success heading='Marked as Inactive' />
-
-          <CustomModal show={showModal3} close={() => { setShowModal3(false) }} action={ActiveMale} heading='Are you sure you want to mark this user as Active?' />
-          <CustomModal show={showModal4} close={() => { setShowModal4(false) }} success heading='Marked as Active' />
-
-          <CustomModal show={userForm} close={() => { setUserFrom(false) }} heading="Edit Roles">
+          <CustomModal show={addUser} close={() => { setUser(false) }} >
             <CustomInput
-              label="Name"
+              label="Add Roles"
               type="text"
-              placeholder="Name"
+              placeholder="Add Roles"
               required
+              name="name"
               labelClass='mainLabel'
               inputClass='mainInput'
+              value={formData.name}
+              onChange={(event) => {
+                setFormData({ ...formData, name: event.target.value });
+                console.log(formData);
+              }}
 
             />
+            <CustomButton variant='primaryButton' text='Add' type='button' onClick={handleSubmit} />
+          </CustomModal>
+
+          <CustomModal show={editUser} close={() => { setEditUser(false) }} >
             <CustomInput
-              label="Email"
-              type="email"
-              placeholder="Email"
+              label="Edit Roles"
+              type="text"
+              placeholder="Edit Roles"
               required
+              name="name"
               labelClass='mainLabel'
               inputClass='mainInput'
+              value={formData.name}
+              onChange={(event) => {
+                setFormData({ ...formData, name: event.target.value });
+                console.log(formData);
+              }}
 
             />
 
-            <SelectBox selectClass="mainInput" name="Select Roles" label="Roles" required option={optionData} />
-
-            <SelectBox selectClass="mainInput" name="Select Department" label="Department" required option={departData} />
-
-
-            <CustomButton variant='primaryButton' text='Submit' type='submit' />
-
+            <SelectBox
+              selectClass="mainInput"
+              name="Status"
+              label="Status"
+              value={formData.status}
+              required
+              option={optionData}
+              onChange={(event) => {
+                setFormData({ ...formData, status: event.target.value });
+                console.log(formData);
+              }}
+            />
+            <CustomButton variant='primaryButton' text='Add' type='button' onClick={handleEditSubmit} />
           </CustomModal>
 
 

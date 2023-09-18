@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisV, faEye, faCheck, faTimes, faFilter } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisV, faEye, faCheck, faTimes, faFilter, faPencil } from "@fortawesome/free-solid-svg-icons";
 
 import { DashboardLayout } from "../../Components/Layout/DashboardLayout";
 import CustomTable from "../../Components/CustomTable";
@@ -16,7 +16,7 @@ import CustomButton from "../../Components/CustomButton";
 
 import "./style.css";
 
-export const LeadListing = () => {
+export const UserManagement = () => {
 
   const [data, setData] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -34,7 +34,7 @@ export const LeadListing = () => {
   };
 
   const hanldeRoute = () => {
-    navigate('/add-lead')
+    navigate('/add-user')
   }
 
 
@@ -52,7 +52,7 @@ export const LeadListing = () => {
   }
 
   const filterData = data.filter(item =>
-    item.name.toLowerCase().includes(inputValue.toLowerCase())
+    item?.name.toLowerCase().includes(inputValue.toLowerCase())
   );
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -62,10 +62,10 @@ export const LeadListing = () => {
 
 
   useEffect(() => {
-    document.title = 'Mt Records | Lead Management';
+    document.title = 'Mt Records | User Management';
     const LogoutData = localStorage.getItem('login');
 
-    fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/leads-listing',
+    fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/user-listing',
       {
         method: 'GET',
         headers: {
@@ -81,7 +81,7 @@ export const LeadListing = () => {
       )
       .then((data) => {
         console.log(data)
-        setData(data.leads);
+        setData(data.users);
       })
       .catch((error) => {
         console.log(error)
@@ -104,37 +104,18 @@ export const LeadListing = () => {
       title: "Email Address",
     },
     {
-      key: "number",
-      title: "Phone",
-    },
-    {
-      key: "tamout",
-      title: "Total Amount",
-    },
-    {
-      key: "product",
-      title: "Product",
-    },
-    {
-      key: "amountPaid",
-      title: "Amount Paid",
-    },
-    {
       key: "unit",
       title: "Unit",
     },
     {
-      key: "brand",
-      title: "Brand",
+      key: "role",
+      title: "Role",
     },
     {
-      key: "description",
-      title: "Description",
+      key: "status",
+      title: "Status",
     },
-    {
-      key: "source",
-      title: "Source",
-    },
+  
     {
       key: "action",
       title: "Action",
@@ -151,11 +132,11 @@ export const LeadListing = () => {
               <div className="dashCard">
                 <div className="row mb-3 justify-content-between">
                   <div className="col-md-6 mb-2">
-                    <h2 className="mainTitle">Lead Management</h2>
+                    <h2 className="mainTitle">User Management</h2>
                   </div>
                   <div className="col-md-6 mb-2">
                     <div className="addUser">
-                      <CustomButton text="Add Lead" variant='primaryButton' onClick={hanldeRoute}/>
+                      <CustomButton text="Add User" variant='primaryButton' onClick={hanldeRoute}/>
                       <CustomInput type="text" placeholder="Search Here..." value={inputValue} inputClass="mainInput" onChange={handleChange} />
                     </div>
                   </div>
@@ -171,27 +152,24 @@ export const LeadListing = () => {
                           <tr key={index}>
                             <td>{index + 1}</td>
                             <td className="text-capitalize">
-                              {item.name}
+                              {item?.name}
                             </td>
-                            {/* <td>{item.username}</td> */}
-                            <td>{item.email}</td>
-                            <td>{item.phone}</td>
-                            <td>{`$ ${item.amount}`}</td>
-                            <td>{item.product}</td>
-                            <td>{`$ ${item.received}`}</td>
-                            <td>{`Unit ${item.getbrand.name}`}</td>
-                            <td>{item.getbrand.name}</td>
-                            <td>{item.description}</td>
-                            <td>{item.source}</td>
-                            {/* <td className={item.status == 1 ? 'greenColor' : "redColor"}>{item.status == 1 ? 'Active' : "Inactive"}</td> */}
+                            {/* <td>{item?.username}</td> */}
+                            <td>{item?.email}</td>
+                            <td>{item?.unit_id}</td>
+                            <td>{item?.user_role == 3 ? 'User' : 'Sub Admin'}</td>
+                            <td className={item?.status == 1 ? 'greenColor' : 'redColor'}>{item?.status == 1 ? 'Active' : 'Inactive'}</td>
+                            {/* <td className={item?.status == 1 ? 'greenColor' : "redColor"}>{item?.status == 1 ? 'Active' : "Inactive"}</td> */}
                             <td>
                               <Dropdown className="tableDropdown">
                                 <Dropdown.Toggle variant="transparent" className="notButton classicToggle">
                                   <FontAwesomeIcon icon={faEllipsisV} />
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu align="end" className="tableDropdownMenu">
-                                  <Link to={`/lead-detail/${item.id}`} className="tableAction"><FontAwesomeIcon icon={faEye} className="tableActionIcon" />View</Link>
+                                  <Link to={`/user-detail/${item?.id}`} className="tableAction"><FontAwesomeIcon icon={faEye} className="tableActionIcon" />View</Link>
+                                  <Link to={`/edit-user/${item?.id}`} className="tableAction"><FontAwesomeIcon icon={faPencil} className="tableActionIcon" />Edit</Link>
                                 </Dropdown.Menu>
+
                               </Dropdown>
                             </td>
                           </tr>

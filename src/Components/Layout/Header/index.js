@@ -5,7 +5,7 @@ import { logo, userImage, mtech } from './../../../Assets/images/'
 import { Navbar, Container, Nav, Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import CustomModal from "../../CustomModal";
-import { useNavigate  } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   faBell,
   faUser,
@@ -24,21 +24,42 @@ export const Header = (props) => {
   const [notificationState, setNotificationState] = useState([])
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
-  
-  const navigate = useNavigate ();
-  
+
+  const navigate = useNavigate();
+
   const Continue = () => {
     setShowModal(false)
     setShowModal2(true)
   }
 
-  const handleClickPopup = ()=> {
+  const handleClickPopup = () => {
     setShowModal(true)
   }
 
-  const handleRedirect = ()=> {
-    localStorage.removeItem('login');
-    navigate('/');
+  const handleRedirect = () => {
+    const LogoutData = localStorage.getItem('login');
+    fetch(`https://custom.mystagingserver.site/mtrecords/public/api/auth/logout`,
+      {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${LogoutData}`
+        },
+      },
+    )
+      .then((response) => {
+        return response.json()
+      })
+      .then((data) => {
+        console.log(data)
+        localStorage.removeItem('login');
+        navigate('/');
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+
   }
 
 
@@ -110,18 +131,18 @@ export const Header = (props) => {
                   {/* <img src={images.profilePic} alt="" className="img-fluid" /> */}
                 </Dropdown.Toggle>
                 <Dropdown.Menu className="userMenu" align="end">
-                  <Link className="userMenuItem" to={'/profile'}>
+                  {/* <Link className="userMenuItem" to={'/profile'}>
                     <FontAwesomeIcon
                       className="me-2 yellow-text"
                       icon={faUser}
                     />{" "}
                     Profile
-                  </Link>
+                  </Link> */}
                   <Link to="#" className="userMenuItem" onClick={handleClickPopup}>
                     <FontAwesomeIcon
                       className="me-1 yellow-text"
                       icon={faSignOut}
-                      
+
                     />{" "}
                     Logout
                   </Link>
@@ -139,8 +160,8 @@ export const Header = (props) => {
         </Container>
       </Navbar>
 
-          <CustomModal show={showModal} close={() => { setShowModal(false) }} action={Continue} heading='Are you sure you want to logout?' />
-          <CustomModal show={showModal2} close={handleRedirect} success heading='Successfully Logged Out' />
+      <CustomModal show={showModal} close={() => { setShowModal(false) }} action={Continue} heading='Are you sure you want to logout?' />
+      <CustomModal show={showModal2} close={handleRedirect} success heading='Successfully Logged Out' />
     </header>
   );
 };

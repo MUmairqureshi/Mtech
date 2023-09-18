@@ -15,12 +15,14 @@ export const SelectBox = (props) => {
             </div>
             {props?.label && <label htmlFor={props?.id} className={props?.labelClass}>{props?.label}{props?.required ? '*' : ''}</label>}
             <div className="fieldData">
-                <select className={props?.selectClass} name={props?.name}>
-                    <option>{props?.name}</option>
+                <select className={props?.selectClass} name={props?.name} onChange={props.onChange} value={props.value}>
+                    <option>{`Select ${props?.name}`}</option>
                     {Array.isArray(props.option) && props.option.map(item => (
-                        <option value={item.code}>{item.name}</option>
-                    ))}
-                </select>
+                       
+                        <option value={!item.code ? item.id : item.code}>{item.name}</option>
+                    ))
+                    }
+                </select>   
                {props?.buttonAction && (
                 <button type='button' onClick={handleClick}><FontAwesomeIcon icon={faTrashAlt} className="removeField"></FontAwesomeIcon></button>
                )

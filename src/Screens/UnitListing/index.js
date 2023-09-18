@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import { Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisV, faEye, faCheck, faTimes, faFilter } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisV, faPencil, faCheck, faTimes, faFilter } from "@fortawesome/free-solid-svg-icons";
 
 import { DashboardLayout } from "../../Components/Layout/DashboardLayout";
 import CustomTable from "../../Components/CustomTable";
@@ -12,6 +12,10 @@ import CustomModal from "../../Components/CustomModal";
 import CustomPagination from "../../Components/CustomPagination"
 import CustomInput from "../../Components/CustomInput";
 import CustomButton from "../../Components/CustomButton";
+import { SelectBox } from "../../Components/CustomSelect";
+import Select from 'react-select'
+
+
 
 
 import "./style.css";
@@ -19,27 +23,68 @@ import "./style.css";
 export const UnitListing = () => {
 
   const [data, setData] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-  const [showModal2, setShowModal2] = useState(false);
-  const [showModal3, setShowModal3] = useState(false);
-  const [showModal4, setShowModal4] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(8);
   const [inputValue, setInputValue] = useState('');
+  const [addUser, setUser] = useState(false);
+  const [editUser, setEditUser] = useState(false);
+  const [userForm, setUserFrom] = useState(false);
+  const [idUser, setIdUser] = useState(0);
+  const [brands, setBrands] = useState({});
+  const [formData, setFormData] = useState({
+    name: '',
+    status: '1',
+    brands: []
+  });
+
+  const handleChangeSelect = (selected) => {
+    setFormData({
+      ...formData, brands: selected
+    })
+    console.log(formData)
+  };
+
+  const optionData = [
+    {
+      name: "Active",
+      code: "1"
+    },
+    {
+      name: "Inactive",
+      code: "0"
+    },
+  ]
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
+  const fectchBrandData = () => {
+    const LogoutData = localStorage.getItem('login');
 
-  const inActive = () => {
-    setShowModal(false)
-    setShowModal2(true)
+    fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/brand-listing',
+      {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${LogoutData}`
+        },
+      }
+    )
+
+      .then(response =>
+        response.json()
+      )
+      .then((data) => {
+        console.log(data)
+        setBrands(data.brands);
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   }
-  const ActiveMale = () => {
-    setShowModal3(false)
-    setShowModal4(true)
-  }
+
 
   const handleChange = (e) => {
     setInputValue(e.target.value);
@@ -54,9 +99,7 @@ export const UnitListing = () => {
   const currentItems = filterData.slice(indexOfFirstItem, indexOfLastItem);
 
 
-
-  useEffect(() => {
-    document.title = 'Parcel Safe | User Management';
+  const fetchData = () => {
     const LogoutData = localStorage.getItem('login');
 
     fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/unit-listing',
@@ -80,6 +123,15 @@ export const UnitListing = () => {
       .catch((error) => {
         console.log(error)
       })
+  }
+
+  const SelectOptions = [];
+  useEffect(() => {
+    document.title = 'Mt Records | Units Management';
+
+    fetchData()
+    fectchBrandData();
+
 
 
   }, []);
@@ -97,8 +149,134 @@ export const UnitListing = () => {
       key: "status",
       title: "Status",
     },
+    {
+      key: "action",
+      title: "Action",
+    },
 
   ];
+
+
+
+  for (const key in brands) {
+    if (brands.hasOwnProperty(key)) {
+      const item = brands[key];
+
+      // Create an object for each option with 'value' and 'label' properties
+      const option = {
+        value: item.id, // Assuming 'item.name' represents the option's value
+        label: item.name, // Assuming 'item.name' also represents the option's label
+      };
+
+      // Push the option object into the SelectOptions array
+      SelectOptions.push(option);
+    }
+  }
+
+  console.log(SelectOptions);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    console.log(formData)
+
+    const LogoutData = localStorage.getItem('login');
+    fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/unit-add-edit`,
+      {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${LogoutData}`
+        },
+        body: JSON.stringify(formData)
+      },
+    )
+      .then((response) => {
+        return response.json()
+      })
+      .then((data) => {
+        console.log(data)
+        setUser(false)
+        setFormData({
+          name: ''
+        })
+        fetchData()
+
+      })
+      .catch((error) => {
+        document.querySelector('.loaderBox').classList.add("d-none");
+        console.log(error);
+      })
+  }
+
+  const editUnit = (unitID) => {
+    const LogoutData = localStorage.getItem('login');
+    fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/view-unit/${unitID}`,
+      {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${LogoutData}`
+        },
+      },
+    )
+      .then((response) => {
+        return response.json()
+      })
+      .then((data) => {
+        console.log(data)
+        setIdUser(unitID)
+        setFormData({
+          ...formData,
+          name: data.unit.name,
+          status: data.status
+        });
+        setEditUser(true)
+
+      })
+      .catch((error) => {
+        console.log(error);
+      })
+  }
+
+  const handleEditSubmit = (event) => {
+    event.preventDefault();
+    console.log(formData)
+
+    const LogoutData = localStorage.getItem('login');
+    fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/unit-add-edit/${idUser}`,
+      {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${LogoutData}`
+        },
+        body: JSON.stringify(formData)
+      },
+    )
+      .then((response) => {
+        return response.json()
+      })
+      .then((data) => {
+        console.log(data)
+        setFormData({
+          name: ''
+        })
+        fetchData()
+        setEditUser(false)
+
+
+      })
+      .catch((error) => {
+        document.querySelector('.loaderBox').classList.add("d-none");
+        console.log(error);
+      })
+  }
+
+
 
 
   return (
@@ -114,6 +292,9 @@ export const UnitListing = () => {
                   </div>
                   <div className="col-md-6 mb-2">
                     <div className="addUser">
+                      <CustomButton text="Add Unit" variant='primaryButton' onClick={() => {
+                        setUser(true)
+                      }} />
                       <CustomInput type="text" placeholder="Search Here..." value={inputValue} inputClass="mainInput" onChange={handleChange} />
                     </div>
                   </div>
@@ -131,7 +312,20 @@ export const UnitListing = () => {
                             <td className="text-capitalize">
                               {item.name}
                             </td>
-                             <td className={item.status == 1 ? 'greenColor' : ''}>{item.status == 1 ? 'Active' : 'Inactive'}</td>
+                            <td className={item.status == 1 ? 'greenColor' : 'redColor'}>{item.status == 1 ? 'Active' : 'Inactive'}</td>
+                            <td>
+                              <Dropdown className="tableDropdown">
+                                <Dropdown.Toggle variant="transparent" className="notButton classicToggle">
+                                  <FontAwesomeIcon icon={faEllipsisV} />
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu align="end" className="tableDropdownMenu">
+                                  <button onClick={() => {
+                                    editUnit(item.id)
+                                    setUserFrom(true)
+                                  }} className="tableAction"><FontAwesomeIcon icon={faPencil} className="tableActionIcon" />Edit</button>
+                                </Dropdown.Menu>
+                              </Dropdown>
+                            </td>
                           </tr>
                         ))}
                       </tbody>
@@ -148,11 +342,70 @@ export const UnitListing = () => {
             </div>
           </div>
 
-          <CustomModal show={showModal} close={() => { setShowModal(false) }} action={inActive} heading='Are you sure you want to mark this user as inactive?' >Hello World</CustomModal>
-          <CustomModal show={showModal2} close={() => { setShowModal2(false) }} success heading='Marked as Inactive' />
+          {/* add unit  */}
 
-          <CustomModal show={showModal3} close={() => { setShowModal3(false) }} action={ActiveMale} heading='Are you sure you want to mark this user as Active?' />
-          <CustomModal show={showModal4} close={() => { setShowModal4(false) }} success heading='Marked as Active' />
+          <CustomModal show={addUser} close={() => { setUser(false) }} >
+            <CustomInput
+              label="Add Unit"
+              type="text"
+              placeholder="Add Unit"
+              required
+              name="name"
+              labelClass='mainLabel'
+              inputClass='mainInput'
+              value={formData.name}
+              onChange={(event) => {
+                setFormData({ ...formData, name: event.target.value });
+                console.log(formData);
+              }}
+
+
+            />
+            <div class="inputWrapper">
+              <label class="mainLabel">Add brands<span>*</span></label>
+              <Select
+                value={formData.brands}
+                isMulti
+                required
+                options={SelectOptions}
+                onChange={handleChangeSelect}
+              />
+            </div>
+
+            <CustomButton variant='primaryButton' text='Add' type='button' onClick={handleSubmit} />
+          </CustomModal>
+
+          <CustomModal show={editUser} close={() => { setEditUser(false) }} >
+            <CustomInput
+              label="Edit Unit"
+              type="text"
+              placeholder="Edit Unit"
+              required
+              name="name"
+              labelClass='mainLabel'
+              inputClass='mainInput'
+              value={formData.name}
+              onChange={(event) => {
+                setFormData({ ...formData, name: event.target.value });
+                console.log(formData);
+              }}
+
+            />
+
+            <SelectBox
+              selectClass="mainInput"
+              name="Status"
+              label="Status"
+              value={formData.status}
+              required
+              option={optionData}
+              onChange={(event) => {
+                setFormData({ ...formData, status: event.target.value });
+                console.log(formData);
+              }}
+            />
+            <CustomButton variant='primaryButton' text='Add' type='button' onClick={handleEditSubmit} />
+          </CustomModal>
 
 
 

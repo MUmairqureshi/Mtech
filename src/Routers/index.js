@@ -9,6 +9,14 @@ import { Dashboard } from "../Screens/Dashboard";
 import { LeadListing } from "../Screens/LeadListing";
 // import DepartDetails from "../Screens/LeadListing/DepartDetails";
 import { UnitListing } from "../Screens/UnitListing";
+import { AddLead } from "../Screens/LeadListing/AddLead";
+import { DetailListing } from "../Screens/LeadListing/DetailListig";
+
+import { UserManagement } from "../Screens/UserManagement";
+import { UserDetail } from "../Screens/UserManagement/UserDetail";
+import { AddUser } from "../Screens/UserManagement/AddUser";
+import { EditUser } from "../Screens/UserManagement/EditUser";
+
 import { BrandListing } from "../Screens/BrandListing";
 import { Roles } from "../Screens/Roles";
 import Profile from "../Screens/Profile";
@@ -33,6 +41,15 @@ export default function AdminRouter() {
         <Route path="/role-management" element={<ProtectedRoutes Components={Roles} />} />
 
         <Route path="/lead-listing" element={<ProtectedRoutes Components={LeadListing} />} />
+         <Route path="/lead-detail/:id" element={<ProtectedRoutes Components={DetailListing} />} />
+        <Route path="/add-lead/" element={<ProtectedRoutes Components={AddLead} />} />
+
+
+        <Route path="/user-management" element={<ProtectedRoutes Components={UserManagement} />} />
+        <Route path="/user-detail/:id" element={<ProtectedRoutes Components={UserDetail} />} />
+        <Route path="/add-user/" element={<ProtectedRoutes Components={AddUser} />} />
+        <Route path="/edit-user/:id" element={<ProtectedRoutes Components={EditUser} />} />
+
         <Route path="/unit-listing" element={<ProtectedRoutes Components={UnitListing} />} />
         <Route path="/brand-listing" element={<ProtectedRoutes Components={BrandListing} />} />
         {/* <Route path="/department-management/depart-details/:id" element={<ProtectedRoutes Components={DepartDetails} />} /> */}

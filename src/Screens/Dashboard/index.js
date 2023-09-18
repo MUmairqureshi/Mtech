@@ -10,11 +10,33 @@ import "./style.css";
 
 export const Dashboard = () => {
   const [statistics, setStatistics] = useState([]);
+  const LogoutData = localStorage.getItem('login');
+  const fetchLeadData = () => {
+    fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/leads-amount',
+      {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${LogoutData}`
+        },
+      }
+    )
+      .then(response =>
+        response.json()
+      )
+      .then((data) => {
+        console.log(data)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
 
   useEffect(() => {
 
-    document.title = 'Project Camp | Dashboard';
-
+    document.title = 'Mt Records | Dashboard';
+    fetchLeadData()
     setStatistics(stats)
   }, []);
 
@@ -39,10 +61,10 @@ export const Dashboard = () => {
             <div className="col-12">
               <div className="dashCard">
                 <div className="d-flex flex-wrap justify-content-between">
-                <h3 className="mainTitle">Total Sales</h3>
-                <SelectBox selectClass="mainInput" name="Monthly" required option={'optionData'}
-                  
-                />
+                  <h3 className="mainTitle">Total Sales</h3>
+                  <SelectBox selectClass="mainInput" name="Monthly" required option={'optionData'}
+
+                  />
                 </div>
                 <div className="graph-wrapper">
                   <CChart
@@ -57,7 +79,7 @@ export const Dashboard = () => {
                       },
                     }}
                     data={{
-                      labels: ["Nov 2010", "March 2011", "July 2012", "Augest 2013", "Augest 2014"],
+                      labels: ["Nov 2010"],
                       tension: "0.5",
                       datasets: [
                         {
@@ -68,7 +90,7 @@ export const Dashboard = () => {
                           pointBackgroundColor: "#00293B",
                           pointBorderColor: "#00293B",
                           borderWidth: 1,
-                          data: [35, 30, 35, 30, 35],
+                          data: [35],
                           tension: 0.5,
                         },
                         {
@@ -78,7 +100,7 @@ export const Dashboard = () => {
                           pointBackgroundColor: "#0116d7",
                           borderWidth: 1,
                           pointBorderColor: "#0116d7",
-                          data: [30, 35, 30, 35, 30],
+                          data: [20],
                           tension: 0.5,
                         },
                       ],

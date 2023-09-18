@@ -6,7 +6,8 @@ import {
   faBorderAll,
   faUser,
   faEye,
-  faTasks
+  faTasks,
+  faMountainCity
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faMessage,
@@ -47,7 +48,7 @@ export const Sidebar = (props) => {
         <li className="sidebar-li">
           <Link className={`sideLink ${location.pathname.includes('/brand-listing') ? 'active' : ''}`} to="/brand-listing">
             <span className="sideIcon">
-              <FontAwesomeIcon icon={faEye} />
+              <FontAwesomeIcon icon={faTasks} />
             </span>
             <span className="sideLinkText">Brand Management</span>
           </Link>
@@ -55,9 +56,17 @@ export const Sidebar = (props) => {
         <li className="sidebar-li">
           <Link className={`sideLink ${location.pathname.includes('/unit-listing') ? 'active' : ''}`} to="/unit-listing">
             <span className="sideIcon">
-              <FontAwesomeIcon icon={faEye} />
+              <FontAwesomeIcon icon={faMountainCity} />
             </span>
             <span className="sideLinkText">Unit Management</span>
+          </Link>
+        </li>
+        <li className="sidebar-li">
+          <Link className={`sideLink ${location.pathname.includes('/user-management') ? 'active' : ''}`} to="/user-management">
+            <span className="sideIcon">
+              <FontAwesomeIcon icon={faUser} />
+            </span>
+            <span className="sideLinkText">User Management</span>
           </Link>
         </li>
       </ul>
