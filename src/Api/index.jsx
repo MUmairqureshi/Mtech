@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 const LogoutData = localStorage.getItem('login');
 const base_url = 'https://custom.mystagingserver.site/mtrecords/public/api/'
-function useApi(endpoint) {
-    const [apiData, setData] = useState(null);
+
+export const useApi = (endpoint) => {
+    const [apiData, setData] = useState({});
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -40,4 +41,62 @@ function useApi(endpoint) {
     return { apiData, loading, error };
 }
 
-export default useApi;
+
+export const usePost = (endpoint) => {
+  const [apiData, setApiData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [dataForm, setDataForm] = useState({});
+
+  // Create a function to update the dataForm state
+  const updateDataForm = (newData) => {
+    setDataForm(newData);
+  };
+
+  useEffect(() => {
+    document.querySelector('.loaderBox').classList.remove("d-none");
+    async function fetchData() {
+      // Your loading indicator logic here
+
+      try {
+        const response = await fetch(base_url + endpoint, {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${LogoutData}` // Include the token in the headers
+          },
+          body: JSON.stringify(dataForm)
+        });
+
+        if (!response.ok) {
+            document.querySelector('.loaderBox').classList.add("d-none");
+          // Handle error and loading indicator logic here
+          throw new Error('Network response was not ok');
+        }
+
+        const result = await response.json();
+
+        // Your loading indicator logic here
+
+        // Update the API data state
+        document.querySelector('.loaderBox').classList.add("d-none");
+        setApiData(result);
+
+        // Set loading state to false
+        setLoading(false);
+      } catch (err) {
+        document.querySelector('.loaderBox').classList.add("d-none");
+        // Handle errors and loading indicator logic here
+        setError(err);
+      }
+    }
+
+    // Call the fetchData function when the endpoint or dataForm changes
+    fetchData();
+  }, [endpoint, dataForm]);
+
+  // Return the relevant data and functions
+  return { apiData, loading, error, updateDataForm };
+};
+

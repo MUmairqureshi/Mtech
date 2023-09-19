@@ -26,7 +26,7 @@ export const AddLead = () => {
 
     const fectchBrandData = () => {
         const LogoutData = localStorage.getItem('login');
-
+        document.querySelector('.loaderBox').classList.remove("d-none");
         fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/brand-listing',
             {
                 method: 'GET',
@@ -43,9 +43,11 @@ export const AddLead = () => {
             )
             .then((data) => {
                 console.log(data)
+                document.querySelector('.loaderBox').classList.add("d-none");
                 setBrands(data.brands);
             })
             .catch((error) => {
+                document.querySelector('.loaderBox').classList.add("d-none");
                 console.log(error)
             })
     }
@@ -53,7 +55,7 @@ export const AddLead = () => {
 
     const fetchUnitData = () => {
         const LogoutData = localStorage.getItem('login');
-
+        document.querySelector('.loaderBox').classList.remove("d-none");
         fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/unit-listing',
             {
                 method: 'GET',
@@ -70,9 +72,11 @@ export const AddLead = () => {
             )
             .then((data) => {
                 console.log(data)
+                document.querySelector('.loaderBox').classList.add("d-none");
                 setUnit(data.units);
             })
             .catch((error) => {
+                document.querySelector('.loaderBox').classList.add("d-none");
                 console.log(error)
             })
     }
@@ -100,7 +104,7 @@ export const AddLead = () => {
         }
 
         console.log(formData)
-
+        document.querySelector('.loaderBox').classList.remove("d-none");
         // Make the fetch request
         fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/leads-add-edit`, {
             method: 'POST',
@@ -114,9 +118,11 @@ export const AddLead = () => {
                 return response.json();
             })
             .then((data) => {
+                document.querySelector('.loaderBox').classList.add("d-none");
                 console.log(data);
             })
             .catch((error) => {
+                document.querySelector('.loaderBox').classList.add("d-none");
                 console.log(error)
             })
     };

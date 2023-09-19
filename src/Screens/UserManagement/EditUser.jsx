@@ -20,7 +20,7 @@ export const EditUser = () => {
 
     const getUserData = () => {
         const LogoutData = localStorage.getItem('login');
-
+        document.querySelector('.loaderBox').classList.remove("d-none");
         fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/get-user/${id}`,
             {
                 method: 'GET',
@@ -37,16 +37,18 @@ export const EditUser = () => {
             )
             .then((data) => {
                 console.log(data)
+                document.querySelector('.loaderBox').classList.add("d-none");
                 setFormData(data.users);
             })
             .catch((error) => {
+                document.querySelector('.loaderBox').classList.add("d-none");
                 console.log(error)
             })
     }
 
     const fectchBrandData = () => {
         const LogoutData = localStorage.getItem('login');
-
+        document.querySelector('.loaderBox').classList.remove("d-none");
         fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/role-listing',
             {
                 method: 'GET',
@@ -63,9 +65,11 @@ export const EditUser = () => {
             )
             .then((data) => {
                 console.log(data)
+                document.querySelector('.loaderBox').classList.add("d-none");
                 setrole(data.roles);
             })
             .catch((error) => {
+                document.querySelector('.loaderBox').classList.add("d-none");
                 console.log(error)
             })
     }
@@ -73,7 +77,7 @@ export const EditUser = () => {
 
     const fetchUnitData = () => {
         const LogoutData = localStorage.getItem('login');
-
+        document.querySelector('.loaderBox').classList.remove("d-none");
         fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/unit-listing',
             {
                 method: 'GET',
@@ -90,9 +94,11 @@ export const EditUser = () => {
             )
             .then((data) => {
                 console.log(data)
+                document.querySelector('.loaderBox').classList.add("d-none");
                 setUnit(data.units);
             })
             .catch((error) => {
+                document.querySelector('.loaderBox').classList.add("d-none");
                 console.log(error)
             })
     }
@@ -112,7 +118,7 @@ export const EditUser = () => {
         }
 
         console.log(formData)
-
+        document.querySelector('.loaderBox').classList.remove("d-none");
         // Make the fetch request
         fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/user-add-edit/${id}`, {
             method: 'POST',
@@ -126,9 +132,11 @@ export const EditUser = () => {
                 return response.json();
             })
             .then((data) => {
+                document.querySelector('.loaderBox').classList.add("d-none");
                 console.log(data);
             })
             .catch((error) => {
+                document.querySelector('.loaderBox').classList.add("d-none");
                 console.log(error)
             })
     };

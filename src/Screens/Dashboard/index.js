@@ -1,44 +1,41 @@
 import { useState, useEffect } from "react";
 
 import { DashboardLayout } from "./../../Components/Layout/DashboardLayout";
-import StatCard from "../../Components/StatsCard/index.js";
-import { stats } from "../../Config/Data";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faArrowCircleDown,
+} from "@fortawesome/free-solid-svg-icons";
 import { CChart } from "@coreui/react-chartjs";
 import { SelectBox } from "../../Components/CustomSelect";
+import {useApi} from "../../Api";
 
 import "./style.css";
 
 export const Dashboard = () => {
-  const [statistics, setStatistics] = useState([]);
-  const LogoutData = localStorage.getItem('login');
-  const fetchLeadData = () => {
-    fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/leads-amount',
-      {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${LogoutData}`
-        },
-      }
-    )
-      .then(response =>
-        response.json()
-      )
-      .then((data) => {
-        console.log(data)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-  }
+  const [data, setData] = useState('');
+  const [lead, setLead] = useState('');
+  const [recived, setReceived] = useState('');
+  const [amount, setAmount] = useState('');
+  const { apiData: leadsAmountData, loading: dataLoading } = useApi('admin/leads-amount');
+  const { apiData: leadsAmountMonthlyData, loading: leadLoading} = useApi('admin/leads-amount-monthly');
+  const { apiData: leadsAmountReceivedData, loading: receivedLoading} = useApi('admin/leads-amount-received');
+  const { apiData: leadsAmountReceivedMonthlyData, loading: AmountLoading } = useApi('admin/leads-amount-received-monthly');
+
 
   useEffect(() => {
 
     document.title = 'Mt Records | Dashboard';
-    fetchLeadData()
-    setStatistics(stats)
   }, []);
+
+
+  useEffect(() => {
+    setData(leadsAmountData)
+    setLead(leadsAmountMonthlyData)
+    setReceived(leadsAmountReceivedData)
+    setAmount(leadsAmountReceivedMonthlyData)
+
+  }, [leadsAmountData, leadsAmountMonthlyData, leadsAmountReceivedData, leadsAmountReceivedMonthlyData])
+
 
   return (
     <>
@@ -48,11 +45,71 @@ export const Dashboard = () => {
             <div className="col-12">
               <div className="dashCard">
                 <div className="row">
-                  {statistics.map((stats) => (
-                    <div className="col-xl-4 col-md-6 stats" key={stats.id}>
-                      <StatCard item={stats} />
+                  <div className="col-xl-4 col-md-6 stats">
+                    <div className="statsCard">
+                      <div className="statsContent">
+                        <div className="statsData">
+                          {leadLoading ? 'Loading...' : <h3 className="statsNumber">{`$ ${data?.totalSum}`}</h3>}
+                          <p className="statsText">Total Amount</p>
+                        </div>
+                      </div>
+                      <div className="statsChange">
+                        <p>
+                          <FontAwesomeIcon
+                            icon={faArrowCircleDown}
+                            className="me-2 redColor"
+                          />
+
+                          100 %
+                        </p>
+                        <p>Since last week</p>
+                      </div>
                     </div>
-                  ))}
+                  </div>
+                  <div className="col-xl-4 col-md-6 stats">
+                    <div className="statsCard">
+                      <div className="statsContent">
+                        <div className="statsData">
+                          {receivedLoading ? 'Loading... ' : <h3 className="statsNumber">{`$ ${recived?.totalSumReceivedAmount}`}</h3>}
+                          <p className="statsText">Total Amount Recieved</p>
+                        </div>
+                      </div>
+                      <div className="statsChange">
+                        <p>
+                          <FontAwesomeIcon
+                            icon={faArrowCircleDown}
+                            className="me-2 redColor"
+                          />
+
+                          100 %
+                        </p>
+                        <p>Since last week</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="col-xl-4 col-md-6 stats">
+                    <div className="statsCard">
+                      <div className="statsContent">
+                        <div className="statsData">
+                          {AmountLoading ? 'Loading...' : 
+                          <h3 className="statsNumber">{`$ ${amount?.sumAmountMonthlyReceived}`}</h3>
+                          }
+                          <p className="statsText">Monthly Amount Recieved</p>
+                        </div>
+                      </div>
+                      <div className="statsChange">
+                        <p>
+                          <FontAwesomeIcon
+                            icon={faArrowCircleDown}
+                            className="me-2 redColor"
+                          />
+
+                          100 %
+                        </p>
+                        <p>Since last week</p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>

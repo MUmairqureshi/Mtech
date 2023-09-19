@@ -32,6 +32,7 @@ export const DetailListing = () => {
     useEffect(() => {
         const LogoutData = localStorage.getItem('login');
         document.title = 'Mt Records | Lead Management Detail';
+        document.querySelector('.loaderBox').classList.remove("d-none");
         fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/view-leads/${id}`,
             {
                 method: 'GET',
@@ -46,12 +47,14 @@ export const DetailListing = () => {
                 return response.json()
             })
             .then((data) => {
+                document.querySelector('.loaderBox').classList.add("d-none");
                 console.log(data)
 
                 setLead(data.leads)
 
             })
             .catch((error) => {
+                document.querySelector('.loaderBox').classList.add("d-none");
                 console.log(error);
             })
     }, [id]);

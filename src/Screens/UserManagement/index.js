@@ -64,7 +64,7 @@ export const UserManagement = () => {
   useEffect(() => {
     document.title = 'Mt Records | User Management';
     const LogoutData = localStorage.getItem('login');
-
+    document.querySelector('.loaderBox').classList.remove("d-none");
     fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/user-listing',
       {
         method: 'GET',
@@ -81,9 +81,11 @@ export const UserManagement = () => {
       )
       .then((data) => {
         console.log(data)
+        document.querySelector('.loaderBox').classList.add("d-none");
         setData(data.users);
       })
       .catch((error) => {
+        document.querySelector('.loaderBox').classList.add("d-none");
         console.log(error)
       })
 

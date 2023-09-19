@@ -61,6 +61,7 @@ export const UnitListing = () => {
 
   const fectchBrandData = () => {
     const LogoutData = localStorage.getItem('login');
+    document.querySelector('.loaderBox').classList.remove("d-none");
 
     fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/brand-listing',
       {
@@ -78,9 +79,11 @@ export const UnitListing = () => {
       )
       .then((data) => {
         console.log(data)
+        document.querySelector('.loaderBox').classList.add("d-none");
         setBrands(data.brands);
       })
       .catch((error) => {
+        document.querySelector('.loaderBox').classList.add("d-none");
         console.log(error)
       })
   }
@@ -101,7 +104,7 @@ export const UnitListing = () => {
 
   const fetchData = () => {
     const LogoutData = localStorage.getItem('login');
-
+    document.querySelector('.loaderBox').classList.remove("d-none");
     fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/unit-listing',
       {
         method: 'GET',
@@ -117,10 +120,12 @@ export const UnitListing = () => {
         response.json()
       )
       .then((data) => {
+        document.querySelector('.loaderBox').classList.add("d-none");
         console.log(data.units)
         setData(data.units);
       })
       .catch((error) => {
+        document.querySelector('.loaderBox').classList.add("d-none");
         console.log(error)
       })
   }
@@ -179,7 +184,7 @@ export const UnitListing = () => {
     event.preventDefault();
 
     console.log(formData)
-
+    document.querySelector('.loaderBox').classList.remove("d-none");
     const LogoutData = localStorage.getItem('login');
     fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/unit-add-edit`,
       {
@@ -196,6 +201,7 @@ export const UnitListing = () => {
         return response.json()
       })
       .then((data) => {
+        document.querySelector('.loaderBox').classList.add("d-none");
         console.log(data)
         setUser(false)
         setFormData({
@@ -228,6 +234,7 @@ export const UnitListing = () => {
       .then((data) => {
         console.log(data)
         setIdUser(unitID)
+        console.log(idUser);
         setFormData({
           ...formData,
           name: data.unit.name,

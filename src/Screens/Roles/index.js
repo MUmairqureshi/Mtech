@@ -13,13 +13,13 @@ import CustomPagination from "../../Components/CustomPagination"
 import CustomInput from "../../Components/CustomInput";
 import CustomButton from "../../Components/CustomButton";
 import { SelectBox } from "../../Components/CustomSelect";
-
+import { usePost, useApi } from "../../Api";
 
 import "./style.css";
 
 export const Roles = () => {
 
-  const [data, setData] = useState([]);
+  const [data, setData] = useState('');
   const [userForm, setUserFrom] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(8);
@@ -27,6 +27,16 @@ export const Roles = () => {
   const [addUser, setUser] = useState(false);
   const [editUser, setEditUser] = useState(false);
   const [idUser, setIdUser] = useState(0);
+  const { apiData: roleData, loading: rolesListingLoading, error: rolesError, updateDataForm: rolesLitingResponse } = usePost('admin/role-add-edit');
+  const { apiData: rolesListing, loading: rolesLoading } = useApi('admin/role-listing');
+  // const { apiData: roleEditData, loading: rolesEditLoading, error: rolesEditError, updateDataForm: roleseditResponse } = usePost('admin/role-add-edit');
+
+  useEffect(() => {
+    setData(rolesListing?.roles);
+  }, [rolesListing])
+
+  console.log(data)
+
   const [formData, setFormData] = useState({
     name: '',
     status: '1'
@@ -52,82 +62,33 @@ export const Roles = () => {
     setInputValue(e.target.value);
   }
 
-  const filterData = data.filter(item =>
-    item.name.toLowerCase().includes(inputValue.toLowerCase())
-  );
+
+  const filterData = data && (
+    data.filter(item =>
+      item.name.toLowerCase().includes(inputValue.toLowerCase())
+    )
+  )
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = filterData.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = filterData?.slice(indexOfFirstItem, indexOfLastItem);
+
+
 
 
 
   useEffect(() => {
     document.title = 'Mt Records | Role Management';
-    fetchData();
 
   }, []);
 
 
-  const fetchData = () => {
-    const LogoutData = localStorage.getItem('login');
-
-    fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/role-listing',
-      {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${LogoutData}`
-        },
-      }
-    )
-
-      .then(response =>
-        response.json()
-      )
-      .then((data) => {
-        console.log(data.roles)
-        setData(data.roles);
-      })
-      .catch((error) => {
-        console.log(error)
-      })
-  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
     console.log(formData)
-
-    const LogoutData = localStorage.getItem('login');
-    fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/role-add-edit`,
-      {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${LogoutData}`
-        },
-        body: JSON.stringify(formData)
-      },
-    )
-      .then((response) => {
-        return response.json()
-      })
-      .then((data) => {
-        console.log(data)
-        setUser(false)
-        setFormData({
-          name: ''
-        })
-        fetchData()
-
-      })
-      .catch((error) => {
-        document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error);
-      })
+    rolesLitingResponse(formData);
   }
 
   const editUnit = (unitID) => {
@@ -185,7 +146,6 @@ export const Roles = () => {
         setFormData({
           name: ''
         })
-        fetchData()
         setEditUser(false)
 
 
@@ -243,7 +203,7 @@ export const Roles = () => {
 
                     >
                       <tbody>
-                        {currentItems.map((item, index) => (
+                        {currentItems && currentItems?.map((item, index) => (
                           <tr key={index}>
                             <td>{index + 1}</td>
                             <td className="text-capitalize">
@@ -269,12 +229,13 @@ export const Roles = () => {
                     </CustomTable>
                     <CustomPagination
                       itemsPerPage={itemsPerPage}
-                      totalItems={data.length}
+                      totalItems={data?.length}
                       currentPage={currentPage}
                       onPageChange={handlePageChange}
                     />
                   </div>
                 </div>
+
               </div>
             </div>
           </div>
@@ -330,9 +291,6 @@ export const Roles = () => {
             />
             <CustomButton variant='primaryButton' text='Add' type='button' onClick={handleEditSubmit} />
           </CustomModal>
-
-
-
         </div>
       </DashboardLayout>
     </>

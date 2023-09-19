@@ -64,6 +64,7 @@ export const BrandListing = () => {
 
   const fetchData = () =>  {
     const LogoutData = localStorage.getItem('login');
+    document.querySelector('.loaderBox').classList.remove("d-none");
 
     fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/brand-listing',
       {
@@ -80,10 +81,12 @@ export const BrandListing = () => {
         response.json()
       )
       .then((data) => {
+        document.querySelector('.loaderBox').classList.add("d-none");
         console.log(data)
         setData(data.brands);
       })
       .catch((error) => {
+        document.querySelector('.loaderBox').classList.add("d-none");
         console.log(error)
       })
   }
@@ -120,7 +123,7 @@ export const BrandListing = () => {
     event.preventDefault();
 
     console.log(formData)
-
+    document.querySelector('.loaderBox').classList.remove("d-none");
     const LogoutData = localStorage.getItem('login');
     fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/brand-add-edit`,
       {
@@ -138,6 +141,7 @@ export const BrandListing = () => {
       })
       .then((data) => {
         console.log(data)
+        document.querySelector('.loaderBox').classList.add("d-none");
         setUser(false)
         setFormData({
           name: ''
@@ -152,6 +156,7 @@ export const BrandListing = () => {
   }
 
   const brandID = (unitID) => {
+    document.querySelector('.loaderBox').classList.remove("d-none");
     const LogoutData = localStorage.getItem('login');
     fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/view-brand/${unitID}`,
       {
@@ -168,6 +173,7 @@ export const BrandListing = () => {
       })
       .then((data) => {
         console.log(data)
+        document.querySelector('.loaderBox').classList.add("d-none");
         setIdUser(unitID)
         setFormData({
           ...formData,
@@ -178,6 +184,7 @@ export const BrandListing = () => {
 
       })
       .catch((error) => {
+        document.querySelector('.loaderBox').classList.add("d-none");
         console.log(error);
       })
   }
@@ -185,7 +192,7 @@ export const BrandListing = () => {
   const handleEditSubmit = (event) => {
     event.preventDefault();
     console.log(formData)
-
+    document.querySelector('.loaderBox').classList.remove("d-none");
     const LogoutData = localStorage.getItem('login');
     fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/brand-add-edit/${idUser}`,
       {
@@ -203,6 +210,7 @@ export const BrandListing = () => {
       })
       .then((data) => {
         console.log(data)
+        document.querySelector('.loaderBox').classList.add("d-none");
         setFormData({
           name: ''
         })
