@@ -26,6 +26,7 @@ export const UnitListing = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(8);
   const [inputValue, setInputValue] = useState('');
+  const [showModal, setShowModal] = useState(false);
   const [addUser, setUser] = useState(false);
   const [editUser, setEditUser] = useState(false);
   const [userForm, setUserFrom] = useState(false);
@@ -202,6 +203,7 @@ export const UnitListing = () => {
       })
       .then((data) => {
         document.querySelector('.loaderBox').classList.add("d-none");
+        setShowModal(true)
         console.log(data)
         setUser(false)
         setFormData({
@@ -237,7 +239,7 @@ export const UnitListing = () => {
         console.log(idUser);
         setFormData({
           ...formData,
-          name: data.unit.name,
+          name: data.unit[0].name,
           status: data.status
         });
         setEditUser(true)
@@ -415,6 +417,7 @@ export const UnitListing = () => {
           </CustomModal>
 
 
+          <CustomModal show={showModal} close={() => { setShowModal(false) }} success heading='Unit added Successfully.' />
 
         </div>
       </DashboardLayout>

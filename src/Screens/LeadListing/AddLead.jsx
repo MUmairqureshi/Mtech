@@ -8,6 +8,7 @@ import CustomButton from "../../Components/CustomButton";
 export const AddLead = () => {
     const [brands, setBrands] = useState({});
     const [unit, setUnit] = useState({});
+    const [showModal, setShowModal]= useState(false);
     const [formData, setFormData] = useState({
         source: '',
         brand: '',
@@ -120,6 +121,7 @@ export const AddLead = () => {
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
                 console.log(data);
+                setShowModal(true)
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
@@ -319,6 +321,7 @@ export const AddLead = () => {
                     </div>
                 </div>
 
+                <CustomModal show={showModal} close={() => { setShowModal(false) }} success heading='Lead added Successfully.' />
 
             </DashboardLayout>
         </>

@@ -25,6 +25,7 @@ export const BrandListing = () => {
   const [inputValue, setInputValue] = useState('');
   const [addUser, setUser] = useState(false);
   const [editUser, setEditUser] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [userForm, setUserFrom] = useState(false);
   const [idUser, setIdUser] = useState(0);
   const [formData, setFormData] = useState({
@@ -142,6 +143,7 @@ export const BrandListing = () => {
       .then((data) => {
         console.log(data)
         document.querySelector('.loaderBox').classList.add("d-none");
+        setShowModal(true)
         setUser(false)
         setFormData({
           name: ''
@@ -345,6 +347,7 @@ export const BrandListing = () => {
             <CustomButton variant='primaryButton' text='Add' type='button' onClick={handleEditSubmit} />
           </CustomModal>
 
+          <CustomModal show={showModal} close={() => { setShowModal(false) }} success heading='Brand added Successfully.' />
 
 
         </div>

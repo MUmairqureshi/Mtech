@@ -31,6 +31,7 @@ const AdminLogin = () => {
         formDataMethod.append('email', formData.email);
         formDataMethod.append('password', formData.password);
         console.log(formData)
+        document.querySelector('.loaderBox').classList.remove("d-none");
 
         const apiUrl = 'https://custom.mystagingserver.site/mtrecords/public/api/auth/login';
 
@@ -46,13 +47,17 @@ const AdminLogin = () => {
                 const responseData = await response.json();
                 localStorage.setItem('login', responseData.data.token);
                 console.log('Login Response:', responseData);
+                document.querySelector('.loaderBox').classList.add("d-none");
                 navigate('/dashboard')
                 
             } else {
+                document.querySelector('.loaderBox').classList.add("d-none");
                 alert('Invalid Credentials')
+
                 console.error('Login failed');
             }
         } catch (error) {
+            document.querySelector('.loaderBox').classList.add("d-none");
             console.error('Error:', error);
         }
     };

@@ -8,6 +8,7 @@ import CustomButton from "../../Components/CustomButton";
 export const AddUser = () => {
     const [initalRole, setrole] = useState({});
     const [initialunit, setUnit] = useState({});
+    const [showModal, setShowModal] = useState(false)
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -106,6 +107,7 @@ export const AddUser = () => {
             .then((data) => {
                 console.log(data);
                 document.querySelector('.loaderBox').classList.add("d-none");
+                setShowModal(true)
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
@@ -225,6 +227,7 @@ export const AddUser = () => {
                         </div>
                     </div>
                 </div>
+                <CustomModal show={showModal} close={() => { setShowModal(false) }} success heading='User has been Successfully Added.' />
 
 
             </DashboardLayout>

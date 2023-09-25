@@ -13,7 +13,7 @@ import CustomPagination from "../../Components/CustomPagination"
 import CustomInput from "../../Components/CustomInput";
 import CustomButton from "../../Components/CustomButton";
 import { SelectBox } from "../../Components/CustomSelect";
-import { usePost, useApi } from "../../Api";
+import { usePost, useApi, useEditpost, usePostUpdate } from "../../Api";
 
 import "./style.css";
 
@@ -26,16 +26,15 @@ export const Roles = () => {
   const [inputValue, setInputValue] = useState('');
   const [addUser, setUser] = useState(false);
   const [editUser, setEditUser] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [idUser, setIdUser] = useState(0);
+  const [dataEdited, setDataEdited] = useState(false);
+  const [dataSubmitted, setDataSubmitted] = useState(false);
   const { apiData: roleData, loading: rolesListingLoading, error: rolesError, updateDataForm: rolesLitingResponse } = usePost('admin/role-add-edit');
   const { apiData: rolesListing, loading: rolesLoading } = useApi('admin/role-listing');
-  // const { apiData: roleEditData, loading: rolesEditLoading, error: rolesEditError, updateDataForm: roleseditResponse } = usePost('admin/role-add-edit');
+  const { apiData: roleEditData, loading: rolesListingEditLoading, error: rolesEditError, updateDataForm: rolesLitingEditResponse, editParam: editDataParam } = useEditpost('admin/view-role/');
 
-  useEffect(() => {
-    setData(rolesListing?.roles);
-  }, [rolesListing])
-
-  console.log(data)
+  const { apiData: roleUpdateData, loading: rolesListingUpdateLoading, error: rolesUpdateError, updateDataForm: rolesUpdateResponse, editParam: updateDataParam } = usePostUpdate('admin/role-add-edit/');
 
   const [formData, setFormData] = useState({
     name: '',
@@ -74,87 +73,67 @@ export const Roles = () => {
   const currentItems = filterData?.slice(indexOfFirstItem, indexOfLastItem);
 
 
-
-
-
   useEffect(() => {
     document.title = 'Mt Records | Role Management';
 
   }, []);
 
+  useEffect(() => {
+    setData(rolesListing?.roles);
+    // console.log(data)
+  }, [rolesListing])
 
 
+
+  //  Add roles 
   const handleSubmit = (event) => {
     event.preventDefault();
 
     console.log(formData)
     rolesLitingResponse(formData);
+    roleData ? setShowModal(true) || setUser(false) : setShowModal(false)
   }
+
+  //  Edit Roles 
 
   const editUnit = (unitID) => {
-    const LogoutData = localStorage.getItem('login');
-    fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/view-role/${unitID}`,
-      {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${LogoutData}`
-        },
-      },
-    )
-      .then((response) => {
-        return response.json()
-      })
-      .then((data) => {
-        console.log(data)
-        setIdUser(unitID)
-        setFormData({
-          ...formData,
-          name: data.roles.name,
-          status: data.status
-        });
-        setEditUser(true)
-
-      })
-      .catch((error) => {
-        console.log(error);
-      })
+    editDataParam(unitID);
+    setDataEdited(true)
   }
+
+  useEffect(() => {
+    if (dataEdited) {
+      console.log(roleEditData);
+      setIdUser(roleEditData?.roles.id)
+      setEditUser(true)
+      setFormData({
+        ...formData,
+        name: roleEditData?.roles.name,
+        status: roleEditData?.roles.status
+      });
+    }
+
+  }, [roleEditData, dataEdited])
+
+
+  // Update roles 
 
   const handleEditSubmit = (event) => {
     event.preventDefault();
     console.log(formData)
 
-    const LogoutData = localStorage.getItem('login');
-    fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/role-add-edit/${idUser}`,
-      {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${LogoutData}`
-        },
-        body: JSON.stringify(formData)
-      },
-    )
-      .then((response) => {
-        return response.json()
-      })
-      .then((data) => {
-        console.log(data)
-        setFormData({
-          name: ''
-        })
-        setEditUser(false)
-
-
-      })
-      .catch((error) => {
-        document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error);
-      })
+    updateDataParam(idUser);
+    rolesUpdateResponse(formData);
+    setDataSubmitted(true)
   }
+
+  useEffect(() => {
+    if (dataSubmitted) {
+      setEditUser(false)
+      setData(rolesListing?.roles)
+      console.log(data)
+    }
+  }, [roleUpdateData, dataSubmitted, rolesListing])
 
   const maleHeaders = [
     {
@@ -189,9 +168,9 @@ export const Roles = () => {
                   </div>
                   <div className="col-md-6 mb-2">
                     <div className="addUser">
-                      <CustomButton text="Add Role" variant='primaryButton' onClick={() => {
+                      {/* <CustomButton text="Add Role" variant='primaryButton' onClick={() => {
                         setUser(true)
-                      }} />
+                      }} /> */}
                       <CustomInput type="text" placeholder="Search Here..." value={inputValue} inputClass="mainInput" onChange={handleChange} />
                     </div>
                   </div>
@@ -203,28 +182,33 @@ export const Roles = () => {
 
                     >
                       <tbody>
-                        {currentItems && currentItems?.map((item, index) => (
-                          <tr key={index}>
-                            <td>{index + 1}</td>
-                            <td className="text-capitalize">
-                              {item.name}
-                            </td>
-                            <td className={item.status == 1 ? 'greenColor' : "redColor"}>{item.status == 1 ? 'Active' : "Inactive"}</td>
-                            <td>
-                              <Dropdown className="tableDropdown">
-                                <Dropdown.Toggle variant="transparent" className="notButton classicToggle">
-                                  <FontAwesomeIcon icon={faEllipsisV} />
-                                </Dropdown.Toggle>
-                                <Dropdown.Menu align="end" className="tableDropdownMenu">
-                                  <button onClick={() => {
-                                    editUnit(item.id)
-                                    setUserFrom(true)
-                                  }} className="tableAction"><FontAwesomeIcon icon={faTimes} className="tableActionIcon" />Edit</button>
-                                </Dropdown.Menu>
-                              </Dropdown>
-                            </td>
-                          </tr>
-                        ))}
+
+                        {
+                          rolesLoading ? 'Loading' : (
+                            currentItems && currentItems?.map((item, index) => (
+                              <tr key={index}>
+                                <td>{index + 1}</td>
+                                <td className="text-capitalize">
+                                  {item.name}
+                                </td>
+                                <td className={item.status == 1 ? 'greenColor' : "redColor"}>{item.status == 1 ? 'Active' : "Inactive"}</td>
+                                <td>
+                                  <Dropdown className="tableDropdown">
+                                    <Dropdown.Toggle variant="transparent" className="notButton classicToggle">
+                                      <FontAwesomeIcon icon={faEllipsisV} />
+                                    </Dropdown.Toggle>
+                                    <Dropdown.Menu align="end" className="tableDropdownMenu">
+                                      <button onClick={() => {
+                                        editUnit(item.id)
+                                        setUserFrom(true)
+                                      }} className="tableAction"><FontAwesomeIcon icon={faTimes} className="tableActionIcon" />Edit</button>
+                                    </Dropdown.Menu>
+                                  </Dropdown>
+                                </td>
+                              </tr>
+                            ))
+                          )
+                        }
                       </tbody>
                     </CustomTable>
                     <CustomPagination
@@ -257,13 +241,14 @@ export const Roles = () => {
               }}
 
             />
-            <CustomButton variant='primaryButton' text='Add' type='button' onClick={handleSubmit} />
+            <CustomButton variant='primaryButton' text='Add' type='submit' onClick={handleSubmit} />
           </CustomModal>
 
           <CustomModal show={editUser} close={() => { setEditUser(false) }} >
             <CustomInput
               label="Edit Roles"
               type="text"
+              disabled
               placeholder="Edit Roles"
               required
               name="name"
@@ -291,6 +276,8 @@ export const Roles = () => {
             />
             <CustomButton variant='primaryButton' text='Add' type='button' onClick={handleEditSubmit} />
           </CustomModal>
+          <CustomModal show={showModal} close={() => { setShowModal(false) }} success heading='Role added Successfully.' />
+
         </div>
       </DashboardLayout>
     </>

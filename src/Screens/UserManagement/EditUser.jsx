@@ -10,6 +10,7 @@ export const EditUser = () => {
     const { id } = useParams();
     const [initalRole, setrole] = useState({});
     const [initialunit, setUnit] = useState({});
+    const [showModal, setShowModal] = useState(false);
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -133,6 +134,7 @@ export const EditUser = () => {
             })
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
+                setShowModal(true)
                 console.log(data);
             })
             .catch((error) => {
@@ -255,7 +257,7 @@ export const EditUser = () => {
                         </div>
                     </div>
                 </div>
-
+                <CustomModal show={showModal} close={() => { setShowModal(false) }} success heading='User Edit Successfully.' />
 
             </DashboardLayout>
         </>
