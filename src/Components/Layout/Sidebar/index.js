@@ -7,7 +7,8 @@ import {
   faUser,
   faEye,
   faTasks,
-  faMountainCity
+  faMountainCity,
+  faMoneyBill
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faMessage,
@@ -67,6 +68,14 @@ export const Sidebar = (props) => {
               <FontAwesomeIcon icon={faUser} />
             </span>
             <span className="sideLinkText">User Management</span>
+          </Link>
+        </li>
+        <li className="sidebar-li">
+          <Link className={`sideLink ${location.pathname.includes('/target-listing') ? 'active' : ''}`} to="/target-listing">
+            <span className="sideIcon">
+              <FontAwesomeIcon icon={faMoneyBill} />
+            </span>
+            <span className="sideLinkText">Unit's Target</span>
           </Link>
         </li>
       </ul>
