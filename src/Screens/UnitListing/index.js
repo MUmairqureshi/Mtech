@@ -32,6 +32,7 @@ export const UnitListing = () => {
   const [userForm, setUserFrom] = useState(false);
   const [idUser, setIdUser] = useState(0);
   const [brands, setBrands] = useState({});
+  const editBrandList = [];
   const [formData, setFormData] = useState({
     name: '',
     status: '1',
@@ -42,7 +43,6 @@ export const UnitListing = () => {
     setFormData({
       ...formData, brands: selected
     })
-    console.log(formData)
   };
 
   const optionData = [
@@ -149,7 +149,11 @@ export const UnitListing = () => {
     },
     {
       key: "username",
-      title: "Name",
+      title: "Unit Name",
+    },
+    {
+      key: "brands",
+      title: "Brands Associate",
     },
     {
       key: "status",
@@ -237,11 +241,20 @@ export const UnitListing = () => {
         console.log(data)
         setIdUser(unitID)
         console.log(idUser);
+        data.unit[0].unit_brands.map((item)=>{
+          const editData = {
+            value: item.brands.id, 
+            label: item.brands.name, 
+          };
+          editBrandList.push(editData)
+        })
         setFormData({
           ...formData,
           name: data.unit[0].name,
-          status: data.status
+          status: data.status,
+          brands: editBrandList
         });
+
         setEditUser(true)
 
       })
@@ -320,6 +333,13 @@ export const UnitListing = () => {
                             <td>{index + 1}</td>
                             <td className="text-capitalize">
                               {item.name}
+                            </td>
+                            <td className="text-capitalize">
+                              {item?.unit__brands.map((brandItem, i, array) => (
+                                <span className={i === array.length - 1 && i != 0 ? '' : 'p-2'} key={i}>{brandItem.brands.name}</span>
+                              )
+
+                              )}
                             </td>
                             <td className={item.status == 1 ? 'greenColor' : 'redColor'}>{item.status == 1 ? 'Active' : 'Inactive'}</td>
                             <td>
@@ -401,18 +421,16 @@ export const UnitListing = () => {
 
             />
 
-            <SelectBox
-              selectClass="mainInput"
-              name="Status"
-              label="Status"
-              value={formData.status}
-              required
-              option={optionData}
-              onChange={(event) => {
-                setFormData({ ...formData, status: event.target.value });
-                console.log(formData);
-              }}
-            />
+            <div class="inputWrapper">
+              <label class="mainLabel">Edit brands<span>*</span></label>
+              <Select
+                value={formData.brands}
+                isMulti
+                required
+                options={SelectOptions}
+                onChange={handleChangeSelect}
+              />
+            </div>
             <CustomButton variant='primaryButton' text='Add' type='button' onClick={handleEditSubmit} />
           </CustomModal>
 

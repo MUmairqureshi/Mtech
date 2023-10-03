@@ -21,6 +21,7 @@ import { BrandListing } from "../Screens/BrandListing";
 import { Roles } from "../Screens/Roles";
 
 import { UnitTarget } from "../Screens/UnitTarget";
+import { TargetDetails } from "../Screens/UnitTarget/targetDetails";
 
 import Profile from "../Screens/Profile";
 import EditProfile from "../Screens/Profile/EditProfile";
@@ -58,6 +59,7 @@ export default function AdminRouter() {
         {/* <Route path="/department-management/depart-details/:id" element={<ProtectedRoutes Components={DepartDetails} />} /> */}
 
         <Route path="/target-listing" element={<ProtectedRoutes Components={UnitTarget} />} />
+        <Route path="/target-listing/target-detail/:id" element={<ProtectedRoutes Components={TargetDetails} />} />
         <Route path="/profile" element={<ProtectedRoutes Components={Profile} />} />
         <Route path="/profile/edit-profile" element={<ProtectedRoutes Components={EditProfile} />} />
         <Route path="/profile/change-password" element={<ChangePassword />} />

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import { Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisV, faPencil, faCheck, faTimes, faFilter } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisV, faPencil, faRemove, faTimes, faFilter, faEye } from "@fortawesome/free-solid-svg-icons";
 
 import { DashboardLayout } from "../../Components/Layout/DashboardLayout";
 import CustomTable from "../../Components/CustomTable";
@@ -14,6 +14,7 @@ import CustomInput from "../../Components/CustomInput";
 import CustomButton from "../../Components/CustomButton";
 import { SelectBox } from "../../Components/CustomSelect";
 import Select from 'react-select'
+import { useApi, usePost, usePostUpdate } from "../../Api";
 
 
 
@@ -27,72 +28,137 @@ export const UnitTarget = () => {
   const [itemsPerPage, setItemsPerPage] = useState(8);
   const [inputValue, setInputValue] = useState('');
   const [showModal, setShowModal] = useState(false);
+  const [units, setUnits] = useState({});
   const [addUser, setUser] = useState(false);
-  const [editUser, setEditUser] = useState(false);
-  const [userForm, setUserFrom] = useState(false);
-  const [idUser, setIdUser] = useState(0);
-  const [brands, setBrands] = useState({});
-  const [formData, setFormData] = useState({
-    name: '',
+  const [EditTarget, setEditTarget] = useState();
+  const [editModal, setEditModal] = useState(false);
+  const [idUser, setIdUser] = useState();
+  const { apiData: unitListing, loading: unitLoading } = useApi('admin/unit-listing');
+  const { apiData: TargetListing, loading: TargetLoding } = useApi('admin/unit-Target-List');
+  const { apiData: TargetResponseData, loading: TragetResponseLoading, error: TargetResponseError, updateDataForm: targetUpdateData, editParam: TargetEditData } = usePostUpdate('admin/unit-targets-edit/');
+
+  const [editFormData, SetEditFormData] = useState({
+    unit_id: '',
+    target: '',
+    year: '2023',
     status: '1',
-    brands: []
+    month: ''
+
+  });
+  const editTarget = (id) => {
+    id = id - 1
+    setIdUser(TargetListing?.data[id]?.unit_target_id)
+
+    setEditTarget(TargetListing?.data[id])
+    SetEditFormData({
+      ...editFormData,
+      unit_id: EditTarget?.name,
+      target: EditTarget?.current_month_target?.target
+    })
+    setEditModal(true)
+  }
+
+
+  const handleEditTarget = (event) => {
+    event.preventDefault();
+    console.log(editFormData)
+
+    TargetEditData(idUser);
+    targetUpdateData(editFormData);
+  }
+
+
+
+  const unitValue = [];
+
+  useEffect(() => {
+    setUnits(unitListing?.units)
+  }, [unitListing])
+
+
+  for (const key in units) {
+    const option = {
+      code: units[key].id,
+      name: units[key].name
+    }
+
+    unitValue.push(option)
+
+  }
+
+
+
+  const [formData, setFormData] = useState({
+    unit_id: '',
+    target: '',
+    year: '2023',
+    status: '1',
+    month: ''
   });
 
-  const handleChangeSelect = (selected) => {
-    setFormData({
-      ...formData, brands: selected
-    })
-    console.log(formData)
-  };
 
-  const optionData = [
+  const monthList = [
     {
-      name: "Active",
-      code: "1"
+      code: 1,
+      name: 'January'
     },
     {
-      name: "Inactive",
-      code: "0"
+      code: 2,
+      name: 'Feburay'
+    }, {
+      code: 3,
+      name: 'March'
     },
+    {
+      code: 4,
+      name: 'April'
+    },
+    {
+      code: 5,
+      name: 'May'
+    },
+    {
+      code: 6,
+      name: 'June'
+    },
+    {
+      code: 7,
+      name: 'July'
+    },
+    {
+      code: 8,
+      name: 'August'
+    },
+    {
+      code: 9,
+      name: 'September'
+    },
+    {
+      code: 10,
+      name: 'Octuber'
+    },
+    {
+      code: 11,
+      name: 'November'
+    },
+    {
+      code: 12,
+      name: 'December'
+    }
   ]
+
+
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
 
-  const fectchBrandData = () => {
-    const LogoutData = localStorage.getItem('login');
-    document.querySelector('.loaderBox').classList.remove("d-none");
-
-    fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/brand-listing',
-      {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${LogoutData}`
-        },
-      }
-    )
-
-      .then(response =>
-        response.json()
-      )
-      .then((data) => {
-        console.log(data)
-        document.querySelector('.loaderBox').classList.add("d-none");
-        setBrands(data.brands);
-      })
-      .catch((error) => {
-        document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error)
-      })
-  }
 
 
-  const handleChange = (e) => {
-    setInputValue(e.target.value);
-  }
+
+  // const handleChange = (e) => {
+  //   setInputValue(e.target.value);
+  // }
 
   const filterData = data.filter(item =>
     item.name.toLowerCase().includes(inputValue.toLowerCase())
@@ -106,7 +172,7 @@ export const UnitTarget = () => {
   const fetchData = () => {
     const LogoutData = localStorage.getItem('login');
     document.querySelector('.loaderBox').classList.remove("d-none");
-    fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/unit-listing',
+    fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/unit-Target-List',
       {
         method: 'GET',
         headers: {
@@ -122,8 +188,10 @@ export const UnitTarget = () => {
       )
       .then((data) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(data.units)
-        setData(data.units);
+
+
+        console.log(data.data)
+        setData(data.data);
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
@@ -131,15 +199,10 @@ export const UnitTarget = () => {
       })
   }
 
-  const SelectOptions = [];
   useEffect(() => {
     document.title = 'Mt Records | Unit Target';
 
     fetchData()
-    fectchBrandData();
-
-
-
   }, []);
 
   const maleHeaders = [
@@ -153,20 +216,12 @@ export const UnitTarget = () => {
     },
     {
       key: "target",
-      title: "Total Target",
+      title: "Target",
     },
-    {
-      key: "totalsale",
-      title: "Total Sale",
-    },
-    {
-      key: "targetscore",
-      title: "Target Score",
-    },
-    {
-      key: "month",
-      title: "Month",
-    },
+    // {
+    //   key: "targetscore",
+    //   title: "Target Score",
+    // },
     {
       key: "status",
       title: "Status",
@@ -180,30 +235,30 @@ export const UnitTarget = () => {
 
 
 
-  for (const key in brands) {
-    if (brands.hasOwnProperty(key)) {
-      const item = brands[key];
 
-      // Create an object for each option with 'value' and 'label' properties
-      const option = {
-        value: item.id, // Assuming 'item.name' represents the option's value
-        label: item.name, // Assuming 'item.name' also represents the option's label
-      };
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+    console.log(formData)
+  };
 
-      // Push the option object into the SelectOptions array
-      SelectOptions.push(option);
-    }
-  }
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
 
-  console.log(SelectOptions);
+  //   console.log(formData)
+  //   rolesLitingResponse(formData);
+  // }
+
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
     console.log(formData)
-    document.querySelector('.loaderBox').classList.remove("d-none");
+
     const LogoutData = localStorage.getItem('login');
-    fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/unit-add-edit`,
+    fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/set-unit-target`,
       {
         method: 'POST',
         headers: {
@@ -218,14 +273,11 @@ export const UnitTarget = () => {
         return response.json()
       })
       .then((data) => {
-        document.querySelector('.loaderBox').classList.add("d-none");
-        setShowModal(true)
         console.log(data)
+        fetchData()
         setUser(false)
-        setFormData({
-          name: ''
-        })
-        fetchData()
+
+
 
       })
       .catch((error) => {
@@ -234,72 +286,34 @@ export const UnitTarget = () => {
       })
   }
 
-  const editUnit = (unitID) => {
-    const LogoutData = localStorage.getItem('login');
-    fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/view-unit/${unitID}`,
-      {
-        method: 'GET',
+  const deleteTarget = async (id) => {
+    try {
+      const LogoutData = localStorage.getItem('login');
+      const response = await fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/unit-targets-delete/${id}`, {
+        method: 'DELETE',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${LogoutData}`
         },
-      },
-    )
-      .then((response) => {
-        return response.json()
-      })
-      .then((data) => {
-        console.log(data)
-        setIdUser(unitID)
-        console.log(idUser);
-        setFormData({
-          ...formData,
-          name: data.unit[0].name,
-          status: data.status
-        });
-        setEditUser(true)
+      });
 
-      })
-      .catch((error) => {
-        console.log(error);
-      })
-  }
+      const data = await response.json();
+      console.log(data);
 
-  const handleEditSubmit = (event) => {
-    event.preventDefault();
-    console.log(formData)
+      // Assuming fetchData is an asynchronous function
+      await fetchData();
 
-    const LogoutData = localStorage.getItem('login');
-    fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/unit-add-edit/${idUser}`,
-      {
-        method: 'POST',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${LogoutData}`
-        },
-        body: JSON.stringify(formData)
-      },
-    )
-      .then((response) => {
-        return response.json()
-      })
-      .then((data) => {
-        console.log(data)
-        setFormData({
-          name: ''
-        })
-        fetchData()
-        setEditUser(false)
+      // Assuming setUser is a function to update user state
+      setUser(false);
+    } catch (error) {
+      document.querySelector('.loaderBox').classList.add("d-none");
+      console.error(error);
+      // Handle the error appropriately (e.g., display an error message to the user)
+    }
+  };
 
 
-      })
-      .catch((error) => {
-        document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error);
-      })
-  }
 
 
 
@@ -334,13 +348,13 @@ export const UnitTarget = () => {
                         {currentItems.map((item, index) => (
                           <tr key={index}>
                             <td>{index + 1}</td>
-                            <td className="text-capitalize">
+                            <td className="text-uppercase">
                               {item.name}
                             </td>
-                            <td>$100000</td>
-                            <td>$90000</td>
-                            <td>$60000</td>
-                            <td>January</td>
+                            {/* <td>{item?.current_month_target?.target ? `$ ${item?.current_month_target?.target}` : '$0'}</td> */}
+                            <td>{item?.current_month_target?.target ? `$ ${item?.current_month_target?.target}` : '$0'}</td>
+                            {/* <td>{`$ ${item?.target_score}`}</td> */}
+                            {/* <td>{item?.current_month_target?.month}</td> */}
                             <td className={item.status == 1 ? 'greenColor' : 'redColor'}>{item.status == 1 ? 'Active' : 'Inactive'}</td>
                             <td>
                               <Dropdown className="tableDropdown">
@@ -348,10 +362,11 @@ export const UnitTarget = () => {
                                   <FontAwesomeIcon icon={faEllipsisV} />
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu align="end" className="tableDropdownMenu">
-                                  <button onClick={() => {
-                                    editUnit(item.id)
-                                    setUserFrom(true)
-                                  }} className="tableAction"><FontAwesomeIcon icon={faPencil} className="tableActionIcon" />Edit</button>
+                                  {/* <button onClick={() => {
+                                    editTarget(item?.id)
+                                  }} className="tableAction"><FontAwesomeIcon icon={faPencil} className="tableActionIcon" />Edit</button> */}
+
+                                  <Link className="tableAction" to={`target-detail/${item?.id}`}><FontAwesomeIcon icon={faEye} className="tableActionIcon" />View Details</Link>
                                 </Dropdown.Menu>
                               </Dropdown>
                             </td>
@@ -371,59 +386,52 @@ export const UnitTarget = () => {
             </div>
           </div>
 
-          {/* add unit  */}
-
-          <CustomModal show={addUser} close={() => { setUser(false) }} heading="Set Target" >
-            <CustomInput
-              label="Select Unit"
-              type="text"
-              placeholder="Select Unit"
-              required
-              name="name"
-              labelClass='mainLabel'
-              inputClass='mainInput'
-              value={formData.name}
-              onChange={(event) => {
-                setFormData({ ...formData, name: event.target.value });
-                console.log(formData);
-              }}
 
 
-            />
-            <CustomInput
-              label="Set Target"
-              type="number"
-              placeholder="Set Target"
-              required
-              name="name"
-              labelClass='mainLabel'
-              inputClass='mainInput'
-              value={formData.name}
-              onChange={(event) => {
-                setFormData({ ...formData, name: event.target.value });
-                console.log(formData);
-              }}
+        </div>
+
+        <CustomModal show={addUser} close={() => { setUser(false) }} heading="Set Target" >
+
+          <SelectBox
+            selectClass="mainInput"
+            name="unit_id"
+            label="Select Unit"
+            labelClass='mainLabel'
+            required
+            value={formData.unit_id}
+            option={unitValue}
+            onChange={handleChange}
+
+          />
+          <CustomInput
+            label="Set Target"
+            type="number"
+            placeholder="Set Target"
+            required
+            name="target"
+            labelClass='mainLabel'
+            inputClass='mainInput'
+            value={formData.target}
+            onChange={(event) => {
+              setFormData({ ...formData, target: event.target.value });
+              console.log(formData);
+            }}
 
 
-            />
+          />
+          <SelectBox
+            selectClass="mainInput"
+            name="month"
+            labelClass='mainLabel'
+            label="Select Month"
+            required
+            value={formData.month}
+            option={monthList}
+            onChange={handleChange}
 
-            <CustomInput
-              label="Select Month"
-              type="number"
-              placeholder="Select Month"
-              required
-              name="name"
-              labelClass='mainLabel'
-              inputClass='mainInput'
-              value={formData.name}
-              onChange={(event) => {
-                setFormData({ ...formData, name: event.target.value });
-                console.log(formData);
-              }}
+          />
 
-
-            />
-            {/* <div class="inputWrapper">
+          {/* <div class="inputWrapper">
               <label class="mainLabel">Add brands<span>*</span></label>
               <Select
                 value={formData.brands}
@@ -434,45 +442,55 @@ export const UnitTarget = () => {
               />
             </div> */}
 
-            <CustomButton variant='primaryButton' text='Add' type='button' onClick={handleSubmit} />
-          </CustomModal>
+          <CustomButton variant='primaryButton' text='Add' type='button' onClick={handleSubmit} />
+        </CustomModal>
 
-          <CustomModal show={editUser} close={() => { setEditUser(false) }} >
-            <CustomInput
-              label="Edit Unit"
-              type="text"
-              placeholder="Edit Unit"
-              required
-              name="name"
-              labelClass='mainLabel'
-              inputClass='mainInput'
-              value={formData.name}
-              onChange={(event) => {
-                setFormData({ ...formData, name: event.target.value });
-                console.log(formData);
-              }}
+        {/* Edit Target  */}
 
-            />
+        <CustomModal show={editModal} close={() => { setEditModal(false) }} heading="Edit Target" >
 
-            <SelectBox
-              selectClass="mainInput"
-              name="Status"
-              label="Status"
-              value={formData.status}
-              required
-              option={optionData}
-              onChange={(event) => {
-                setFormData({ ...formData, status: event.target.value });
-                console.log(formData);
-              }}
-            />
-            <CustomButton variant='primaryButton' text='Add' type='button' onClick={handleEditSubmit} />
-          </CustomModal>
+          <SelectBox
+            selectClass="mainInput"
+            name="unit_id"
+            label="Select Unit"
+            labelClass='mainLabel'
+            required
+            value={5}
+            option={unitValue}
+            onChange={handleChange}
+
+          />
+          <CustomInput
+            label="Set Target"
+            type="number"
+            placeholder="Set Target"
+            required
+            name="target"
+            labelClass='mainLabel'
+            inputClass='mainInput'
+            value={editFormData.target}
+            onChange={(event) => {
+              setFormData({ ...editFormData, target: event.target.value });
+        
+            }}
 
 
-          <CustomModal show={showModal} close={() => { setShowModal(false) }} success heading='Unit added Successfully.' />
+          />
+          <SelectBox
+            selectClass="mainInput"
+            name="month"
+            labelClass='mainLabel'
+            label="Select Month"
+            required
+            value={editFormData.month}
+            option={monthList}
+            onChange={handleChange}
 
-        </div>
+          />
+
+
+          <CustomButton variant='primaryButton' text='Edit' type='button' onClick={handleEditTarget} />
+        </CustomModal>
       </DashboardLayout>
     </>
   );

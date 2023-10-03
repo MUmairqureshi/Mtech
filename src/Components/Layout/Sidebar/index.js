@@ -75,7 +75,7 @@ export const Sidebar = (props) => {
             <span className="sideIcon">
               <FontAwesomeIcon icon={faMoneyBill} />
             </span>
-            <span className="sideLinkText">Unit's Target</span>
+            <span className="sideLinkText">Sales</span>
           </Link>
         </li>
       </ul>
