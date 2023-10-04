@@ -8,6 +8,9 @@ import BackButton from "../../Components/BackButton";
 import CustomModal from "../../Components/CustomModal";
 import CustomButton from "../../Components/CustomButton";
 import CustomTable from "../../Components/CustomTable";
+import { SelectBox } from "../../Components/CustomSelect";
+import CustomInput from "../../Components/CustomInput";
+import { useApi } from "../../Api";
 
 export const TargetDetails = () => {
 
@@ -21,7 +24,29 @@ export const TargetDetails = () => {
     const [showModal2, setShowModal2] = useState(false);
     const [showModal3, setShowModal3] = useState(false);
     const [showModal4, setShowModal4] = useState(false);
-    const [leadData, setLeadData] = useState(false)
+    const [editModal, setEditModal] = useState(false);
+    const [leadData, setLeadData] = useState(false);
+    const [formData, setFormData] = useState({});
+    const [units, setUnits] = useState({});
+    const { apiData: unitListing, loading: unitLoading } = useApi('admin/unit-listing');
+
+    const unitValue = [];
+
+    useEffect(() => {
+        setUnits(unitListing?.units)
+    }, [unitListing])
+
+
+    for (const key in units) {
+        const option = {
+            code: units[key].id,
+            name: units[key].name
+        }
+
+        unitValue.push(option)
+
+    }
+
 
     const month = [
         "",
@@ -50,7 +75,7 @@ export const TargetDetails = () => {
         setShowModal4(true)
     }
 
-    useEffect(() => {
+    const editDetailData = () => {
         const LogoutData = localStorage.getItem('login');
         document.title = 'Mt Records | Lead Management Detail';
         document.querySelector('.loaderBox').classList.remove("d-none");
@@ -72,13 +97,70 @@ export const TargetDetails = () => {
                 console.log(data)
 
                 setLeadData(data.data)
+                setFormData(data.data.current_month_target)
 
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
                 console.log(error);
             })
-    }, [id]);
+    }
+
+    useEffect(() => {
+        editDetailData()
+    }, []);
+
+    console.log(formData)
+
+    const monthList = [
+        {
+            code: 1,
+            name: 'January'
+        },
+        {
+            code: 2,
+            name: 'Feburay'
+        }, {
+            code: 3,
+            name: 'March'
+        },
+        {
+            code: 4,
+            name: 'April'
+        },
+        {
+            code: 5,
+            name: 'May'
+        },
+        {
+            code: 6,
+            name: 'June'
+        },
+        {
+            code: 7,
+            name: 'July'
+        },
+        {
+            code: 8,
+            name: 'August'
+        },
+        {
+            code: 9,
+            name: 'September'
+        },
+        {
+            code: 10,
+            name: 'Octuber'
+        },
+        {
+            code: 11,
+            name: 'November'
+        },
+        {
+            code: 12,
+            name: 'December'
+        }
+    ]
 
     const maleHeaders = [
         {
@@ -117,16 +199,51 @@ export const TargetDetails = () => {
     ];
 
 
+    const handleEdit = (event) => {
+        event.preventDefault();
+        const userId = leadData?.current_month_target?.id
+        const LogoutData = localStorage.getItem('login');
+        fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/unit-targets-edit/${userId}`,
+            {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${LogoutData}`
+                },
+                body: JSON.stringify(formData)
+            },
+        )
+            .then((response) => {
+                return response.json()
+            })
+            .then((data) => {
+                console.log(data)
+                editDetailData()
+                setEditModal(false)
+            })
+            .catch((error) => {
+                document.querySelector('.loaderBox').classList.add("d-none");
+                console.log(error);
+            })
+    }
+
+
     return (
         <>
             <DashboardLayout>
                 <div className="dashCard mb-4">
-                    <div className="row mb-3">
-                        <div className="col-12 mb-2">
+                    <div className="row mb-3 justify-content-between">
+                        <div className="col-md-4">
                             <h2 className="mainTitle">
                                 <BackButton />
                                 Current Target Details
                             </h2>
+                        </div>
+                        <div className="col-md-3">
+                            <CustomButton variant='primaryButton' text="Edit Target" onClick={() => {
+                                setEditModal(true)
+                            }} />
                         </div>
                     </div>
                     <div className="row mb-3">
@@ -211,6 +328,56 @@ export const TargetDetails = () => {
 
                 <CustomModal show={showModal3} close={() => { setShowModal3(false) }} action={Active} heading='Are you sure you want to mark this user as Active?' />
                 <CustomModal show={showModal4} close={() => { setShowModal4(false) }} success heading='Marked as Active' />
+
+                <CustomModal show={editModal} close={() => { setEditModal(false) }} heading="Edit Target" >
+
+                    <SelectBox
+                        selectClass="mainInput"
+                        name="unit_id"
+                        label="Select Unit"
+                        labelClass='mainLabel'
+                        required
+                        value={formData?.unit_id}
+                        option={unitValue}
+                        onChange={(event) => {
+                            setFormData({ ...formData, unit_id: event.target.value });
+
+                        }}
+
+                    />
+                    <CustomInput
+                        label="Set Target"
+                        type="number"
+                        placeholder="Set Target"
+                        required
+                        name="target"
+                        labelClass='mainLabel'
+                        inputClass='mainInput'
+                        value={formData?.target}
+                        onChange={(event) => {
+                            setFormData({ ...formData, target: event.target.value });
+
+                        }}
+
+
+                    />
+                    <SelectBox
+                        selectClass="mainInput"
+                        name="month"
+                        labelClass='mainLabel'
+                        label="Select Month"
+                        required
+                        value={formData?.month}
+                        option={monthList}
+                        onChange={(event) => {
+                            setFormData({ ...formData, month: event.target.value });
+                        }}
+
+                    />
+
+
+                    <CustomButton variant='primaryButton' text='Edit' type='button' onClick={handleEdit} />
+                </CustomModal>
             </DashboardLayout>
         </>
     );

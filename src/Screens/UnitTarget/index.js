@@ -30,7 +30,6 @@ export const UnitTarget = () => {
   const [showModal, setShowModal] = useState(false);
   const [units, setUnits] = useState({});
   const [addUser, setUser] = useState(false);
-  const [EditTarget, setEditTarget] = useState();
   const [editModal, setEditModal] = useState(false);
   const [idUser, setIdUser] = useState();
   const { apiData: unitListing, loading: unitLoading } = useApi('admin/unit-listing');
@@ -45,19 +44,6 @@ export const UnitTarget = () => {
     month: ''
 
   });
-  const editTarget = (id) => {
-    id = id - 1
-    setIdUser(TargetListing?.data[id]?.unit_target_id)
-
-    setEditTarget(TargetListing?.data[id])
-    SetEditFormData({
-      ...editFormData,
-      unit_id: EditTarget?.name,
-      target: EditTarget?.current_month_target?.target
-    })
-    setEditModal(true)
-  }
-
 
   const handleEditTarget = (event) => {
     event.preventDefault();
@@ -447,50 +433,6 @@ export const UnitTarget = () => {
 
         {/* Edit Target  */}
 
-        <CustomModal show={editModal} close={() => { setEditModal(false) }} heading="Edit Target" >
-
-          <SelectBox
-            selectClass="mainInput"
-            name="unit_id"
-            label="Select Unit"
-            labelClass='mainLabel'
-            required
-            value={5}
-            option={unitValue}
-            onChange={handleChange}
-
-          />
-          <CustomInput
-            label="Set Target"
-            type="number"
-            placeholder="Set Target"
-            required
-            name="target"
-            labelClass='mainLabel'
-            inputClass='mainInput'
-            value={editFormData.target}
-            onChange={(event) => {
-              setFormData({ ...editFormData, target: event.target.value });
-        
-            }}
-
-
-          />
-          <SelectBox
-            selectClass="mainInput"
-            name="month"
-            labelClass='mainLabel'
-            label="Select Month"
-            required
-            value={editFormData.month}
-            option={monthList}
-            onChange={handleChange}
-
-          />
-
-
-          <CustomButton variant='primaryButton' text='Edit' type='button' onClick={handleEditTarget} />
-        </CustomModal>
       </DashboardLayout>
     </>
   );
