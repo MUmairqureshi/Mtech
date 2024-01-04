@@ -17,11 +17,23 @@ import { UserDetail } from "../Screens/UserManagement/UserDetail";
 import { AddUser } from "../Screens/UserManagement/AddUser";
 import { EditUser } from "../Screens/UserManagement/EditUser";
 
+import { RefundManagement } from "../Screens/RefundManagement";
+import { AddRefund } from "../Screens/RefundManagement/AddRefund";
+import { EditRefund } from "../Screens/RefundManagement/EditRefund";
+import { RefundDetail } from "../Screens/RefundManagement/RefundDetail";
+
+import { ChargeBackManagement } from "../Screens/ChargeBackManagement";
+import { AddChargeBack } from "../Screens/ChargeBackManagement/AddChargeBack";
+import { EditChargeBack } from "../Screens/ChargeBackManagement/EditChargeBack";
+import { ChargeBackDetail } from "../Screens/ChargeBackManagement/ChargeBackDetail";
+
 import { BrandListing } from "../Screens/BrandListing";
 import { Roles } from "../Screens/Roles";
 
 import { UnitTarget } from "../Screens/UnitTarget";
 import { TargetDetails } from "../Screens/UnitTarget/targetDetails";
+
+import { MerchantManagement } from "../Screens/MerchantManagement";
 
 import Profile from "../Screens/Profile";
 import EditProfile from "../Screens/Profile/EditProfile";
@@ -60,6 +72,19 @@ export default function AdminRouter() {
 
         <Route path="/target-listing" element={<ProtectedRoutes Components={UnitTarget} />} />
         <Route path="/target-listing/target-detail/:id" element={<ProtectedRoutes Components={TargetDetails} />} />
+        
+        <Route path="/merchant-management" element={<ProtectedRoutes Components={MerchantManagement} />} />
+
+        <Route path="/refund-management" element={<ProtectedRoutes Components={RefundManagement} />} />
+        <Route path="/refund-detail/:id" element={<ProtectedRoutes Components={RefundDetail} />} />
+        <Route path="/add-refund/" element={<ProtectedRoutes Components={AddRefund} />} />
+        <Route path="/edit-refund/:id" element={<ProtectedRoutes Components={EditRefund} />} />
+
+        <Route path="/chargeback-management" element={<ProtectedRoutes Components={ChargeBackManagement} />} />
+        <Route path="/chargeback-detail/:id" element={<ProtectedRoutes Components={ChargeBackDetail} />} />
+        <Route path="/add-chargeback/" element={<ProtectedRoutes Components={AddChargeBack} />} />
+        <Route path="/edit-chargeback/:id" element={<ProtectedRoutes Components={EditChargeBack} />} />
+
         <Route path="/profile" element={<ProtectedRoutes Components={Profile} />} />
         <Route path="/profile/edit-profile" element={<ProtectedRoutes Components={EditProfile} />} />
         <Route path="/profile/change-password" element={<ChangePassword />} />

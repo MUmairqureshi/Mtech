@@ -47,6 +47,23 @@ export const Sidebar = (props) => {
           </Link>
         </li>
         <li className="sidebar-li">
+          <Link className={`sideLink ${location.pathname.includes('/refund-management') ? 'active' : ''}`} to="/refund-management">
+            <span className="sideIcon">
+              <FontAwesomeIcon icon={faEye} />
+            </span>
+            <span className="sideLinkText">Refund Management</span>
+          </Link>
+        </li>
+
+        <li className="sidebar-li">
+          <Link className={`sideLink ${location.pathname.includes('/chargeback-management') ? 'active' : ''}`} to="/chargeback-management">
+            <span className="sideIcon">
+              <FontAwesomeIcon icon={faEye} />
+            </span>
+            <span className="sideLinkText">Charge Back Management</span>
+          </Link>
+        </li>
+        <li className="sidebar-li">
           <Link className={`sideLink ${location.pathname.includes('/brand-listing') ? 'active' : ''}`} to="/brand-listing">
             <span className="sideIcon">
               <FontAwesomeIcon icon={faTasks} />
@@ -68,6 +85,14 @@ export const Sidebar = (props) => {
               <FontAwesomeIcon icon={faUser} />
             </span>
             <span className="sideLinkText">User Management</span>
+          </Link>
+        </li>
+        <li className="sidebar-li">
+          <Link className={`sideLink ${location.pathname.includes('/merchant-management') ? 'active' : ''}`} to="/merchant-management">
+            <span className="sideIcon">
+              <FontAwesomeIcon icon={faMountainCity} />
+            </span>
+            <span className="sideLinkText">Merchant Management</span>
           </Link>
         </li>
         <li className="sidebar-li">
