@@ -126,7 +126,7 @@ export const AddRefund = () => {
             formDataMethod.append(key, formData[key]);
         }
 
-        console.log(formData)
+        console.log("formData" , formData)
         document.querySelector('.loaderBox').classList.remove("d-none");
         // Make the fetch request
         fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/refund-add-edit`, {
@@ -138,6 +138,7 @@ export const AddRefund = () => {
             body: formDataMethod // Use the FormData object as the request body
         })
             .then((response) => {
+                console.log("formDataresponse"  ,response )
                 return response.json();
             })
             .then((data) => {

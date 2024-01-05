@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisV, faEye, faCheck, faTimes, faFilter } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisV, faEye, faCheck, faTimes, faFilter, faEdit } from "@fortawesome/free-solid-svg-icons";
 
 import { DashboardLayout } from "../../Components/Layout/DashboardLayout";
 import CustomTable from "../../Components/CustomTable";
@@ -114,7 +114,7 @@ export const LeadListing = () => {
     },
     {
       key: "tamout",
-      title: "Total Amount",
+      title: "Quoted Amount",
     },
     {
       key: "product",
@@ -181,10 +181,10 @@ export const LeadListing = () => {
                             {/* <td>{item?.username}</td> */}
                             <td>{item?.email}</td>
                             <td>{item?.phone}</td>
-                            <td>{`$ ${item?.amount}`}</td>
+                            <td>{`$ ${item?.quoted_amount}`}</td>
                             <td>{item?.product}</td>
                             <td>{`$ ${item?.received}`}</td>
-                            <td>{item.accountrep?.name}</td>
+                            <td>{item?.unitdetail?.name}</td>
                             <td>{item.getbrand?.name}</td>
                             <td>{item?.description}</td>
                             <td>{item?.source}</td>
@@ -196,6 +196,7 @@ export const LeadListing = () => {
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu align="end" className="tableDropdownMenu">
                                   <Link to={`/lead-detail/${item?.id}`} className="tableAction"><FontAwesomeIcon icon={faEye} className="tableActionIcon" />View</Link>
+                                  <Link to={`/edit-lead/${item?.id}`} className="tableAction"><FontAwesomeIcon icon={faEdit} className="tableActionIcon" />Edit</Link>
                                 </Dropdown.Menu>
                               </Dropdown>
                             </td>

@@ -1,20 +1,18 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router";
 import { DashboardLayout } from "../../Components/Layout/DashboardLayout";
 import BackButton from "../../Components/BackButton";
 import CustomModal from "../../Components/CustomModal";
 import CustomInput from '../../Components/CustomInput';
 import { SelectBox } from "../../Components/CustomSelect";
 import CustomButton from "../../Components/CustomButton";
-export const EditChargeBack = () => {
-    const { id } = useParams();
+export const AddPurchase = () => {
     const [initalRole, setrole] = useState({});
     const [initialunit, setUnit] = useState({});
     const [merchant, setMerchant]= useState()
-    const [showModal, setShowModal] = useState(false);
+    const [showModal, setShowModal] = useState(false)
     const [formData, setFormData] = useState({});
 
-    const refundType = [
+    const purchaseType = [
         {
             id: 'Partial',
             name: 'Partial'
@@ -55,35 +53,9 @@ export const EditChargeBack = () => {
           })
       }
 
-    const getUserData = () => {
-        const LogoutData = localStorage.getItem('login');
-        document.querySelector('.loaderBox').classList.remove("d-none");
-        fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/get-chargeback/${id}`,
-            {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${LogoutData}`
-                },
-            }
-        )
 
-            .then(response =>
-                response.json()
-            )
-            .then((data) => {
-                console.log(data)
-                document.querySelector('.loaderBox').classList.add("d-none");
-                setFormData(data?.data);
-            })
-            .catch((error) => {
-                document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
-            })
-    }
 
-  
+
     const LogoutData = localStorage.getItem('login');
 
 
@@ -99,7 +71,7 @@ export const EditChargeBack = () => {
         console.log(formData)
         document.querySelector('.loaderBox').classList.remove("d-none");
         // Make the fetch request
-        fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/chargeback-add-edit/${id}`, {
+        fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/purchase-add-edit`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -108,22 +80,22 @@ export const EditChargeBack = () => {
             body: formDataMethod // Use the FormData object as the request body
         })
             .then((response) => {
+                console.log("purchase_type_response" , response)
                 return response.json();
             })
             .then((data) => {
+                console.log("data" , data);
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setShowModal(true)
-                console.log(data);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
                 console.log(error)
             })
     };
-
+console.log("purchase_type_formDataMethod" , formData)
 
     useEffect(() => {
-        getUserData()
         fetchMerchantData()
     }, [])
 
@@ -147,7 +119,7 @@ export const EditChargeBack = () => {
                         <div className="col-12 mb-2">
                             <h2 className="mainTitle">
                                 <BackButton />
-                                Edit ChargeBack Detail
+                                Add Purchase
                             </h2>
                         </div>
                     </div>
@@ -173,29 +145,29 @@ export const EditChargeBack = () => {
                                             </div>
                                             <div className="col-md-4 mb-4">
                                                 <CustomInput
-                                                    label='Charge Back Amount'
+                                                    label='Purchase Amount'
                                                     required
                                                     id='amount'
                                                     type='number'
-                                                    placeholder='Enter Charge Back Amount'
+                                                    placeholder='Enter Purchase Amount'
                                                     labelClass='mainLabel'
                                                     inputClass='mainInput'
-                                                    name="chargeback_amount"
-                                                    value={formData.chargeback_amount}
+                                                    name="purchase_amount"
+                                                    value={formData.purchase_amount}
                                                     onChange={handleChange}
                                                 />
                                             </div>
                                             <div className="col-md-4 mb-4">
                                                 <CustomInput
-                                                    label='Charge Back Date'
+                                                    label='Purchase Date'
                                                     // required
                                                     id='date'
                                                     type='date'
-                                                    placeholder='Enter Charge Back Date'
+                                                    placeholder='Enter Purchase Date'
                                                     labelClass='mainLabel'
                                                     inputClass='mainInput'
-                                                    name="chargeback_date"
-                                                    value={formData.chargeback_date}
+                                                    name="purchase_date"
+                                                    value={formData.purchase_date}
                                                     onChange={handleChange}
                                                 />
                                             </div>
@@ -215,17 +187,17 @@ export const EditChargeBack = () => {
                                             <div className="col-md-4 mb-4">
                                                 <SelectBox
                                                     selectClass="mainInput"
-                                                    name="chargeback_type"
-                                                    label="Charge Back Type"
+                                                    name="purchase_type"
+                                                    label="Purchase Type"
                                                     required
-                                                    value={formData.chargeback_type}
-                                                    option={refundType}
+                                                    value={formData.purchase_type}
+                                                    option={purchaseType}
                                                     onChange={handleChange}
                                                 />
 
                                             </div>
 
-                                            <div className="col-md-4 mb-4">
+                                            {/* <div className="col-md-4 mb-4">
                                                 <SelectBox
                                                     selectClass="mainInput"
                                                     name="merchant_id"
@@ -236,15 +208,15 @@ export const EditChargeBack = () => {
                                                     onChange={handleChange}
                                                 />
 
-                                            </div>
+                                            </div> */}
                                             <div className="col-md-12 mb-4">
                                                 <div className="inputWrapper">
-                                                    <label>Reason*</label>
-                                                    <textarea value={formData?.reason} name="reason" className="mainInput" onChange={handleChange}></textarea>
+                                                <label>Reason*</label>
+                                                <textarea value={formData?.reason} name="reason" className="mainInput" onChange={handleChange}></textarea>
                                                 </div>
                                             </div>
                                             <div className="col-md-12">
-                                                <CustomButton variant='primaryButton' text='Submit' type='Add User' />
+                                                <CustomButton variant='primaryButton' text='Submit' type='submit' />
                                             </div>
                                         </div>
                                     </div>
@@ -253,7 +225,8 @@ export const EditChargeBack = () => {
                         </div>
                     </div>
                 </div>
-                <CustomModal show={showModal} close={() => { setShowModal(false) }} success heading='ChargeBack Edit Successfully.' />
+                <CustomModal show={showModal} close={() => { setShowModal(false) }} success heading='Purchase has been Successfully Added.' />
+
 
             </DashboardLayout>
         </>

@@ -11,6 +11,7 @@ import { LeadListing } from "../Screens/LeadListing";
 import { UnitListing } from "../Screens/UnitListing";
 import { AddLead } from "../Screens/LeadListing/AddLead";
 import { DetailListing } from "../Screens/LeadListing/DetailListig";
+import { EditLead } from "../Screens/LeadListing/EditLead";
 
 import { UserManagement } from "../Screens/UserManagement";
 import { UserDetail } from "../Screens/UserManagement/UserDetail";
@@ -26,6 +27,18 @@ import { ChargeBackManagement } from "../Screens/ChargeBackManagement";
 import { AddChargeBack } from "../Screens/ChargeBackManagement/AddChargeBack";
 import { EditChargeBack } from "../Screens/ChargeBackManagement/EditChargeBack";
 import { ChargeBackDetail } from "../Screens/ChargeBackManagement/ChargeBackDetail";
+
+import { PurchaseManagement } from "../Screens/PurchaseManagement";
+import { AddPurchase } from "../Screens/PurchaseManagement/AddPurchase";
+import { EditPurchase } from "../Screens/PurchaseManagement/EditPurchase";
+import { PurchaseDetail } from "../Screens/PurchaseManagement/PurchaseDetail";
+
+import { ReversalDetail } from "../Screens/ReversalManagement/ReversalDetail";
+import { ReversalManagement } from "../Screens/ReversalManagement";
+import { AddReversal } from "../Screens/ReversalManagement/AddReversal";
+import { EditReversal } from "../Screens/ReversalManagement/EditReversal";
+
+import { ReportManagement } from "../Screens/ReportManagement";
 
 import { BrandListing } from "../Screens/BrandListing";
 import { Roles } from "../Screens/Roles";
@@ -58,6 +71,7 @@ export default function AdminRouter() {
 
         <Route path="/lead-listing" element={<ProtectedRoutes Components={LeadListing} />} />
          <Route path="/lead-detail/:id" element={<ProtectedRoutes Components={DetailListing} />} />
+         <Route path="/edit-lead/:id" element={<ProtectedRoutes Components={EditLead} />} />
         <Route path="/add-lead/" element={<ProtectedRoutes Components={AddLead} />} />
 
 
@@ -84,6 +98,19 @@ export default function AdminRouter() {
         <Route path="/chargeback-detail/:id" element={<ProtectedRoutes Components={ChargeBackDetail} />} />
         <Route path="/add-chargeback/" element={<ProtectedRoutes Components={AddChargeBack} />} />
         <Route path="/edit-chargeback/:id" element={<ProtectedRoutes Components={EditChargeBack} />} />
+
+        <Route path="/purchase-management" element={<ProtectedRoutes Components={PurchaseManagement} />} />
+        <Route path="/purchase-detail/:id" element={<ProtectedRoutes Components={PurchaseDetail} />} />
+        <Route path="/add-purchase/" element={<ProtectedRoutes Components={AddPurchase} />} />
+        <Route path="/edit-purchase/:id" element={<ProtectedRoutes Components={EditPurchase} />} />
+
+        <Route path="/reversal-management" element={<ProtectedRoutes Components={ReversalManagement} />} />
+        <Route path="/reversal-detail/:id" element={<ProtectedRoutes Components={ReversalDetail} />} />
+        <Route path="/add-reversal/" element={<ProtectedRoutes Components={AddReversal} />} />
+        <Route path="/edit-reversal/:id" element={<ProtectedRoutes Components={EditReversal} />} />
+
+
+        <Route path="/report-management" element={<ProtectedRoutes Components={ReportManagement} />} />
 
         <Route path="/profile" element={<ProtectedRoutes Components={Profile} />} />
         <Route path="/profile/edit-profile" element={<ProtectedRoutes Components={EditProfile} />} />

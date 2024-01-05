@@ -147,7 +147,7 @@ export const UnitTarget = () => {
   // }
 
   const filterData = data.filter(item =>
-    item.name.toLowerCase().includes(inputValue.toLowerCase())
+    item?.name.toLowerCase().includes(inputValue.toLowerCase())
   );
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -176,8 +176,8 @@ export const UnitTarget = () => {
         document.querySelector('.loaderBox').classList.add("d-none");
 
 
-        console.log(data.data)
-        setData(data.data);
+        console.log(data?.data)
+        setData(data?.data);
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
@@ -335,13 +335,13 @@ export const UnitTarget = () => {
                           <tr key={index}>
                             <td>{index + 1}</td>
                             <td className="text-uppercase">
-                              {item.name}
+                              {item?.name}
                             </td>
                             {/* <td>{item?.current_month_target?.target ? `$ ${item?.current_month_target?.target}` : '$0'}</td> */}
-                            <td>{item?.current_month_target?.target ? `$ ${item?.current_month_target?.target}` : '$0'}</td>
+                            <td>{item?.target_amount ? `$ ${item?.target_amount}` : '$0'}</td>
                             {/* <td>{`$ ${item?.target_score}`}</td> */}
                             {/* <td>{item?.current_month_target?.month}</td> */}
-                            <td className={item.status == 1 ? 'greenColor' : 'redColor'}>{item.status == 1 ? 'Active' : 'Inactive'}</td>
+                            <td className={item?.isAschived == 1 ? 'greenColor' : 'redColor'}>{item?.isAschived == 1 ? 'Acheived' : 'Not Acheived'}</td>
                             <td>
                               <Dropdown className="tableDropdown">
                                 <Dropdown.Toggle variant="transparent" className="notButton classicToggle">

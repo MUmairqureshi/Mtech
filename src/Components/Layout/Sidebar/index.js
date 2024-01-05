@@ -63,6 +63,25 @@ export const Sidebar = (props) => {
             <span className="sideLinkText">Charge Back Management</span>
           </Link>
         </li>
+
+        <li className="sidebar-li">
+          <Link className={`sideLink ${location.pathname.includes('/purchase-management') ? 'active' : ''}`} to="/purchase-management">
+            <span className="sideIcon">
+              <FontAwesomeIcon icon={faEye} />
+            </span>
+            <span className="sideLinkText">Purchase Management</span>
+          </Link>
+        </li>
+
+        <li className="sidebar-li">
+          <Link className={`sideLink ${location.pathname.includes('/reversal-management') ? 'active' : ''}`} to="/reversal-management">
+            <span className="sideIcon">
+              <FontAwesomeIcon icon={faEye} />
+            </span>
+            <span className="sideLinkText">Reversal Management</span>
+          </Link>
+        </li>
+
         <li className="sidebar-li">
           <Link className={`sideLink ${location.pathname.includes('/brand-listing') ? 'active' : ''}`} to="/brand-listing">
             <span className="sideIcon">
@@ -101,6 +120,14 @@ export const Sidebar = (props) => {
               <FontAwesomeIcon icon={faMoneyBill} />
             </span>
             <span className="sideLinkText">Sales</span>
+          </Link>
+        </li>
+        <li className="sidebar-li">
+          <Link className={`sideLink ${location.pathname.includes('/report-management') ? 'active' : ''}`} to="/report-management">
+            <span className="sideIcon">
+              <FontAwesomeIcon icon={faMoneyBill} />
+            </span>
+            <span className="sideLinkText">Report Management</span>
           </Link>
         </li>
       </ul>

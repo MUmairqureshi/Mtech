@@ -6,7 +6,7 @@ import CustomModal from "../../Components/CustomModal";
 import CustomInput from '../../Components/CustomInput';
 import { SelectBox } from "../../Components/CustomSelect";
 import CustomButton from "../../Components/CustomButton";
-export const EditChargeBack = () => {
+export const EditPurchase = () => {
     const { id } = useParams();
     const [initalRole, setrole] = useState({});
     const [initialunit, setUnit] = useState({});
@@ -14,7 +14,7 @@ export const EditChargeBack = () => {
     const [showModal, setShowModal] = useState(false);
     const [formData, setFormData] = useState({});
 
-    const refundType = [
+    const purchaseType = [
         {
             id: 'Partial',
             name: 'Partial'
@@ -54,11 +54,12 @@ export const EditChargeBack = () => {
             console.log(error)
           })
       }
-
+      
+    //   https://custom.mystagingserver.site/mtrecords/public/api/admin/purchase-add-edit/1
     const getUserData = () => {
         const LogoutData = localStorage.getItem('login');
         document.querySelector('.loaderBox').classList.remove("d-none");
-        fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/get-chargeback/${id}`,
+        fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/get-purchase/${id}`,
             {
                 method: 'GET',
                 headers: {
@@ -99,7 +100,7 @@ export const EditChargeBack = () => {
         console.log(formData)
         document.querySelector('.loaderBox').classList.remove("d-none");
         // Make the fetch request
-        fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/chargeback-add-edit/${id}`, {
+        fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/purchase-add-edit/${id}`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -147,7 +148,7 @@ export const EditChargeBack = () => {
                         <div className="col-12 mb-2">
                             <h2 className="mainTitle">
                                 <BackButton />
-                                Edit ChargeBack Detail
+                                Edit Purchase Detail
                             </h2>
                         </div>
                     </div>
@@ -173,29 +174,29 @@ export const EditChargeBack = () => {
                                             </div>
                                             <div className="col-md-4 mb-4">
                                                 <CustomInput
-                                                    label='Charge Back Amount'
+                                                    label='Purchase Amount'
                                                     required
                                                     id='amount'
                                                     type='number'
-                                                    placeholder='Enter Charge Back Amount'
+                                                    placeholder='Enter Purchase Amount'
                                                     labelClass='mainLabel'
                                                     inputClass='mainInput'
-                                                    name="chargeback_amount"
-                                                    value={formData.chargeback_amount}
+                                                    name="purchase_amount"
+                                                    value={formData.purchase_amount}
                                                     onChange={handleChange}
                                                 />
                                             </div>
                                             <div className="col-md-4 mb-4">
                                                 <CustomInput
-                                                    label='Charge Back Date'
+                                                    label='Purchase Date'
                                                     // required
                                                     id='date'
                                                     type='date'
-                                                    placeholder='Enter Charge Back Date'
+                                                    placeholder='Enter Purchase Date'
                                                     labelClass='mainLabel'
                                                     inputClass='mainInput'
-                                                    name="chargeback_date"
-                                                    value={formData.chargeback_date}
+                                                    name="purchase_date"
+                                                    value={formData.purchase_date}
                                                     onChange={handleChange}
                                                 />
                                             </div>
@@ -215,17 +216,17 @@ export const EditChargeBack = () => {
                                             <div className="col-md-4 mb-4">
                                                 <SelectBox
                                                     selectClass="mainInput"
-                                                    name="chargeback_type"
-                                                    label="Charge Back Type"
+                                                    name="purchase_type"
+                                                    label="Purchase Type"
                                                     required
-                                                    value={formData.chargeback_type}
-                                                    option={refundType}
+                                                    value={formData.purchase_type}
+                                                    option={purchaseType}
                                                     onChange={handleChange}
                                                 />
 
                                             </div>
 
-                                            <div className="col-md-4 mb-4">
+                                            {/* <div className="col-md-4 mb-4">
                                                 <SelectBox
                                                     selectClass="mainInput"
                                                     name="merchant_id"
@@ -236,7 +237,7 @@ export const EditChargeBack = () => {
                                                     onChange={handleChange}
                                                 />
 
-                                            </div>
+                                            </div> */}
                                             <div className="col-md-12 mb-4">
                                                 <div className="inputWrapper">
                                                     <label>Reason*</label>
@@ -244,7 +245,7 @@ export const EditChargeBack = () => {
                                                 </div>
                                             </div>
                                             <div className="col-md-12">
-                                                <CustomButton variant='primaryButton' text='Submit' type='Add User' />
+                                                <CustomButton variant='primaryButton' text='Submit' type='submit' />
                                             </div>
                                         </div>
                                     </div>
@@ -253,7 +254,7 @@ export const EditChargeBack = () => {
                         </div>
                     </div>
                 </div>
-                <CustomModal show={showModal} close={() => { setShowModal(false) }} success heading='ChargeBack Edit Successfully.' />
+                <CustomModal show={showModal} close={() => { setShowModal(false) }} success heading='Purchase Update Successfully.' />
 
             </DashboardLayout>
         </>

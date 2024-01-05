@@ -5,7 +5,7 @@ import BackButton from "../../Components/BackButton";
 import CustomModal from "../../Components/CustomModal";
 import CustomButton from "../../Components/CustomButton";
 
-export const ChargeBackDetail = () => {
+export const ReversalDetail = () => {
 
     const { id } = useParams();
 
@@ -28,12 +28,12 @@ export const ChargeBackDetail = () => {
         setShowModal3(false)
         setShowModal4(true)
     }
-
+ 
     useEffect(() => {
         const LogoutData = localStorage.getItem('login');
-        document.title = 'Mt Records | Refund Detail';
+        document.title = 'Mt Records | Reversal Detail';
         document.querySelector('.loaderBox').classList.remove("d-none");
-        fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/get-chargeback/${id}`,
+        fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/get-reversal/${id}`,
             {
                 method: 'GET',
                 headers: {
@@ -67,7 +67,7 @@ export const ChargeBackDetail = () => {
                         <div className="col-12 mb-2">
                             <h2 className="mainTitle">
                                 <BackButton />
-                                ChargeBack Details
+                                Reversal  Details
                             </h2>
                         </div>
                     </div>
@@ -83,25 +83,25 @@ export const ChargeBackDetail = () => {
                             <div className="row">
                                 <div className="col-md-4 mb-4">
                                     <p className="secondaryText">User Name</p>
-                                    <p>{user?.chargebackuser?.name}</p>
+                                    <p>{user?.reversaluser?.name}</p>
                                 </div>
                                 <div className="col-md-4 mb-4">
                                     <p className="secondaryText">Email Address</p>
-                                    <p>{user?.chargebackuser?.email}</p>
+                                    <p>{user?.reversaluser?.email}</p>
                                 </div>
                                 <div className="col-md-4 mb-4">
-                                    <p className="secondaryText">Charge Back Date</p>
-                                    <p>{user?.chargeback_date}</p>
-                                </div>
-
-                                <div className="col-md-4 mb-4">
-                                    <p className="secondaryText">Charge Back Type</p>
-                                    <p>{user?.chargeback_type}</p>
+                                    <p className="secondaryText">Reversal Date</p>
+                                    <p>{user?.reversal_date}</p>
                                 </div>
 
                                 <div className="col-md-4 mb-4">
-                                    <p className="secondaryText">Charge Back Amount</p>
-                                    <p>{`$ ${user?.chargeback_amount}`}</p>
+                                    <p className="secondaryText">Reversal Type</p>
+                                    <p>{user?.reversal_type}</p>
+                                </div>
+
+                                <div className="col-md-4 mb-4">
+                                    <p className="secondaryText">Reversal Amount</p>
+                                    <p>{`$ ${user?.reversal_amount}`}</p>
                                 </div>
 
                                 <div className="col-md-4 mb-4">
@@ -109,10 +109,10 @@ export const ChargeBackDetail = () => {
                                     <p>{user?.merchantdetail?.name}</p>
                                 </div>
 
-                                <div className="col-md-12 mb-4">
+                                {/* <div className="col-md-12 mb-4">
                                     <p className="secondaryText">Reason</p>
                                     <p>{user?.reason}</p>
-                                </div>
+                                </div> */}
                                
                                
                             </div>

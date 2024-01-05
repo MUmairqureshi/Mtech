@@ -16,7 +16,7 @@ import CustomButton from "../../Components/CustomButton";
 
 import "./style.css";
 
-export const ChargeBackManagement = () => {
+export const ReversalManagement = () => {
 
   const [data, setData] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -34,7 +34,7 @@ export const ChargeBackManagement = () => {
   };
 
   const hanldeRoute = () => {
-    navigate('/add-chargeback')
+    navigate('/add-reversal')
   }
 
 
@@ -59,13 +59,13 @@ export const ChargeBackManagement = () => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filterData.slice(indexOfFirstItem, indexOfLastItem);
 
-
+  
 
   useEffect(() => {
-    document.title = 'Mt Records | Charge Back Management';
+    document.title = 'Mt Records | reversal Management';
     const LogoutData = localStorage.getItem('login');
     document.querySelector('.loaderBox').classList.remove("d-none");
-    fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/chargeback-listing',
+    fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/reversal-listing',
       {
         method: 'GET',
         headers: {
@@ -91,7 +91,7 @@ export const ChargeBackManagement = () => {
 
 
   }, []);
-
+  
   const maleHeaders = [
     {
       key: "id",
@@ -102,26 +102,26 @@ export const ChargeBackManagement = () => {
       title: "Lead Id",
     },
     {
-      key: "refundAmount",
-      title: "Charge Back Amount",
+      key: "reversalAmount",
+      title: "reversal Amount",
     },
     {
-      key: "Charge BackDate",
-      title: "Charge Back Date",
+      key: "reversalDate",
+      title: "reversal Date",
     },
     {
-      key: "Charge BackUser",
-      title: "Charge Back User",
+      key: "reversalUser",
+      title: "reversal User",
     },
     {
-      key: "Charge BackType",
-      title: "Charge Back Type",
+      key: "reversalType",
+      title: "reversal Type",
     },
 
-    {
-      key: "merchant",
-      title: "Merchant",
-    },
+    // {
+    //   key: "merchant",
+    //   title: "Merchant",
+    // },
     {
       key: "action",
       title: "Action",
@@ -138,11 +138,11 @@ export const ChargeBackManagement = () => {
               <div className="dashCard">
                 <div className="row mb-3 justify-content-between">
                   <div className="col-md-6 mb-2">
-                    <h2 className="mainTitle">Charge Back Management</h2>
+                    <h2 className="mainTitle">Reversal Management</h2>
                   </div>
                   <div className="col-md-6 mb-2">
                     <div className="addUser">
-                      <CustomButton text="Add New Charge Back" variant='primaryButton' onClick={hanldeRoute}/>
+                      <CustomButton text="Add New reversal" variant='primaryButton' onClick={hanldeRoute}/>
                       <CustomInput type="text" placeholder="Search Here..." value={inputValue} inputClass="mainInput" onChange={handleChange} />
                     </div>
                   </div>
@@ -161,11 +161,11 @@ export const ChargeBackManagement = () => {
                               {item?.lead_id}
                             </td>
                             {/* <td>{item?.username}</td> */}
-                            <td>{`$ ${item?.chargeback_amount}`}</td>
-                            <td>{item?.chargeback_date}</td>
+                            <td>{`$ ${item?.reversal_amount}`}</td>
+                            <td>{item?.reversal_date}</td>
                             <td>{item?.leaddetail?.email}</td>
-                            <td>{item?.chargeback_type}</td> 
-                            <td>{item?.merchantdetail?.name}</td> 
+                            <td>{item?.reversal_type}</td> 
+                            {/* <td>{item?.merchantdetail?.name}</td>  */}
                             {/* <td className={item?.status == 1 ? 'greenColor' : "redColor"}>{item?.status == 1 ? 'Active' : "Inactive"}</td> */}
                             <td>
                               <Dropdown className="tableDropdown">
@@ -173,8 +173,8 @@ export const ChargeBackManagement = () => {
                                   <FontAwesomeIcon icon={faEllipsisV} />
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu align="end" className="tableDropdownMenu">
-                                  <Link to={`/chargeback-detail/${item?.id}`} className="tableAction"><FontAwesomeIcon icon={faEye} className="tableActionIcon" />View</Link>
-                                  <Link to={`/edit-chargeback/${item?.id}`} className="tableAction"><FontAwesomeIcon icon={faPencil} className="tableActionIcon" />Edit</Link>
+                                  <Link to={`/reversal-detail/${item?.id}`} className="tableAction"><FontAwesomeIcon icon={faEye} className="tableActionIcon" />View</Link>
+                                  <Link to={`/edit-reversal/${item?.id}`} className="tableAction"><FontAwesomeIcon icon={faPencil} className="tableActionIcon" />Edit</Link>
                                 </Dropdown.Menu>
 
                               </Dropdown>

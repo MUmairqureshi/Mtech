@@ -107,28 +107,28 @@ export const DetailListing = () => {
                                   
                                 </div>
                                 <div className="col-md-4 mb-4">
-                                    <p className="secondaryText">Total Amount</p>
-                                    <p>{lead?.amount}</p>
+                                    <p className="secondaryText">Quoted Amount</p>
+                                    <p>{`$ ${lead?.quoted_amount}`}</p>
                                     
                                 </div>
                                 <div className="col-md-4 mb-4">
                                     <p className="secondaryText">Amount Recevied</p>
-                                    <p>{lead?.received}</p>
+                                    <p>{`$ ${lead?.received}`}</p>
                                 </div>
                                 <div className="col-md-4 mb-4">
                                     <p className="secondaryText">Amount Recovery</p>
-                                    <p>{lead?.recovery}</p>
+                                    <p>{`$ ${lead?.recovery}`}</p>
                                 
                                 </div>
                                 <div className="col-md-4 mb-4">
                                     <p className="secondaryText">Brand Name</p>
-                                    <p>{lead?.brand}</p>
+                                    <p>{lead?.getbrand?.name}</p>
                                    
 
                                 </div>
                                 <div className="col-md-4 mb-4">
                                     <p className="secondaryText">Unit Name</p>
-                                    <p>{lead?.account_rep}</p>
+                                    <p>{lead?.unitdetail?.name}</p>
                                 
                                 </div>
                                 <div className="col-md-8 mb-4">

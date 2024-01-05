@@ -226,15 +226,15 @@ export const AddLead = () => {
                                             </div>
                                             <div className="col-md-4 mb-4">
                                                 <CustomInput
-                                                    label='Amount'
+                                                    label='Quoted Amount'
                                                     required
                                                     id='amount'
                                                     type='number'
-                                                    placeholder='Enter amount'
+                                                    placeholder='Enter Quoted Amount'
                                                     labelClass='mainLabel'
                                                     inputClass='mainInput'
-                                                    name="amount"
-                                                    value={formData.amount}
+                                                    name="quoted_amount"
+                                                    value={formData.quoted_amount}
                                                     onChange={handleChange}
                                                 />
                                             </div>
@@ -281,10 +281,10 @@ export const AddLead = () => {
                                             <div className="col-md-4 mb-4">
                                                 <SelectBox
                                                     selectClass="mainInput"
-                                                    name="account_rep"
+                                                    name="unit_id"
                                                     label="Unit"
                                                     required
-                                                    value={formData.account_rep}
+                                                    value={formData.unit_id}
                                                     option={unit}
                                                     onChange={handleChange}
                                                 />

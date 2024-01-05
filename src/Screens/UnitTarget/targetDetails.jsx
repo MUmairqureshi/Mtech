@@ -201,9 +201,9 @@ export const TargetDetails = () => {
 
     const handleEdit = (event) => {
         event.preventDefault();
-        const userId = leadData?.current_month_target?.id
+        const userId = leadData?.id
         const LogoutData = localStorage.getItem('login');
-        fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/unit-targets-edit/${userId}`,
+        fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/unit-targets-edit/${formData?.id}`,
             {
                 method: 'POST',
                 headers: {
@@ -271,11 +271,11 @@ export const TargetDetails = () => {
                                     <p>{leadData?.current_month_target?.year}</p>
 
                                 </div>
-                                <div className="col-md-4 mb-4">
+                                {/* <div className="col-md-4 mb-4">
                                     <p className="secondaryText">Total Amount</p>
                                     <p>{`$ ${leadData?.total_sales}`}</p>
 
-                                </div>
+                                </div> */}
                             </div>
 
                             <div className="row mb-3">

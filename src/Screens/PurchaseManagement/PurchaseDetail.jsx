@@ -5,7 +5,7 @@ import BackButton from "../../Components/BackButton";
 import CustomModal from "../../Components/CustomModal";
 import CustomButton from "../../Components/CustomButton";
 
-export const ChargeBackDetail = () => {
+export const PurchaseDetail = () => {
 
     const { id } = useParams();
 
@@ -28,12 +28,12 @@ export const ChargeBackDetail = () => {
         setShowModal3(false)
         setShowModal4(true)
     }
-
+ 
     useEffect(() => {
         const LogoutData = localStorage.getItem('login');
-        document.title = 'Mt Records | Refund Detail';
+        document.title = 'Mt Records | Purchase Detail';
         document.querySelector('.loaderBox').classList.remove("d-none");
-        fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/get-chargeback/${id}`,
+        fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/get-purchase/${id}`,
             {
                 method: 'GET',
                 headers: {
@@ -67,7 +67,7 @@ export const ChargeBackDetail = () => {
                         <div className="col-12 mb-2">
                             <h2 className="mainTitle">
                                 <BackButton />
-                                ChargeBack Details
+                                Purchase  Details
                             </h2>
                         </div>
                     </div>
@@ -83,31 +83,31 @@ export const ChargeBackDetail = () => {
                             <div className="row">
                                 <div className="col-md-4 mb-4">
                                     <p className="secondaryText">User Name</p>
-                                    <p>{user?.chargebackuser?.name}</p>
+                                    <p>{user?.purchaseuser?.name}</p>
                                 </div>
                                 <div className="col-md-4 mb-4">
                                     <p className="secondaryText">Email Address</p>
-                                    <p>{user?.chargebackuser?.email}</p>
+                                    <p>{user?.purchaseuser?.email}</p>
                                 </div>
                                 <div className="col-md-4 mb-4">
-                                    <p className="secondaryText">Charge Back Date</p>
-                                    <p>{user?.chargeback_date}</p>
-                                </div>
-
-                                <div className="col-md-4 mb-4">
-                                    <p className="secondaryText">Charge Back Type</p>
-                                    <p>{user?.chargeback_type}</p>
+                                    <p className="secondaryText">Purchase Date</p>
+                                    <p>{user?.purchase_date}</p>
                                 </div>
 
                                 <div className="col-md-4 mb-4">
-                                    <p className="secondaryText">Charge Back Amount</p>
-                                    <p>{`$ ${user?.chargeback_amount}`}</p>
+                                    <p className="secondaryText">Purchase Type</p>
+                                    <p>{user?.purchase_type}</p>
                                 </div>
 
                                 <div className="col-md-4 mb-4">
+                                    <p className="secondaryText">Purchase Amount</p>
+                                    <p>{`$ ${user?.purchase_amount}`}</p>
+                                </div>
+
+                                {/* <div className="col-md-4 mb-4">
                                     <p className="secondaryText">Merchant</p>
                                     <p>{user?.merchantdetail?.name}</p>
-                                </div>
+                                </div> */}
 
                                 <div className="col-md-12 mb-4">
                                     <p className="secondaryText">Reason</p>

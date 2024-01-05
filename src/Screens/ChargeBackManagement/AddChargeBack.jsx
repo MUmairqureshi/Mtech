@@ -223,11 +223,11 @@ export const AddChargeBack = () => {
                                             </div>
                                             <div className="col-md-4 mb-4">
                                                 <CustomInput
-                                                    label='Refund Amount'
+                                                    label='Charge Back Amount'
                                                     required
                                                     id='amount'
                                                     type='number'
-                                                    placeholder='Enter Refund Amount'
+                                                    placeholder='Enter Charge Back Amount'
                                                     labelClass='mainLabel'
                                                     inputClass='mainInput'
                                                     name="chargeback_amount"
@@ -237,11 +237,11 @@ export const AddChargeBack = () => {
                                             </div>
                                             <div className="col-md-4 mb-4">
                                                 <CustomInput
-                                                    label='Refund Date'
+                                                    label='Charge Back Date'
                                                     // required
                                                     id='date'
                                                     type='date'
-                                                    placeholder='Enter Refund Date'
+                                                    placeholder='Enter Charge Back Date'
                                                     labelClass='mainLabel'
                                                     inputClass='mainInput'
                                                     name="chargeback_date"
@@ -266,7 +266,7 @@ export const AddChargeBack = () => {
                                                 <SelectBox
                                                     selectClass="mainInput"
                                                     name="chargeback_type"
-                                                    label="Refund Type"
+                                                    label="Charge Back Type"
                                                     required
                                                     value={formData.chargeback_type}
                                                     option={refundType}
@@ -316,7 +316,7 @@ export const AddChargeBack = () => {
                         </div>
                     </div>
                 </div>
-                <CustomModal show={showModal} close={() => { setShowModal(false) }} success heading='Refund has been Successfully Added.' />
+                <CustomModal show={showModal} close={() => { setShowModal(false) }} success heading='Charge Back has been Successfully Added.' />
 
 
             </DashboardLayout>
