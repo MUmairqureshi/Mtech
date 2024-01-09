@@ -28,7 +28,7 @@ const UserManagementDetail = () => {
 
   useEffect(() => {
     const LogoutData = localStorage.getItem('login');
-    fetch(`https://custom.mystagingserver.site/parcel_safe_app/public/api/admin/get-user/${id}`,
+    fetch(`https://custom3.mystagingserver.site/parcel_safe_app/public/api/admin/get-user/${id}`,
       {
         method: 'GET',
         headers: {

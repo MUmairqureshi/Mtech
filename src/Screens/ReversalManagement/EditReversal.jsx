@@ -30,7 +30,7 @@ export const EditReversal = () => {
         const LogoutData = localStorage.getItem('login');
         document.querySelector('.loaderBox').classList.remove("d-none");
     
-        fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/merchant-listing',
+        fetch('https://custom3.mystagingserver.site/mtrecords/public/api/admin/merchant-listing',
           {
             method: 'GET',
             headers: {
@@ -55,11 +55,11 @@ export const EditReversal = () => {
           })
       }
       
-    //   https://custom.mystagingserver.site/mtrecords/public/api/admin/reversal-add-edit/1
+    //   https://custom3.mystagingserver.site/mtrecords/public/api/admin/reversal-add-edit/1
     const getUserData = () => {
         const LogoutData = localStorage.getItem('login');
         document.querySelector('.loaderBox').classList.remove("d-none");
-        fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/get-reversal/${id}`,
+        fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/get-reversal/${id}`,
             {
                 method: 'GET',
                 headers: {
@@ -100,7 +100,7 @@ export const EditReversal = () => {
         console.log(formData)
         document.querySelector('.loaderBox').classList.remove("d-none");
         // Make the fetch request
-        fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/reversal-add-edit/${id}`, {
+        fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/reversal-add-edit/${id}`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

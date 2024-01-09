@@ -30,7 +30,7 @@ export const EditRefund = () => {
         const LogoutData = localStorage.getItem('login');
         document.querySelector('.loaderBox').classList.remove("d-none");
     
-        fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/merchant-listing',
+        fetch('https://custom3.mystagingserver.site/mtrecords/public/api/admin/merchant-listing',
           {
             method: 'GET',
             headers: {
@@ -58,7 +58,7 @@ export const EditRefund = () => {
     const getUserData = () => {
         const LogoutData = localStorage.getItem('login');
         document.querySelector('.loaderBox').classList.remove("d-none");
-        fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/get-refund/${id}`,
+        fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/get-refund/${id}`,
             {
                 method: 'GET',
                 headers: {
@@ -99,7 +99,7 @@ export const EditRefund = () => {
         console.log(formData)
         document.querySelector('.loaderBox').classList.remove("d-none");
         // Make the fetch request
-        fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/refund-add-edit/${id}`, {
+        fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/refund-add-edit/${id}`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

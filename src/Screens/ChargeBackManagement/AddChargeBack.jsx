@@ -47,7 +47,7 @@ export const AddChargeBack = () => {
         const LogoutData = localStorage.getItem('login');
         document.querySelector('.loaderBox').classList.remove("d-none");
     
-        fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/merchant-listing',
+        fetch('https://custom3.mystagingserver.site/mtrecords/public/api/admin/merchant-listing',
           {
             method: 'GET',
             headers: {
@@ -77,7 +77,7 @@ export const AddChargeBack = () => {
         const LogoutData = localStorage.getItem('login');
         document.querySelector('.loaderBox').classList.remove("d-none");
 
-        fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/role-listing',
+        fetch('https://custom3.mystagingserver.site/mtrecords/public/api/admin/role-listing',
             {
                 method: 'GET',
                 headers: {
@@ -106,7 +106,7 @@ export const AddChargeBack = () => {
     const fetchUnitData = () => {
         const LogoutData = localStorage.getItem('login');
         document.querySelector('.loaderBox').classList.remove("d-none");
-        fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/unit-listing',
+        fetch('https://custom3.mystagingserver.site/mtrecords/public/api/admin/unit-listing',
             {
                 method: 'GET',
                 headers: {
@@ -148,7 +148,7 @@ export const AddChargeBack = () => {
         console.log(formData)
         document.querySelector('.loaderBox').classList.remove("d-none");
         // Make the fetch request
-        fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/chargeback-add-edit`, {
+        fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/chargeback-add-edit`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

@@ -161,6 +161,10 @@ body {
     border-right-color: var(--primaryColor);
     animation:s2 1s infinite linear;
   }
+
+  body {
+    position: relative;
+  }
   @keyframes s2 {to{transform: rotate(1turn)}}
 
   .loaderBox {

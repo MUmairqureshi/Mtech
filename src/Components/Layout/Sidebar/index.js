@@ -130,6 +130,14 @@ export const Sidebar = (props) => {
             <span className="sideLinkText">Report Management</span>
           </Link>
         </li>
+        <li className="sidebar-li">
+          <Link className={`sideLink ${location.pathname.includes('/unit-report-management') ? 'active' : ''}`} to="/unit-report-management">
+            <span className="sideIcon">
+              <FontAwesomeIcon icon={faMoneyBill} />
+            </span>
+            <span className="sideLinkText">Unit Reports</span>
+          </Link>
+        </li>
       </ul>
     </div>
   );

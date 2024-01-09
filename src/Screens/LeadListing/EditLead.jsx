@@ -10,6 +10,7 @@ export const EditLead = () => {
     const { id } = useParams();
     const [showModal, setShowModal] = useState(false);
     const [formData, setFormData] = useState({});
+    const [user, setUser] = useState();
     const [brands, setBrands] = useState({});
     const [unit, setUnit] = useState({});
 
@@ -18,7 +19,7 @@ export const EditLead = () => {
     const fectchBrandData = () => {
         const LogoutData = localStorage.getItem('login');
         document.querySelector('.loaderBox').classList.remove("d-none");
-        fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/brand-listing',
+        fetch('https://custom3.mystagingserver.site/mtrecords/public/api/admin/brand-listing',
             {
                 method: 'GET',
                 headers: {
@@ -47,7 +48,7 @@ export const EditLead = () => {
     const fetchUnitData = () => {
         const LogoutData = localStorage.getItem('login');
         document.querySelector('.loaderBox').classList.remove("d-none");
-        fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/unit-listing',
+        fetch('https://custom3.mystagingserver.site/mtrecords/public/api/admin/unit-listing',
             {
                 method: 'GET',
                 headers: {
@@ -76,7 +77,7 @@ export const EditLead = () => {
     const getUserData = () => {
         const LogoutData = localStorage.getItem('login');
         document.querySelector('.loaderBox').classList.remove("d-none");
-        fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/view-leads/${id}`,
+        fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/view-leads/${id}`,
             {
                 method: 'GET',
                 headers: {
@@ -91,9 +92,10 @@ export const EditLead = () => {
                 response.json()
             )
             .then((data) => {
-                console.log(data?.leads)
+                console.log(data)
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setFormData(data?.leads);
+                userData(data?.leads?.unit_id)
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
@@ -117,7 +119,7 @@ export const EditLead = () => {
         console.log(formData)
         document.querySelector('.loaderBox').classList.remove("d-none");
         // Make the fetch request
-        fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/leads-add-edit/${id}`, {
+        fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/leads-add-edit/${id}`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -144,17 +146,49 @@ export const EditLead = () => {
         getUserData()
         fectchBrandData()
         fetchUnitData()
+        
     }, [])
 
 
     const handleChange = (event) => {
         const { name, value } = event.target;
+        if (name === 'unit_id') {
+            userData(value)
+        }
         setFormData((prevData) => ({
             ...prevData,
             [name]: value,
         }));
         console.log(formData)
     };
+
+
+    const userData = (uniID) => {
+        document.querySelector('.loaderBox').classList.remove("d-none");
+        fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-units/${uniID}`,
+            {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${LogoutData}`
+                },
+            }
+        )
+
+            .then(response =>
+                response.json()
+            )
+            .then((data) => {
+                console.log('user', data?.data)
+                document.querySelector('.loaderBox').classList.add("d-none");
+                setUser(data?.data)
+            })
+            .catch((error) => {
+                document.querySelector('.loaderBox').classList.add("d-none");
+                console.log(error)
+            })
+    }
 
 
 
@@ -307,6 +341,30 @@ export const EditLead = () => {
                             />
 
                         </div>
+                        <div className="col-md-4 mb-4">
+                            <SelectBox
+                                selectClass="mainInput"
+                                name="sales_rep"
+                                label="Sales Rep"
+                                required
+                                value={formData.sales_rep}
+                                option={user}
+                                onChange={handleChange}
+                            />
+
+                        </div>
+                        <div className="col-md-4 mb-4">
+                            <SelectBox
+                                selectClass="mainInput"
+                                name="account_rep"
+                                label="Account Rep"
+                                required
+                                value={formData.account_rep}
+                                option={user}
+                                onChange={handleChange}
+                            />
+
+                        </div>
                         <div className="col-md-12 mb-4">
                             <div className="inputWrapper">
                                 <div className="form-controls">
@@ -328,7 +386,7 @@ export const EditLead = () => {
 
                         </div>
                         <div className="col-md-12">
-                            <CustomButton variant='primaryButton' text='Submit' type='submit' onClick={handleSubmit}/>
+                            <CustomButton variant='primaryButton' text='Submit' type='submit' onClick={handleSubmit} />
                         </div>
                     </div>
                 </div>

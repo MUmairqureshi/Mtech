@@ -65,7 +65,7 @@ export const PurchaseManagement = () => {
     document.title = 'Mt Records | Purchase Management';
     const LogoutData = localStorage.getItem('login');
     document.querySelector('.loaderBox').classList.remove("d-none");
-    fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/purchase-listing',
+    fetch('https://custom3.mystagingserver.site/mtrecords/public/api/admin/purchase-listing',
       {
         method: 'GET',
         headers: {

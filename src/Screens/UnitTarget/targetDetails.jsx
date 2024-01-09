@@ -79,7 +79,7 @@ export const TargetDetails = () => {
         const LogoutData = localStorage.getItem('login');
         document.title = 'Mt Records | Lead Management Detail';
         document.querySelector('.loaderBox').classList.remove("d-none");
-        fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/get-unit-targets_details/${id}`,
+        fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/get-unit-targets_details/${id}`,
             {
                 method: 'GET',
                 headers: {
@@ -203,7 +203,7 @@ export const TargetDetails = () => {
         event.preventDefault();
         const userId = leadData?.id
         const LogoutData = localStorage.getItem('login');
-        fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/unit-targets-edit/${formData?.id}`,
+        fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/unit-targets-edit/${formData?.id}`,
             {
                 method: 'POST',
                 headers: {

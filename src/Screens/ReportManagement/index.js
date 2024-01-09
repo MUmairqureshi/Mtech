@@ -106,7 +106,7 @@ export const ReportManagement = () => {
   const fectchBrandData = () => {
     const LogoutData = localStorage.getItem('login');
     document.querySelector('.loaderBox').classList.remove("d-none");
-    fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/brand-listing',
+    fetch('https://custom3.mystagingserver.site/mtrecords/public/api/admin/brand-listing',
       {
         method: 'GET',
         headers: {
@@ -135,7 +135,7 @@ export const ReportManagement = () => {
   const fetchUnitData = () => {
     const LogoutData = localStorage.getItem('login');
     document.querySelector('.loaderBox').classList.remove("d-none");
-    fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/unit-listing',
+    fetch('https://custom3.mystagingserver.site/mtrecords/public/api/admin/unit-listing',
       {
         method: 'GET',
         headers: {
@@ -167,16 +167,19 @@ export const ReportManagement = () => {
     const LogoutData = localStorage.getItem('login');
     document.querySelector('.loaderBox').classList.remove("d-none");
 
-    fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/report-generate/?unit_id=${formData?.unit_id}&month=${formData?.month}&year=${formData?.year}`,
+    const formDataMethod = new FormData();
+    for (const key in formData) {
+      formDataMethod.append(key, formData[key]);
+    }
+
+    fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/unit-sheets-generate`,
       {
-        method: 'GET',
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
-          'Access-Control-Allow-Headers': '*',
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, PUT, DELETE',
+          'Accept': 'application/json',
           'Authorization': `Bearer ${LogoutData}`
-        }
+        },
+        body: formDataMethod
 
       }
     )
@@ -264,11 +267,11 @@ export const ReportManagement = () => {
           <div className="row mb-3 align-items-end">
             <div className="col-12">
               <div className="dashCard">
-                <div className="row mb-3 justify-content-between">
+                <div className="row mb-3 justify-content-end">
                   <div className="col-md-12 mb-2">
-                    <h2 className="mainTitle">Merchant Management</h2>
+                    <h2 className="mainTitle">Unit Sheets Reports</h2>
                   </div>
-                  <div className="col-md-12 mb-2">
+                  <div className="col-md-8 mb-2">
                     <div className="addUser align-items-center">
                       <SelectBox
                         selectClass="mainInput"
@@ -296,12 +299,12 @@ export const ReportManagement = () => {
                         }}
                       />
 
-                      <CustomInput type="text" placeholder="Enter Year" name="year" value={formData.year}
+                      {/* <CustomInput type="text" placeholder="Enter Year" name="year" value={formData.year}
                         label="Year"
                         inputClass="mainInput" onChange={(event) => {
                           setFormData({ ...formData, year: event.target.value });
                           console.log(formData);
-                        }} />
+                        }} /> */}
                       <CustomButton variant='primaryButton' text='Search' type='button' onClick={fetchData} />
                     </div>
                   </div>

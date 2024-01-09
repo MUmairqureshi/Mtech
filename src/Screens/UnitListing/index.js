@@ -35,7 +35,7 @@ export const UnitListing = () => {
   const editBrandList = [];
   const [formData, setFormData] = useState({
     name: '',
-    status: '1',
+    // status: 1,
     brands: []
   });
 
@@ -64,7 +64,7 @@ export const UnitListing = () => {
     const LogoutData = localStorage.getItem('login');
     document.querySelector('.loaderBox').classList.remove("d-none");
 
-    fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/brand-listing',
+    fetch('https://custom3.mystagingserver.site/mtrecords/public/api/admin/brand-listing',
       {
         method: 'GET',
         headers: {
@@ -106,7 +106,7 @@ export const UnitListing = () => {
   const fetchData = () => {
     const LogoutData = localStorage.getItem('login');
     document.querySelector('.loaderBox').classList.remove("d-none");
-    fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/unit-listing',
+    fetch('https://custom3.mystagingserver.site/mtrecords/public/api/admin/unit-listing',
       {
         method: 'GET',
         headers: {
@@ -191,7 +191,7 @@ export const UnitListing = () => {
     console.log(formData)
     document.querySelector('.loaderBox').classList.remove("d-none");
     const LogoutData = localStorage.getItem('login');
-    fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/unit-add-edit`,
+    fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/unit-add-edit`,
       {
         method: 'POST',
         headers: {
@@ -224,7 +224,7 @@ export const UnitListing = () => {
 
   const editUnit = (unitID) => {
     const LogoutData = localStorage.getItem('login');
-    fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/view-unit/${unitID}`,
+    fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/view-unit/${unitID}`,
       {
         method: 'GET',
         headers: {
@@ -268,7 +268,7 @@ export const UnitListing = () => {
     console.log(formData)
 
     const LogoutData = localStorage.getItem('login');
-    fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/unit-add-edit/${idUser}`,
+    fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/unit-add-edit/${idUser}`,
       {
         method: 'POST',
         headers: {

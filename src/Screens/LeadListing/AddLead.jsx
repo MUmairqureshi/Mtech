@@ -8,7 +8,8 @@ import CustomButton from "../../Components/CustomButton";
 export const AddLead = () => {
     const [brands, setBrands] = useState({});
     const [unit, setUnit] = useState({});
-    const [showModal, setShowModal]= useState(false);
+    const [showModal, setShowModal] = useState(false);
+    const [user, setUser] = useState();
     const [formData, setFormData] = useState({
         source: '',
         brand: '',
@@ -20,7 +21,7 @@ export const AddLead = () => {
         amount: '',
         received: '',
         recovery: '',
-        sales_rep: 54,
+        sales_rep: '',
         account_rep: ''
     });
 
@@ -28,7 +29,7 @@ export const AddLead = () => {
     const fectchBrandData = () => {
         const LogoutData = localStorage.getItem('login');
         document.querySelector('.loaderBox').classList.remove("d-none");
-        fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/brand-listing',
+        fetch('https://custom3.mystagingserver.site/mtrecords/public/api/admin/brand-listing',
             {
                 method: 'GET',
                 headers: {
@@ -57,7 +58,7 @@ export const AddLead = () => {
     const fetchUnitData = () => {
         const LogoutData = localStorage.getItem('login');
         document.querySelector('.loaderBox').classList.remove("d-none");
-        fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/unit-listing',
+        fetch('https://custom3.mystagingserver.site/mtrecords/public/api/admin/unit-listing',
             {
                 method: 'GET',
                 headers: {
@@ -84,16 +85,47 @@ export const AddLead = () => {
 
     const handleChange = (event) => {
         const { name, value } = event.target;
+        if (name === 'unit_id') {
+            userData(value)
+        }
         setFormData((prevData) => ({
             ...prevData,
             [name]: value,
         }));
+
         console.log(formData)
     };
 
 
     const LogoutData = localStorage.getItem('login');
 
+
+    const userData = (uniID) => {
+        document.querySelector('.loaderBox').classList.remove("d-none");
+        fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-units/${uniID}`,
+            {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${LogoutData}`
+                },
+            }
+        )
+
+            .then(response =>
+                response.json()
+            )
+            .then((data) => {
+                console.log('user', data?.data)
+                document.querySelector('.loaderBox').classList.add("d-none");
+                setUser(data?.data)
+            })
+            .catch((error) => {
+                document.querySelector('.loaderBox').classList.add("d-none");
+                console.log(error)
+            })
+    }
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -107,7 +139,7 @@ export const AddLead = () => {
         console.log(formData)
         document.querySelector('.loaderBox').classList.remove("d-none");
         // Make the fetch request
-        fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/leads-add-edit`, {
+        fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/leads-add-edit`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -133,6 +165,7 @@ export const AddLead = () => {
     useEffect(() => {
         fectchBrandData()
         fetchUnitData()
+        // userData()
     }, [])
 
 
@@ -286,6 +319,31 @@ export const AddLead = () => {
                                                     required
                                                     value={formData.unit_id}
                                                     option={unit}
+                                                    onChange={handleChange}
+                                                />
+
+                                            </div>
+
+                                            <div className="col-md-4 mb-4">
+                                                <SelectBox
+                                                    selectClass="mainInput"
+                                                    name="sales_rep"
+                                                    label="Sales Rep"
+                                                    required
+                                                    value={formData.sales_rep}
+                                                    option={user}
+                                                    onChange={handleChange}
+                                                />
+
+                                            </div>
+                                            <div className="col-md-4 mb-4">
+                                                <SelectBox
+                                                    selectClass="mainInput"
+                                                    name="account_rep"
+                                                    label="Account Rep"
+                                                    required
+                                                    value={formData.account_rep}
+                                                    option={user}
                                                     onChange={handleChange}
                                                 />
 

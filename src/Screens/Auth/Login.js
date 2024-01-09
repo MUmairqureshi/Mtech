@@ -33,7 +33,7 @@ const AdminLogin = () => {
         console.log(formData)
         document.querySelector('.loaderBox').classList.remove("d-none");
 
-        const apiUrl = 'https://custom.mystagingserver.site/mtrecords/public/api/auth/login';
+        const apiUrl = 'https://custom3.mystagingserver.site/mtrecords/public/api/auth/login';
 
 
         try {

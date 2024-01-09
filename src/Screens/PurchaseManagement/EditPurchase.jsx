@@ -30,7 +30,7 @@ export const EditPurchase = () => {
         const LogoutData = localStorage.getItem('login');
         document.querySelector('.loaderBox').classList.remove("d-none");
     
-        fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/merchant-listing',
+        fetch('https://custom3.mystagingserver.site/mtrecords/public/api/admin/merchant-listing',
           {
             method: 'GET',
             headers: {
@@ -55,11 +55,11 @@ export const EditPurchase = () => {
           })
       }
       
-    //   https://custom.mystagingserver.site/mtrecords/public/api/admin/purchase-add-edit/1
+    //   https://custom3.mystagingserver.site/mtrecords/public/api/admin/purchase-add-edit/1
     const getUserData = () => {
         const LogoutData = localStorage.getItem('login');
         document.querySelector('.loaderBox').classList.remove("d-none");
-        fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/get-purchase/${id}`,
+        fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/get-purchase/${id}`,
             {
                 method: 'GET',
                 headers: {
@@ -100,7 +100,7 @@ export const EditPurchase = () => {
         console.log(formData)
         document.querySelector('.loaderBox').classList.remove("d-none");
         // Make the fetch request
-        fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/purchase-add-edit/${id}`, {
+        fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/purchase-add-edit/${id}`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

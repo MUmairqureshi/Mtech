@@ -1,4 +1,4 @@
-import { Route, Routes, BrowserRouter } from "react-router-dom";
+import { Route, Routes, BrowserRouter, Navigate } from "react-router-dom";
 
 import AdminLogin from "../Screens/Auth/Login";
 import ForgetPassword from "../Screens/Auth/ForgetPassword";
@@ -39,6 +39,7 @@ import { AddReversal } from "../Screens/ReversalManagement/AddReversal";
 import { EditReversal } from "../Screens/ReversalManagement/EditReversal";
 
 import { ReportManagement } from "../Screens/ReportManagement";
+import { UnitReportManagement } from "../Screens/UnitReportManagement";
 
 import { BrandListing } from "../Screens/BrandListing";
 import { Roles } from "../Screens/Roles";
@@ -56,22 +57,41 @@ import Error from "../Screens/Error";
 
 
 export default function AdminRouter() {
+  //  const [ islogin , setIslogin]
+
+
+
+  const token = localStorage.getItem('login');
+  // const isTokenAvailable = !!token;
+  // console.log("token", token)
+
   return (
     <BrowserRouter basename="/customProject">
       <Routes>
         <Route path="/" element={<AdminLogin />} />
-        <Route path="/login" element={<AdminLogin />} />
+
+        {/* Protected routes */}
+        {/* <Route
+          path="/customProject"
+          element={
+            isTokenAvailable ? (
+              <Navigate to="/customProject/dashboard" />
+            ) : (
+              <Navigate to="/login"/>
+            )
+          }
+        /> */}
         <Route path="/forget-password" element={<ForgetPassword />} />
         <Route path="/forget-password2" element={<ForgetPassword2 />} />
         <Route path="/forget-password3" element={<ForgetPassword3 />} />
 
-        <Route path="/dashboard" element={ <ProtectedRoutes Components={Dashboard}  />} />
+        <Route path="/dashboard" element={<ProtectedRoutes Components={Dashboard} />} />
 
         <Route path="/role-management" element={<ProtectedRoutes Components={Roles} />} />
 
         <Route path="/lead-listing" element={<ProtectedRoutes Components={LeadListing} />} />
-         <Route path="/lead-detail/:id" element={<ProtectedRoutes Components={DetailListing} />} />
-         <Route path="/edit-lead/:id" element={<ProtectedRoutes Components={EditLead} />} />
+        <Route path="/lead-detail/:id" element={<ProtectedRoutes Components={DetailListing} />} />
+        <Route path="/edit-lead/:id" element={<ProtectedRoutes Components={EditLead} />} />
         <Route path="/add-lead/" element={<ProtectedRoutes Components={AddLead} />} />
 
 
@@ -86,7 +106,7 @@ export default function AdminRouter() {
 
         <Route path="/target-listing" element={<ProtectedRoutes Components={UnitTarget} />} />
         <Route path="/target-listing/target-detail/:id" element={<ProtectedRoutes Components={TargetDetails} />} />
-        
+
         <Route path="/merchant-management" element={<ProtectedRoutes Components={MerchantManagement} />} />
 
         <Route path="/refund-management" element={<ProtectedRoutes Components={RefundManagement} />} />
@@ -111,6 +131,7 @@ export default function AdminRouter() {
 
 
         <Route path="/report-management" element={<ProtectedRoutes Components={ReportManagement} />} />
+        <Route path="/unit-report-management" element={<ProtectedRoutes Components={UnitReportManagement} />} />
 
         <Route path="/profile" element={<ProtectedRoutes Components={Profile} />} />
         <Route path="/profile/edit-profile" element={<ProtectedRoutes Components={EditProfile} />} />

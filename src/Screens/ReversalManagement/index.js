@@ -65,7 +65,7 @@ export const ReversalManagement = () => {
     document.title = 'Mt Records | reversal Management';
     const LogoutData = localStorage.getItem('login');
     document.querySelector('.loaderBox').classList.remove("d-none");
-    fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/reversal-listing',
+    fetch('https://custom3.mystagingserver.site/mtrecords/public/api/admin/reversal-listing',
       {
         method: 'GET',
         headers: {

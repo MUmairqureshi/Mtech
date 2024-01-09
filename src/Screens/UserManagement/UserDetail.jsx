@@ -33,7 +33,7 @@ export const UserDetail = () => {
         const LogoutData = localStorage.getItem('login');
         document.title = 'Mt Records | User Management Detail';
         document.querySelector('.loaderBox').classList.remove("d-none");
-        fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/get-user/${id}`,
+        fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/get-user/${id}`,
             {
                 method: 'GET',
                 headers: {
@@ -75,7 +75,7 @@ export const UserDetail = () => {
                         <div className="col-12">
                             <div className="row mb-3 justify-content-end">
                                 <div className="col-lg-4 text-end order-1 order-lg-2 mb-3">
-                                <span className={`statusBadge ${user?.status == 1 ? 'statusBadgeActive' : 'statusBadgeInactive'}`}>{user?.status == 1 ? 'Active' : 'Inactive'}</span>
+                                    <span className={`statusBadge ${user?.status == 1 ? 'statusBadgeActive' : 'statusBadgeInactive'}`}>{user?.status == 1 ? 'Active' : 'Inactive'}</span>
                                 </div>
                             </div>
 
@@ -91,13 +91,27 @@ export const UserDetail = () => {
                                 </div>
                                 <div className="col-md-4 mb-4">
                                     <p className="secondaryText">Unit Name</p>
-                                    <p>{user?.unit_id}</p>
+                                    {
+                                        user?.unit_id && user?.unit_id?.map((item, index) => (
+                                            <span className="ps-1" key={index}>{item?.label}</span>
+                                        ))
+                                    }
                                 </div>
                                 <div className="col-md-4 mb-4">
                                     <p className="secondaryText">User Role</p>
-                                    <p>{user?.user_role == 3 ? 'User' : 'Sub Admin'}</p>
+                                    <p>{user?.role?.name}</p>
                                 </div>
-                               
+
+                                {
+                                    user?.permission && (
+                                        <div className="col-md-4 mb-4">
+                                            <p className="secondaryText">Permission</p>
+                                            <p>{user?.permission == 1 ? 'Lead' : 'Executive'}</p>
+                                        </div>
+                                    )
+                                }
+
+
                             </div>
                         </div>
                     </div>

@@ -33,7 +33,7 @@ export const DetailListing = () => {
         const LogoutData = localStorage.getItem('login');
         document.title = 'Mt Records | Lead Management Detail';
         document.querySelector('.loaderBox').classList.remove("d-none");
-        fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/view-leads/${id}`,
+        fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/view-leads/${id}`,
             {
                 method: 'GET',
                 headers: {
@@ -129,6 +129,16 @@ export const DetailListing = () => {
                                 <div className="col-md-4 mb-4">
                                     <p className="secondaryText">Unit Name</p>
                                     <p>{lead?.unitdetail?.name}</p>
+                                
+                                </div>
+                                <div className="col-md-4 mb-4">
+                                    <p className="secondaryText">Account Rep</p>
+                                    <p>{lead?.accountrepdetail?.name}</p>
+                                
+                                </div>
+                                <div className="col-md-4 mb-4">
+                                    <p className="secondaryText">Sales Rep</p>
+                                    <p>{lead?.salesrep?.name}</p>
                                 
                                 </div>
                                 <div className="col-md-8 mb-4">

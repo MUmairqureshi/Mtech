@@ -5,24 +5,38 @@ import CustomModal from "../../Components/CustomModal";
 import CustomInput from '../../Components/CustomInput';
 import { SelectBox } from "../../Components/CustomSelect";
 import CustomButton from "../../Components/CustomButton";
+import Select from 'react-select'
+import { json } from "react-router";
 export const AddUser = () => {
     const [initalRole, setrole] = useState({});
     const [initialunit, setUnit] = useState({});
     const [showModal, setShowModal] = useState(false)
+    const [permission, setPermission] = useState(false)
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         password: '',
-        unit_id: '',
+        unit_id: [],
         user_role: ''
     });
+
+    const userRole = [
+        {
+            code: 1,
+            name: 'Lead'
+        },
+        {
+            code: 2,
+            name: 'Executive'
+        }
+    ]
 
 
     const fectchBrandData = () => {
         const LogoutData = localStorage.getItem('login');
         document.querySelector('.loaderBox').classList.remove("d-none");
 
-        fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/role-listing',
+        fetch('https://custom3.mystagingserver.site/mtrecords/public/api/admin/role-listing',
             {
                 method: 'GET',
                 headers: {
@@ -51,7 +65,7 @@ export const AddUser = () => {
     const fetchUnitData = () => {
         const LogoutData = localStorage.getItem('login');
         document.querySelector('.loaderBox').classList.remove("d-none");
-        fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/unit-listing',
+        fetch('https://custom3.mystagingserver.site/mtrecords/public/api/admin/unit-listing',
             {
                 method: 'GET',
                 headers: {
@@ -77,8 +91,33 @@ export const AddUser = () => {
     }
 
 
+    const handleChangeSelect = (selected) => {
+        setFormData({
+            ...formData, unit_id: selected
+        })
+    };
+
+
 
     const LogoutData = localStorage.getItem('login');
+
+    const SelectOptions = []
+    for (const key in initialunit) {
+        if (initialunit.hasOwnProperty(key)) {
+            const item = initialunit[key];
+
+            // Create an object for each option with 'value' and 'label' properties
+            const option = {
+                value: item.id, // Assuming 'item.name' represents the option's value
+                label: item.name, // Assuming 'item.name' also represents the option's label
+            };
+
+            // Push the option object into the SelectOptions array
+            SelectOptions.push(option);
+        }
+    }
+
+    console.log("GHGHGH" ,SelectOptions)
 
 
     const handleSubmit = (event) => {
@@ -87,13 +126,17 @@ export const AddUser = () => {
         // Create a new FormData object
         const formDataMethod = new FormData();
         for (const key in formData) {
-            formDataMethod.append(key, formData[key]);
+            if(key == 'unit_id') {
+                formDataMethod.append(key, JSON.stringify(formData[key]))
+            } else {
+                formDataMethod.append(key, formData[key]);
+            }
         }
-
+        console.log("formDataMethod", formDataMethod)
         console.log(formData)
         document.querySelector('.loaderBox').classList.remove("d-none");
         // Make the fetch request
-        fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/user-add-edit`, {
+        fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-add-edit`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -116,6 +159,18 @@ export const AddUser = () => {
     };
 
 
+
+
+
+
+
+
+    
+
+
+
+
+
     useEffect(() => {
         fectchBrandData()
         fetchUnitData()
@@ -124,6 +179,14 @@ export const AddUser = () => {
 
     const handleChange = (event) => {
         const { name, value } = event.target;
+        if (name == 'user_role' && value == 2 || name == 'user_role' && value == 4) {
+            setPermission(true)
+        }
+
+        if (name == 'user_role' && value == 1 || name == 'user_role' && value == 3) {
+            setPermission(false)
+        }
+
         setFormData((prevData) => ({
             ...prevData,
             [name]: value,
@@ -205,17 +268,35 @@ export const AddUser = () => {
                                                 />
 
                                             </div>
-                                            <div className="col-md-4 mb-4">
-                                                <SelectBox
-                                                    selectClass="mainInput"
-                                                    name="unit_id"
-                                                    label="Unit"
-                                                    required
-                                                    value={formData.unit_id}
-                                                    option={initialunit}
-                                                    onChange={handleChange}
-                                                />
+                                            {
+                                                permission && (
+                                                    <div className="col-md-4 mb-4">
+                                                        <SelectBox
+                                                            selectClass="mainInput"
+                                                            name="permission"
+                                                            label="Permission"
+                                                            required
+                                                            value={formData.permission}
+                                                            option={userRole}
+                                                            onChange={handleChange}
+                                                        />
 
+                                                    </div>
+                                                )
+                                            }
+ 
+                                            <div className="col-md-4 mb-4">
+                                                <div class="inputWrapper">
+                                                    <label class="mainLabel">Add Units<span>*</span></label>
+                                           
+                                                    <Select
+                                                        value={formData.unit_id}
+                                                        isMulti
+                                                        required
+                                                        options={SelectOptions}
+                                                        onChange={handleChangeSelect}
+                                                    />
+                                                </div>
                                             </div>
                                             <div className="col-md-12">
                                                 <CustomButton variant='primaryButton' text='Submit' type='Add User' />

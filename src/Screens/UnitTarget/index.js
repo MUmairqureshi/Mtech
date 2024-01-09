@@ -158,7 +158,7 @@ export const UnitTarget = () => {
   const fetchData = () => {
     const LogoutData = localStorage.getItem('login');
     document.querySelector('.loaderBox').classList.remove("d-none");
-    fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/unit-Target-List',
+    fetch('https://custom3.mystagingserver.site/mtrecords/public/api/admin/unit-Target-List',
       {
         method: 'GET',
         headers: {
@@ -244,7 +244,7 @@ export const UnitTarget = () => {
     console.log(formData)
 
     const LogoutData = localStorage.getItem('login');
-    fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/set-unit-target`,
+    fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/set-unit-target`,
       {
         method: 'POST',
         headers: {
@@ -275,7 +275,7 @@ export const UnitTarget = () => {
   const deleteTarget = async (id) => {
     try {
       const LogoutData = localStorage.getItem('login');
-      const response = await fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/unit-targets-delete/${id}`, {
+      const response = await fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/unit-targets-delete/${id}`, {
         method: 'DELETE',
         headers: {
           'Accept': 'application/json',

@@ -63,7 +63,7 @@ export const LeadListing = () => {
   const leadData = () => {
     const LogoutData = localStorage.getItem('login');
     document.querySelector('.loaderBox').classList.remove("d-none");
-    fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/leads-listing',
+    fetch('https://custom3.mystagingserver.site/mtrecords/public/api/admin/leads-listing',
       {
         method: 'GET',
         headers: {

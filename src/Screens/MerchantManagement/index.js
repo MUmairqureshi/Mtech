@@ -67,7 +67,7 @@ export const MerchantManagement = () => {
     const LogoutData = localStorage.getItem('login');
     document.querySelector('.loaderBox').classList.remove("d-none");
 
-    fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/merchant-listing',
+    fetch('https://custom3.mystagingserver.site/mtrecords/public/api/admin/merchant-listing',
       {
         method: 'GET',
         headers: {
@@ -126,7 +126,7 @@ export const MerchantManagement = () => {
     console.log(formData)
     document.querySelector('.loaderBox').classList.remove("d-none");
     const LogoutData = localStorage.getItem('login');
-    fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/merchant-add-edit`,
+    fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/merchant-add-edit`,
       {
         method: 'POST',
         headers: {
@@ -160,7 +160,7 @@ export const MerchantManagement = () => {
   const brandID = (unitID) => {
     document.querySelector('.loaderBox').classList.remove("d-none");
     const LogoutData = localStorage.getItem('login');
-    fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/get-merchant/${unitID}`,
+    fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/get-merchant/${unitID}`,
       {
         method: 'GET',
         headers: {
@@ -196,7 +196,7 @@ export const MerchantManagement = () => {
     console.log(formData)
     document.querySelector('.loaderBox').classList.remove("d-none");
     const LogoutData = localStorage.getItem('login');
-    fetch(`https://custom.mystagingserver.site/mtrecords/public/api/admin/merchant-add-edit/${idUser}`,
+    fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/merchant-add-edit/${idUser}`,
       {
         method: 'POST',
         headers: {

@@ -65,7 +65,7 @@ export const UserManagement = () => {
     document.title = 'Mt Records | User Management';
     const LogoutData = localStorage.getItem('login');
     document.querySelector('.loaderBox').classList.remove("d-none");
-    fetch('https://custom.mystagingserver.site/mtrecords/public/api/admin/user-listing',
+    fetch('https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-listing',
       {
         method: 'GET',
         headers: {
@@ -91,6 +91,7 @@ export const UserManagement = () => {
 
 
   }, []);
+  console.log("datasusers" ,data)
 
   const maleHeaders = [
     {
@@ -158,8 +159,12 @@ export const UserManagement = () => {
                             </td>
                             {/* <td>{item?.username}</td> */}
                             <td>{item?.email}</td>
-                            <td>{item?.unit_id}</td>
-                            <td>{item?.user_role == 3 ? 'User' : 'Sub Admin'}</td>
+                            <td>{
+                              item?.unit_id && item?.unit_id.map((item)=> (
+                                <span className="ps-1">{item?.name}</span>
+                              )) 
+                            }</td>
+                            <td>{item?.role?.name}</td>
                             <td className={item?.status == 1 ? 'greenColor' : 'redColor'}>{item?.status == 1 ? 'Active' : 'Inactive'}</td>
                             {/* <td className={item?.status == 1 ? 'greenColor' : "redColor"}>{item?.status == 1 ? 'Active' : "Inactive"}</td> */}
                             <td>
