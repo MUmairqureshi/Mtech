@@ -127,7 +127,7 @@ export const ChargeBackManagement = () => {
       title: "Action",
     },
   ];
-
+console.log("currentItems" , currentItems)
 
   return (
     <>

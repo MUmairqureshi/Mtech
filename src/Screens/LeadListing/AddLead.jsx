@@ -19,8 +19,8 @@ export const AddLead = () => {
         phone: '',
         description: '',
         amount: '',
-        received: '',
-        recovery: '',
+        received: 0,
+        recovery: 0,
         sales_rep: '',
         account_rep: ''
     });
@@ -274,7 +274,6 @@ export const AddLead = () => {
                                             <div className="col-md-4 mb-4">
                                                 <CustomInput
                                                     label='Amount Received'
-                                                    required
                                                     id='received'
                                                     type='number'
                                                     placeholder='Enter Received Amount'
@@ -288,7 +287,6 @@ export const AddLead = () => {
                                             <div className="col-md-4 mb-4">
                                                 <CustomInput
                                                     label='Amount Recovery'
-                                                    required
                                                     id='recovery'
                                                     type='number'
                                                     placeholder='Enter Recovery Amount'
@@ -341,7 +339,6 @@ export const AddLead = () => {
                                                     selectClass="mainInput"
                                                     name="account_rep"
                                                     label="Account Rep"
-                                                    required
                                                     value={formData.account_rep}
                                                     option={user}
                                                     onChange={handleChange}

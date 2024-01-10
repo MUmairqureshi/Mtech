@@ -6,26 +6,31 @@ export const ProtectedRoutes = (props) => {
     const navigate = useNavigate();
     const location = useLocation()
     console.log('params', location.pathname);
-
-    useEffect(() => {
-        let login = localStorage.getItem('login');
-        if (!login) {
-            navigate('/login');
+    let login = localStorage.getItem('login');
+    // useEffect(() => {
+    //     let login = localStorage.getItem('login');
+    //     if (!login) {
+    //         navigate('/login');
            
-        }
-        // if(login && location.pathname == '/login') {
-        //     navigate('/dashboard')
-        //     alert()
-        // }
-
+    //     }
+     
         
 
-        // Cleanup function to avoid memory leaks
-        return () => {
-            // Cleanup code if needed
-        };
-    }, []); // Added an empty dependency array
+    //     // Cleanup function to avoid memory leaks
+    //     return () => {
+    //         // Cleanup code if needed
+    //     };
+    // }, []); // Added an empty dependency array
 
+
+
+    useEffect(() => {
+        if (!login) {
+            navigate('/login');
+        }else if(login && location.pathname === '/') {
+            navigate('/dashboard');
+          }
+    }, [navigate,login , location.pathname]);
     return (
         <>
             <Components />

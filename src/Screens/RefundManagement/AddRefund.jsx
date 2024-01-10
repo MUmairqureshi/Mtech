@@ -11,6 +11,7 @@ export const AddRefund = () => {
     const [merchant, setMerchant]= useState()
     const [showModal, setShowModal] = useState(false)
     const [formData, setFormData] = useState({});
+    const [successStatus, setSuccessStatus] = useState();
 
     const refundType = [
         {
@@ -138,13 +139,15 @@ export const AddRefund = () => {
             body: formDataMethod // Use the FormData object as the request body
         })
             .then((response) => {
-                console.log("formDataresponse"  ,response )
+                console.log("formDataresponse" ,response )
                 return response.json();
             })
             .then((data) => {
-                console.log(data);
-                document.querySelector('.loaderBox').classList.add("d-none");
-                setShowModal(true)
+                console.log(data?.status);
+                    document.querySelector('.loaderBox').classList.add("d-none");
+                    data?.status ? setSuccessStatus(data?.msg) : setSuccessStatus(data?.msg)
+                    setShowModal(true)
+               
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
@@ -285,7 +288,7 @@ export const AddRefund = () => {
                         </div>
                     </div>
                 </div>
-                <CustomModal show={showModal} close={() => { setShowModal(false) }} success heading='Refund has been Successfully Added.' />
+                <CustomModal show={showModal} close={() => { setShowModal(false) }} success heading={successStatus} />
 
 
             </DashboardLayout>

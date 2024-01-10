@@ -10,7 +10,7 @@ export const EditPurchase = () => {
     const { id } = useParams();
     const [initalRole, setrole] = useState({});
     const [initialunit, setUnit] = useState({});
-    const [merchant, setMerchant]= useState()
+    const [merchant, setMerchant] = useState()
     const [showModal, setShowModal] = useState(false);
     const [formData, setFormData] = useState({});
 
@@ -26,35 +26,35 @@ export const EditPurchase = () => {
     ]
 
 
-    const fetchMerchantData = () =>  {
+    const fetchMerchantData = () => {
         const LogoutData = localStorage.getItem('login');
         document.querySelector('.loaderBox').classList.remove("d-none");
-    
+
         fetch('https://custom3.mystagingserver.site/mtrecords/public/api/admin/merchant-listing',
-          {
-            method: 'GET',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${LogoutData}`
-            },
-          }
+            {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${LogoutData}`
+                },
+            }
         )
-    
-          .then(response =>
-            response.json()
-          )
-          .then((data) => {
-            document.querySelector('.loaderBox').classList.add("d-none");
-            console.log(data)
-            setMerchant(data?.data);
-          })
-          .catch((error) => {
-            document.querySelector('.loaderBox').classList.add("d-none");
-            console.log(error)
-          })
-      }
-      
+
+            .then(response =>
+                response.json()
+            )
+            .then((data) => {
+                document.querySelector('.loaderBox').classList.add("d-none");
+                console.log(data)
+                setMerchant(data?.data);
+            })
+            .catch((error) => {
+                document.querySelector('.loaderBox').classList.add("d-none");
+                console.log(error)
+            })
+    }
+
     //   https://custom3.mystagingserver.site/mtrecords/public/api/admin/purchase-add-edit/1
     const getUserData = () => {
         const LogoutData = localStorage.getItem('login');
@@ -76,7 +76,9 @@ export const EditPurchase = () => {
             .then((data) => {
                 console.log(data)
                 document.querySelector('.loaderBox').classList.add("d-none");
+                setViewleads(data?.data?.lead_id);
                 setFormData(data?.data);
+
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
@@ -84,7 +86,7 @@ export const EditPurchase = () => {
             })
     }
 
-  
+
     const LogoutData = localStorage.getItem('login');
 
 
@@ -129,14 +131,134 @@ export const EditPurchase = () => {
     }, [])
 
 
+    // const handleChange = (event) => {
+    //     const { name, value } = event.target;
+    //     setFormData((prevData) => ({
+    //         ...prevData,
+    //         [name]: value,
+    //     }));
+    //     console.log(formData)
+    // };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    const [unitid, setUnitid] = useState();
+
+
+
+    const userData = (uniID) => {
+        console.log("unitid", uniID)
+        document.querySelector('.loaderBox').classList.remove("d-none");
+        fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-units/${uniID}`,
+            {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${LogoutData}`
+                },
+            }
+        )
+
+            .then(response =>
+                response.json()
+            )
+            .then((data) => {
+                console.log('user', data?.data)
+                document.querySelector('.loaderBox').classList.add("d-none");
+                setUnitid(data?.data)
+            })
+            .catch((error) => {
+                document.querySelector('.loaderBox').classList.add("d-none");
+                console.log(error)
+            })
+    }
+
+
+
+    console.log("unitid", unitid)
+
+
+
+
+
+
+
+
+
+
+
+    const [viewleads, setViewleads] = useState('');
+
+
+    const fetchData = async () => {
+        console.log("viewleads", viewleads)
+        try {
+            const response = await fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/view-leads/${viewleads}`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${LogoutData}`
+                },
+            });
+
+            const data = await response.json();
+            console.log("data.leads.unit_id", data)
+
+            console.log("data.leads.unit_id", data?.leads)
+            userData(data?.leads.unit_id);
+            // Process the data as needed
+            console.log(data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
     const handleChange = (event) => {
         const { name, value } = event.target;
+
+        console.log("name", name, value)
+        if (name === 'lead_id') {
+            setViewleads(value);
+        }
+
         setFormData((prevData) => ({
             ...prevData,
             [name]: value,
         }));
-        console.log(formData)
+        console.log(formData);
     };
+
+
+    useEffect(() => {
+        fetchData();
+    }, [viewleads]);
+
+
 
 
 
@@ -159,7 +281,7 @@ export const EditPurchase = () => {
                                     <div className="col-lg-12">
                                         <div className="row">
                                             <div className="col-md-4 mb-4">
-                                                <CustomInput
+                                                {/* <CustomInput
                                                     label='Lead ID'
                                                     required
                                                     id='name'
@@ -170,6 +292,60 @@ export const EditPurchase = () => {
                                                     name="lead_id"
                                                     value={formData.lead_id}
                                                     onChange={handleChange}
+                                                /> */}
+
+
+                                                <CustomInput
+                                                    label='Lead ID'
+                                                    required
+                                                    id='name'
+                                                    disabled
+                                                    type='number'
+                                                    placeholder='Enter Lead ID'
+                                                    labelClass='mainLabel'
+                                                    inputClass='mainInput'
+                                                    name="lead_id"
+                                                    value={formData.lead_id}
+                                                // onChange={handleChange}
+                                                />
+                                            </div>
+                                            <div className="col-md-4 mb-4">
+                                                <CustomInput
+                                                    label='Name'
+                                                    id='name'
+                                                    type='text'
+                                                    labelClass='mainLabel'
+                                                    inputClass='mainInput'
+                                                    name="name"
+                                                    disabled
+                                                    value={formData.leaddetail?.name}
+                                                // onChange={handleChange}
+                                                />
+                                            </div>
+                                            <div className="col-md-4 mb-4">
+                                                <CustomInput
+                                                    label='Email'
+                                                    id='name'
+                                                    type='email'
+                                                    labelClass='mainLabel'
+                                                    inputClass='mainInput'
+                                                    name="email"
+                                                    disabled
+                                                    value={formData.leaddetail?.email}
+                                                // onChange={handleChange}
+                                                />
+                                            </div>
+                                            <div className="col-md-4 mb-4">
+                                                <CustomInput
+                                                    label='Received Amount'
+                                                    id='name'
+                                                    type='number'
+                                                    labelClass='mainLabel'
+                                                    inputClass='mainInput'
+                                                    name="received"
+                                                    disabled
+                                                    value={formData.leaddetail?.received}
+                                                // onChange={handleChange}
                                                 />
                                             </div>
                                             <div className="col-md-4 mb-4">
@@ -221,6 +397,20 @@ export const EditPurchase = () => {
                                                     required
                                                     value={formData.purchase_type}
                                                     option={purchaseType}
+                                                    onChange={handleChange}
+                                                />
+
+                                            </div>
+
+
+                                            <div className="col-md-4 mb-4">
+                                                <SelectBox
+                                                    selectClass="mainInput"
+                                                    name="purchase_user_id"
+                                                    label="User Id"
+                                                    required
+                                                    value={formData.purchase_user_id}
+                                                    option={unitid}
                                                     onChange={handleChange}
                                                 />
 

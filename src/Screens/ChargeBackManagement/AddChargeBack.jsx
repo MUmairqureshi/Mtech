@@ -11,6 +11,7 @@ export const AddChargeBack = () => {
     const [merchant, setMerchant]= useState()
     const [showModal, setShowModal] = useState(false)
     const [formData, setFormData] = useState({});
+    const [successStatus, setSuccessStatus] = useState('Server Error!');
 
     const refundType = [
         {
@@ -162,6 +163,7 @@ export const AddChargeBack = () => {
             .then((data) => {
                 console.log(data);
                 document.querySelector('.loaderBox').classList.add("d-none");
+                data?.status ? setSuccessStatus(data?.msg) : setSuccessStatus(data?.msg)
                 setShowModal(true)
             })
             .catch((error) => {
@@ -178,14 +180,134 @@ export const AddChargeBack = () => {
     }, [])
 
 
+    // const handleChange = (event) => {
+    //     const { name, value } = event.target;
+    //     setFormData((prevData) => ({
+    //         ...prevData,
+    //         [name]: value,
+    //     }));
+    //     console.log(formData)
+    // };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
+
+
+
+    const [unitid, setUnitid] = useState();
+
+
+
+    const userData = (uniID) => {
+        console.log("unitid", uniID)
+        document.querySelector('.loaderBox').classList.remove("d-none");
+        fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-units/${uniID}`,
+            {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${LogoutData}`
+                },
+            }
+        )
+
+            .then(response =>
+                response.json()
+            )
+            .then((data) => {
+                console.log('user', data?.data)
+                document.querySelector('.loaderBox').classList.add("d-none");
+                setUnitid(data?.data)
+            })
+            .catch((error) => {
+                document.querySelector('.loaderBox').classList.add("d-none");
+                console.log(error)
+            })
+    }
+
+
+
+    console.log("unitid", unitid)
+
+
+
+
+
+
+
+
+
+
+
+    const [viewleads, setViewleads] = useState('');
+
+
+    const fetchData = async () => {
+        console.log("viewleads", viewleads)
+        try {
+            const response = await fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/view-leads/${viewleads}`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${LogoutData}`
+                },
+            });
+
+            const data = await response.json();
+            console.log("data.leads.unit_id", data)
+
+            console.log("data.leads.unit_id", data?.leads)
+            userData(data?.leads.unit_id);
+            // Process the data as needed
+            console.log(data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
     const handleChange = (event) => {
         const { name, value } = event.target;
+
+        console.log("name", name, value)
+        if (name === 'lead_id') {
+            setViewleads(value);
+        }
+
         setFormData((prevData) => ({
             ...prevData,
             [name]: value,
         }));
-        console.log(formData)
+        console.log(formData);
     };
+
+
+    useEffect(() => {
+        fetchData();
+    }, [viewleads]);
+
 
 
 
@@ -300,6 +422,20 @@ export const AddChargeBack = () => {
                                                 />
 
                                             </div>
+
+
+                                            <div className="col-md-4 mb-4">
+                                                <SelectBox
+                                                    selectClass="mainInput"
+                                                    name="chargeback_user_id"
+                                                    label="User Id"
+                                                    required
+                                                    value={formData.chargeback_user_id}
+                                                    option={unitid}
+                                                    onChange={handleChange}
+                                                />
+
+                                            </div>
                                             <div className="col-md-12 mb-4">
                                                 <div className="inputWrapper">
                                                 <label>Reason*</label>
@@ -316,7 +452,7 @@ export const AddChargeBack = () => {
                         </div>
                     </div>
                 </div>
-                <CustomModal show={showModal} close={() => { setShowModal(false) }} success heading='Charge Back has been Successfully Added.' />
+                <CustomModal show={showModal} close={() => { setShowModal(false) }} success heading={successStatus} />
 
 
             </DashboardLayout>
