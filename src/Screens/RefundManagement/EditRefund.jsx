@@ -80,7 +80,7 @@ export const EditRefund = () => {
                 console.log('re', data)
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setFormData(data?.data);
-                setViewleads(data?.data?.lead_id);
+                setViewleads(data?.data?.lead_code);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
@@ -219,7 +219,7 @@ export const EditRefund = () => {
         const { name, value } = event.target;
 
         // console.log("name", name, value)
-        if (name === 'lead_id') {
+        if (name === 'lead_code') {
             setViewleads(value);
         }
 
@@ -277,12 +277,12 @@ export const EditRefund = () => {
                                                     required
                                                     id='name'
                                                     disabled
-                                                    type='number'
-                                                    placeholder='Enter Lead ID'
+                                                    type='text'
+                                                    placeholder='Enter Lead Code'
                                                     labelClass='mainLabel'
                                                     inputClass='mainInput'
-                                                    name="lead_id"
-                                                    value={formData.lead_id}
+                                                    name="lead_code"
+                                                    value={formData.lead_code}
                                                     // onChange={handleChange}
                                                 />
                                             </div>

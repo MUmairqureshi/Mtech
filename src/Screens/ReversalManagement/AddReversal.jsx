@@ -11,6 +11,8 @@ export const AddReversal = () => {
     const [merchant, setMerchant] = useState()
     const [showModal, setShowModal] = useState(false)
     const [formData, setFormData] = useState({});
+    const [messgaeShow, setMessageShow] = useState();
+    const [leadStatus, setLeadStatus] = useState(false);
 
     const reversalType = [
         {
@@ -143,6 +145,13 @@ export const AddReversal = () => {
 
             const data = await response.json();
             console.log("data.leads.unit_id", data)
+            if (data?.status) {
+                setMessageShow('Lead Verified')
+                setLeadStatus(true)
+            } else {
+                setMessageShow('Lead not exist')
+                setLeadStatus(false);
+            }
 
             console.log("data.leads.unit_id", data?.leads)
             userData(data?.leads.unit_id);
@@ -157,9 +166,7 @@ export const AddReversal = () => {
         const { name, value } = event.target;
 
         console.log("name", name, value)
-        if (name === 'lead_id') {
-            setViewleads(value);
-        }
+
 
         setFormData((prevData) => ({
             ...prevData,
@@ -168,6 +175,12 @@ export const AddReversal = () => {
         console.log(formData);
     };
 
+    const handleFetch = (event) => {
+        const { name, value } = event.target;
+        if (name === 'lead_code') {
+            setViewleads(value);
+        }
+    };
 
     useEffect(() => {
         fetchData();
@@ -242,17 +255,23 @@ export const AddReversal = () => {
                                         <div className="row">
                                             <div className="col-md-4 mb-4">
                                                 <CustomInput
-                                                    label='Lead ID'
+                                                    label='Lead Code'
                                                     required
                                                     id='name'
-                                                    type='number'
-                                                    placeholder='Enter Lead ID'
+                                                    type='text'
+                                                    placeholder='Enter Lead Code'
                                                     labelClass='mainLabel'
                                                     inputClass='mainInput'
-                                                    name="lead_id"
-                                                    value={formData.lead_id}
+                                                    name="lead_code"
+                                                    value={formData.lead_code}
                                                     onChange={handleChange}
+                                                    onBlur={handleFetch}
                                                 />
+                                                {
+                                                    messgaeShow && (
+                                                        <p className={leadStatus ? 'text-success' : 'text-danger'}>{messgaeShow}</p>
+                                                    )
+                                                }
                                             </div>
                                             <div className="col-md-4 mb-4">
                                                 <CustomInput

@@ -76,7 +76,7 @@ export const EditChargeBack = () => {
                 console.log(data)
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setFormData(data?.data);
-                setViewleads(data?.data?.lead_id);
+                setViewleads(data?.data?.lead_code);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
@@ -221,7 +221,7 @@ export const EditChargeBack = () => {
         const { name, value } = event.target;
 
         console.log("name", name, value)
-        if (name === 'lead_id') {
+        if (name === 'lead_code') {
             setViewleads(value);
         }
 
@@ -260,16 +260,16 @@ export const EditChargeBack = () => {
 
 
                                                 <CustomInput
-                                                    label='Lead ID'
+                                                    label='Lead Code'
                                                     required
                                                     id='name'
                                                     disabled
-                                                    type='number'
-                                                    placeholder='Enter Lead ID'
+                                                    type='text'
+                                                    placeholder='Enter Lead Code'
                                                     labelClass='mainLabel'
                                                     inputClass='mainInput'
-                                                    name="lead_id"
-                                                    value={formData.lead_id}
+                                                    name="lead_code"
+                                                    value={formData.lead_code}
                                                 // onChange={handleChange}
                                                 />
                                             </div>
@@ -395,7 +395,7 @@ export const EditChargeBack = () => {
                                             <div className="col-md-12 mb-4">
                                                 <div className="inputWrapper">
                                                     <label>Reason*</label>
-                                                    <textarea value={formData?.reason} name="reason" className="mainInput" onChange={handleChange}></textarea>
+                                                    <textarea value={formData?.description} name="reason" className="mainInput" onChange={handleChange}></textarea>
                                                 </div>
                                             </div>
                                             <div className="col-md-12">

@@ -8,10 +8,12 @@ import CustomButton from "../../Components/CustomButton";
 export const AddChargeBack = () => {
     const [initalRole, setrole] = useState({});
     const [initialunit, setUnit] = useState({});
-    const [merchant, setMerchant]= useState()
+    const [merchant, setMerchant] = useState()
     const [showModal, setShowModal] = useState(false)
     const [formData, setFormData] = useState({});
     const [successStatus, setSuccessStatus] = useState('Server Error!');
+    const [messgaeShow, setMessageShow] = useState();
+    const [leadStatus, setLeadStatus] = useState(false);
 
     const refundType = [
         {
@@ -44,34 +46,34 @@ export const AddChargeBack = () => {
     ]
 
 
-    const fetchMerchantData = () =>  {
+    const fetchMerchantData = () => {
         const LogoutData = localStorage.getItem('login');
         document.querySelector('.loaderBox').classList.remove("d-none");
-    
+
         fetch('https://custom3.mystagingserver.site/mtrecords/public/api/admin/merchant-listing',
-          {
-            method: 'GET',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${LogoutData}`
-            },
-          }
+            {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${LogoutData}`
+                },
+            }
         )
-    
-          .then(response =>
-            response.json()
-          )
-          .then((data) => {
-            document.querySelector('.loaderBox').classList.add("d-none");
-            console.log(data)
-            setMerchant(data?.data);
-          })
-          .catch((error) => {
-            document.querySelector('.loaderBox').classList.add("d-none");
-            console.log(error)
-          })
-      }
+
+            .then(response =>
+                response.json()
+            )
+            .then((data) => {
+                document.querySelector('.loaderBox').classList.add("d-none");
+                console.log(data)
+                setMerchant(data?.data);
+            })
+            .catch((error) => {
+                document.querySelector('.loaderBox').classList.add("d-none");
+                console.log(error)
+            })
+    }
 
 
     const fectchBrandData = () => {
@@ -211,7 +213,7 @@ export const AddChargeBack = () => {
 
 
 
-    
+
 
 
 
@@ -279,23 +281,27 @@ export const AddChargeBack = () => {
             const data = await response.json();
             console.log("data.leads.unit_id", data)
 
+            if (data?.status) {
+                setMessageShow('Lead Verified')
+                setLeadStatus(true)
+            } else {
+                setMessageShow('Lead not exist')
+                setLeadStatus(false);
+            }
+
             console.log("data.leads.unit_id", data?.leads)
             userData(data?.leads.unit_id);
             // Process the data as needed
             console.log(data);
         } catch (error) {
             console.error('Error fetching data:', error);
+            // userData(0);
         }
     };
 
     const handleChange = (event) => {
         const { name, value } = event.target;
-
         console.log("name", name, value)
-        if (name === 'lead_id') {
-            setViewleads(value);
-        }
-
         setFormData((prevData) => ({
             ...prevData,
             [name]: value,
@@ -303,6 +309,14 @@ export const AddChargeBack = () => {
         console.log(formData);
     };
 
+
+
+    const handleFetch = (event) => {
+        const { name, value } = event.target;
+        if (name === 'lead_code') {
+            setViewleads(value);
+        }
+    };
 
     useEffect(() => {
         fetchData();
@@ -331,17 +345,23 @@ export const AddChargeBack = () => {
                                         <div className="row">
                                             <div className="col-md-4 mb-4">
                                                 <CustomInput
-                                                    label='Lead ID'
+                                                    label='Lead Code'
                                                     required
                                                     id='name'
-                                                    type='number'
-                                                    placeholder='Enter Lead ID'
+                                                    type='text'
+                                                    placeholder='Enter Lead Code'
                                                     labelClass='mainLabel'
                                                     inputClass='mainInput'
-                                                    name="lead_id"
-                                                    value={formData.lead_id}
+                                                    name="lead_code"
+                                                    value={formData.lead_code}
                                                     onChange={handleChange}
+                                                    onBlur={handleFetch}
                                                 />
+                                                {
+                                                    messgaeShow && (
+                                                        <p className={leadStatus ? 'text-success' : 'text-danger'}>{messgaeShow}</p>
+                                                    )
+                                                }
                                             </div>
                                             <div className="col-md-4 mb-4">
                                                 <CustomInput
@@ -438,8 +458,8 @@ export const AddChargeBack = () => {
                                             </div>
                                             <div className="col-md-12 mb-4">
                                                 <div className="inputWrapper">
-                                                <label>Reason*</label>
-                                                <textarea value={formData?.description} name="description" className="mainInput" onChange={handleChange}></textarea>
+                                                    <label>Reason*</label>
+                                                    <textarea value={formData?.description} name="description" className="mainInput" onChange={handleChange} required></textarea>
                                                 </div>
                                             </div>
                                             <div className="col-md-12">

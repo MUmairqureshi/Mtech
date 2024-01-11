@@ -11,7 +11,7 @@ export const AddRefund = () => {
     const [merchant, setMerchant]= useState()
     const [showModal, setShowModal] = useState(false)
     const [formData, setFormData] = useState({});
-    const [successStatus, setSuccessStatus] = useState();
+    const [successStatus, setSuccessStatus] = useState('Server Error!');
 
     const refundType = [
         {
@@ -194,15 +194,15 @@ export const AddRefund = () => {
                                         <div className="row">
                                             <div className="col-md-4 mb-4">
                                                 <CustomInput
-                                                    label='Lead ID'
+                                                    label='Enter Lead Code'
                                                     required
                                                     id='name'
-                                                    type='number'
-                                                    placeholder='Enter Lead ID'
+                                                    type='text'
+                                                    placeholder='Enter Lead Code'
                                                     labelClass='mainLabel'
                                                     inputClass='mainInput'
-                                                    name="lead_id"
-                                                    value={formData.lead_id}
+                                                    name="lead_code"
+                                                    value={formData?.lead_code}
                                                     onChange={handleChange}
                                                 />
                                             </div>

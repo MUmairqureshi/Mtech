@@ -77,7 +77,7 @@ export const EditReversal = () => {
                 console.log(data)
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setFormData(data?.data);
-                setViewleads(data?.data?.lead_id);
+                setViewleads(data?.data?.lead_code);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
@@ -233,7 +233,7 @@ export const EditReversal = () => {
         const { name, value } = event.target;
 
         console.log("name", name, value)
-        if (name === 'lead_id') {
+        if (name === 'lead_code') {
             setViewleads(value);
         }
 
@@ -281,12 +281,12 @@ export const EditReversal = () => {
                                                     required
                                                     id='name'
                                                     disabled
-                                                    type='number'
+                                                    type='text'
                                                     placeholder='Enter Lead ID'
                                                     labelClass='mainLabel'
                                                     inputClass='mainInput'
-                                                    name="lead_id"
-                                                    value={formData.lead_id}
+                                                    name="lead_code"
+                                                    value={formData.lead_code}
                                                 // onChange={handleChange}
                                                 />
                                             </div>
