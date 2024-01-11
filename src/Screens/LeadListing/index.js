@@ -101,6 +101,26 @@ export const LeadListing = () => {
       title: "S.No",
     },
     {
+      key: "lead code",
+      title: "LEAD CODE",
+    },
+    {
+      key: "date",
+      title: "DATE",
+    },
+    {
+      key: "source",
+      title: "Source",
+    },
+    {
+      key: "brand",
+      title: "Brand",
+    },
+    {
+      key: "product",
+      title: "Product",
+    },
+    {
       key: "username",
       title: "Name",
     },
@@ -113,29 +133,43 @@ export const LeadListing = () => {
       title: "Phone",
     },
     {
+      key: "descripction",
+      title: "Descripction",
+    },
+    {
       key: "tamout",
       title: "Quoted Amount",
     },
     {
-      key: "product",
-      title: "Product",
+      key: "received",
+      title: "RECEIVED Amount",
+    },
+
+    {
+      key: "recovery",
+      title: "RECOVERY Amount",
     },
     {
-      key: "amountPaid",
-      title: "Amount Paid",
+      key: "gross",
+      title: "Gross Amount",
     },
+    {
+      key: "seles rep",
+      title: "SALES REP",
+    },
+    {
+      key: "account rep",
+      title: "ACCOUNT REP",
+    },
+    // {
+    //   key: "amountPaid",
+    //   title: "Amount Paid",
+    // },
     {
       key: "unit",
       title: "Unit",
     },
-    {
-      key: "brand",
-      title: "Brand",
-    },
-    {
-      key: "source",
-      title: "Source",
-    },
+   
     {
       key: "action",
       title: "Action",
@@ -174,17 +208,33 @@ export const LeadListing = () => {
                           <tr key={index}>
                             <td>{index + 1}</td>
                             <td className="text-capitalize">
+                              {item?.code}
+                            </td>
+                            <td className="text-capitalize">
+                              {item?.date}
+                            </td>
+                            <td>{item?.source}</td>
+                            <td>{item.getbrand?.name}</td>
+                            <td>{item?.product}</td>
+                            <td className="text-capitalize">
                               {item?.name}
                             </td>
                             {/* <td>{item?.username}</td> */}
                             <td>{item?.email}</td>
                             <td>{item?.phone}</td>
+                            <td>{item?.description}</td>
                             <td>{`$ ${item?.quoted_amount}`}</td>
-                            <td>{item?.product}</td>
+
                             <td>{item?.received === null ? '$ 0' : `$ ${item?.received}`}</td>
-                            <td>{item?.unitdetail?.name}</td>
-                            <td>{item.getbrand?.name}</td>
-                            <td>{item?.source}</td>
+                            <td>{item?.recovery}</td>
+                            <td>{ item?.received + item?.recovery}</td>
+                            <td>{ item?.salesrep?.name}</td>
+
+                            <td>{ item?.account_rep}</td>
+                            <td>{ item?.unit_id}</td>
+                          
+ 
+ 
                             {/* <td className={item.status == 1 ? 'greenColor' : "redColor"}>{item.status == 1 ? 'Active' : "Inactive"}</td> */}
                             <td>
                               <Dropdown className="tableDropdown">

@@ -22,4 +22,15 @@
 
 
 
+.text-danger {
+    margin-top: -12px;
+    --bs-text-opacity: 1;
+    color: rgba(var(--bs-danger-rgb), var(--bs-text-opacity)) !important;
+}
 
+
+.text-success {
+    margin-top: -12px;
+    --bs-text-opacity: 1;
+    color: rgba(var(--bs-danger-rgb), var(--bs-text-opacity)) !important;
+}

@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisV, faEye, faCheck, faTimes, faFilter, faPencil } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisV, faEye, faCheck, faTimes, faFilter, faPencil, faChainSlash } from "@fortawesome/free-solid-svg-icons";
 
 import { DashboardLayout } from "../../Components/Layout/DashboardLayout";
 import CustomTable from "../../Components/CustomTable";
@@ -50,11 +50,12 @@ export const PurchaseManagement = () => {
   const handleChange = (e) => {
     setInputValue(e.target.value);
   }
+  console.log("data" , data)
 
   const filterData = data.filter(item =>
     item?.leaddetail?.name.toLowerCase().includes(inputValue.toLowerCase())
   );
-
+console.log("filterData" , filterData)
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filterData.slice(indexOfFirstItem, indexOfLastItem);
@@ -99,7 +100,7 @@ export const PurchaseManagement = () => {
     },
     {
       key: "leadid",
-      title: "Lead Id",
+      title: "Lead CODE",
     },
     {
       key: "purchaseAmount",
@@ -128,7 +129,7 @@ export const PurchaseManagement = () => {
     },
   ];
 
-
+console.log("currentItems" , currentItems)
   return (
     <>
       <DashboardLayout>
@@ -154,11 +155,11 @@ export const PurchaseManagement = () => {
 
                     >
                       <tbody>
-                        {currentItems.map((item, index) => (
+                        {currentItems?.map((item, index) => (
                           <tr key={index}>
                             <td>{index + 1}</td>
                             <td className="text-capitalize">
-                              {item?.lead_id}
+                              {item?.lead_code}
                             </td>
                             {/* <td>{item?.username}</td> */}
                             <td>{`$ ${item?.purchase_amount}`}</td>

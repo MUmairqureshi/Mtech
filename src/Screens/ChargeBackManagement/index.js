@@ -99,7 +99,7 @@ export const ChargeBackManagement = () => {
     },
     {
       key: "leadid",
-      title: "Lead Id",
+      title: "Lead Code",
     },
     {
       key: "refundAmount",

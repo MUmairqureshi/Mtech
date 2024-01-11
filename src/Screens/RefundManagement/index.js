@@ -99,7 +99,7 @@ export const RefundManagement = () => {
     },
     {
       key: "leadid",
-      title: "Lead Id",
+      title: "Lead Code",
     },
     {
       key: "refundAmount",

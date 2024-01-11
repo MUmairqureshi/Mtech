@@ -147,6 +147,12 @@ export const DetailListing = () => {
 
 
                                 </div>
+                                <div className="col-md-8 mb-4">
+                                   <p className="secondaryText">LEAD Code:</p>
+                                   <p>{lead?.code}</p>
+
+
+                                </div>
                             </div>
                         </div>
                     </div>
