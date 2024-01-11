@@ -9,7 +9,10 @@ import CustomButton from "../../Components/CustomButton";
 export const EditLead = () => {
     const { id } = useParams();
     const [showModal, setShowModal] = useState(false);
-    const [formData, setFormData] = useState({});
+    const [formData, setFormData] = useState({
+        received: 0,
+        recovery: 0
+    });
     const [user, setUser] = useState();
     const [brands, setBrands] = useState({});
     const [unit, setUnit] = useState({});
@@ -189,7 +192,7 @@ export const EditLead = () => {
                 console.log(error)
             })
     }
-
+console.log("formData " , formData)
 
 
     return (
@@ -292,7 +295,7 @@ export const EditLead = () => {
                         <div className="col-md-4 mb-4">
                             <CustomInput
                                 label='Amount Received'
-                                required
+                                
                                 id='received'
                                 type='number'
                                 placeholder='Enter Received Amount'
@@ -306,7 +309,7 @@ export const EditLead = () => {
                         <div className="col-md-4 mb-4">
                             <CustomInput
                                 label='Amount Recovery'
-                                required
+                                
                                 id='recovery'
                                 type='number'
                                 placeholder='Enter Recovery Amount'
@@ -358,7 +361,6 @@ export const EditLead = () => {
                                 selectClass="mainInput"
                                 name="account_rep"
                                 label="Account Rep"
-                                required
                                 value={formData.account_rep}
                                 option={user}
                                 onChange={handleChange}

@@ -119,7 +119,17 @@ export const Sidebar = (props) => {
             <span className="sideIcon">
               <FontAwesomeIcon icon={faMoneyBill} />
             </span>
-            <span className="sideLinkText">Sales</span>
+            <span className="sideLinkText">Unit Target</span>
+          </Link>
+        </li>
+
+
+        <li className="sidebar-li">
+          <Link className={`sideLink ${location.pathname.includes('/Usertarget-listing') ? 'active' : ''}`} to="/Usertarget-listing">
+            <span className="sideIcon">
+              <FontAwesomeIcon icon={faMoneyBill} />
+            </span>
+            <span className="sideLinkText">User Target</span>
           </Link>
         </li>
         <li className="sidebar-li">

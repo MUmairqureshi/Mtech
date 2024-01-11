@@ -9,6 +9,8 @@ import { DashboardLayout } from "../../Components/Layout/DashboardLayout";
 import CustomTable from "../../Components/CustomTable";
 import CustomModal from "../../Components/CustomModal";
 
+import Tab from 'react-bootstrap/Tab';
+import Tabs from 'react-bootstrap/Tabs';
 import CustomPagination from "../../Components/CustomPagination"
 import CustomInput from "../../Components/CustomInput";
 import CustomButton from "../../Components/CustomButton";
@@ -22,7 +24,7 @@ import { useApi, usePost, usePostUpdate } from "../../Api";
 import "./style.css";
 
 export const UnitTarget = () => {
-
+  const [userdata, setUserdata] = useState([]);
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(8);
@@ -155,6 +157,24 @@ export const UnitTarget = () => {
   const currentItems = filterData.slice(indexOfFirstItem, indexOfLastItem);
 
 
+
+  console.log("data" , data)
+
+console.log("userdata" , userdata)
+
+  // const filterUserdata = userdata.filter(item =>
+  //   item?.name.toLowerCase().includes(inputValue.toLowerCase())
+  // );
+
+//   const userindexOfLastItem = currentPage * itemsPerPage;
+//   const userindexOfFirstItem = indexOfLastItem - itemsPerPage;
+//   const usercurrentItems = filterUserdata.slice(userindexOfFirstItem, userindexOfLastItem);
+
+// // console.log("usercurrentItems " , usercurrentItems)
+
+
+console.log("currentItems" , currentItems)
+
   const fetchData = () => {
     const LogoutData = localStorage.getItem('login');
     document.querySelector('.loaderBox').classList.remove("d-none");
@@ -185,10 +205,43 @@ export const UnitTarget = () => {
       })
   }
 
+
+
+  const fetchuserData = () => {
+    const LogoutData = localStorage.getItem('login');
+    document.querySelector('.loaderBox').classList.remove("d-none");
+    fetch('https://custom3.mystagingserver.site/mtrecords/public/api/admin/usertarget-listing',
+      {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${LogoutData}`
+        },
+      }
+    )
+
+      .then(response =>
+        response.json()
+      )
+      .then((data) => {
+        document.querySelector('.loaderBox').classList.add("d-none");
+
+
+        console.log(data?.data)
+        setUserdata(data?.data);
+      })
+      .catch((error) => {
+        document.querySelector('.loaderBox').classList.add("d-none");
+        console.log(error)
+      })
+  }
+
   useEffect(() => {
     document.title = 'Mt Records | Unit Target';
 
     fetchData()
+    fetchuserData()
   }, []);
 
   const maleHeaders = [
@@ -300,13 +353,18 @@ export const UnitTarget = () => {
   };
 
 
-
+console.log("userdata" , userdata)
 
 
 
   return (
     <>
       <DashboardLayout>
+
+
+
+
+
         <div className="container-fluid">
           <div className="row mb-3">
             <div className="col-12">
@@ -326,19 +384,73 @@ export const UnitTarget = () => {
                 </div>
                 <div className="row mb-3">
                   <div className="col-12">
-                    <CustomTable
+
+
+                    <Tabs
+                      defaultActiveKey="unit"
+                      id="uncontrolled-tab-example"
+                      className="mb-3"
+                    >
+                      <Tab eventKey="unit" title="Unit">
+
+
+                        <h2 className="mainTitle">Unit Listing</h2>
+                        <CustomTable
+                          headers={maleHeaders}
+
+                        >
+                          <tbody>
+                            {currentItems.map((item, index) => (
+                              <tr key={index}>
+                                <td>{index + 1}</td>
+                                <td className="text-uppercase">
+                                  {item?.name}
+                                </td>
+                                {/* <td>{item?.current_month_target?.target ? `$ ${item?.current_month_target?.target}` : '$0'}</td> */}
+                                <td>{item?.target_amount ? `$ ${item?.target_amount}` : '$0'}</td>
+                                {/* <td>{`$ ${item?.target_score}`}</td> */}
+                                {/* <td>{item?.current_month_target?.month}</td> */}
+                                <td className={item?.isAschived == 1 ? 'greenColor' : 'redColor'}>{item?.isAschived == 1 ? 'Acheived' : 'Not Acheived'}</td>
+                                <td>
+                                  <Dropdown className="tableDropdown">
+                                    <Dropdown.Toggle variant="transparent" className="notButton classicToggle">
+                                      <FontAwesomeIcon icon={faEllipsisV} />
+                                    </Dropdown.Toggle>
+                                    <Dropdown.Menu align="end" className="tableDropdownMenu">
+                                      {/* <button onClick={() => {
+                                    editTarget(item?.id)
+                                  }} className="tableAction"><FontAwesomeIcon icon={faPencil} className="tableActionIcon" />Edit</button> */}
+
+                                      <Link className="tableAction" to={`target-detail/${item?.id}`}><FontAwesomeIcon icon={faEye} className="tableActionIcon" />View Details</Link>
+                                    </Dropdown.Menu>
+                                  </Dropdown>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </CustomTable>
+
+
+                      </Tab>
+
+
+
+                      <Tab eventKey="user" title="User">
+                        <h2 className="mainTitle">User Listing</h2>
+
+                        <CustomTable
                       headers={maleHeaders}
 
                     >
                       <tbody>
-                        {currentItems.map((item, index) => (
+                        {userdata.map((item, index) => (
                           <tr key={index}>
                             <td>{index + 1}</td>
                             <td className="text-uppercase">
-                              {item?.name}
+                            {item?.unit_detail?.name}
                             </td>
                             {/* <td>{item?.current_month_target?.target ? `$ ${item?.current_month_target?.target}` : '$0'}</td> */}
-                            <td>{item?.target_amount ? `$ ${item?.target_amount}` : '$0'}</td>
+                            <td>{item?.target ? `$ ${item?.target}` : '$0'}</td>
                             {/* <td>{`$ ${item?.target_score}`}</td> */}
                             {/* <td>{item?.current_month_target?.month}</td> */}
                             <td className={item?.isAschived == 1 ? 'greenColor' : 'redColor'}>{item?.isAschived == 1 ? 'Acheived' : 'Not Acheived'}</td>
@@ -360,6 +472,12 @@ export const UnitTarget = () => {
                         ))}
                       </tbody>
                     </CustomTable>
+
+
+                      </Tab>
+
+                    </Tabs>
+
                     <CustomPagination
                       itemsPerPage={itemsPerPage}
                       totalItems={data.length}

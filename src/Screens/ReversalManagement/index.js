@@ -158,7 +158,7 @@ export const ReversalManagement = () => {
                           <tr key={index}>
                             <td>{index + 1}</td>
                             <td className="text-capitalize">
-                              {item?.lead_id}
+                              {item?.lead_code}
                             </td>
                             {/* <td>{item?.username}</td> */}
                             <td>{`$ ${item?.reversal_amount}`}</td>

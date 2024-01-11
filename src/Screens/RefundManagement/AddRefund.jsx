@@ -11,6 +11,7 @@ export const AddRefund = () => {
     const [merchant, setMerchant]= useState()
     const [showModal, setShowModal] = useState(false)
     const [formData, setFormData] = useState({});
+    const [successStatus, setSuccessStatus] = useState('Server Error!');
 
     const refundType = [
         {
@@ -138,13 +139,15 @@ export const AddRefund = () => {
             body: formDataMethod // Use the FormData object as the request body
         })
             .then((response) => {
-                console.log("formDataresponse"  ,response )
+                console.log("formDataresponse" ,response )
                 return response.json();
             })
             .then((data) => {
-                console.log(data);
-                document.querySelector('.loaderBox').classList.add("d-none");
-                setShowModal(true)
+                console.log(data?.status);
+                    document.querySelector('.loaderBox').classList.add("d-none");
+                    data?.status ? setSuccessStatus(data?.msg) : setSuccessStatus(data?.msg)
+                    setShowModal(true)
+               
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
@@ -191,15 +194,15 @@ export const AddRefund = () => {
                                         <div className="row">
                                             <div className="col-md-4 mb-4">
                                                 <CustomInput
-                                                    label='Lead ID'
+                                                    label='Enter Lead Code'
                                                     required
                                                     id='name'
-                                                    type='number'
-                                                    placeholder='Enter Lead ID'
+                                                    type='text'
+                                                    placeholder='Enter Lead Code'
                                                     labelClass='mainLabel'
                                                     inputClass='mainInput'
-                                                    name="lead_id"
-                                                    value={formData.lead_id}
+                                                    name="lead_code"
+                                                    value={formData?.lead_code}
                                                     onChange={handleChange}
                                                 />
                                             </div>
@@ -285,7 +288,7 @@ export const AddRefund = () => {
                         </div>
                     </div>
                 </div>
-                <CustomModal show={showModal} close={() => { setShowModal(false) }} success heading='Refund has been Successfully Added.' />
+                <CustomModal show={showModal} close={() => { setShowModal(false) }} success heading={successStatus} />
 
 
             </DashboardLayout>

@@ -31,6 +31,8 @@ const CustomInput = (props) => {
           name={props?.name} 
           className={props?.inputClass} 
           onChange={props?.onChange} 
+          onFocus={props?.onFocus} 
+          onBlur={props?.onBlur} 
           value={props.value} />
         }
       </div>

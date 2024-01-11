@@ -203,7 +203,7 @@ export const TargetDetails = () => {
         event.preventDefault();
         const userId = leadData?.id
         const LogoutData = localStorage.getItem('login');
-        fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/unit-targets-edit/${formData?.id}`,
+        fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/unit-targets-edit/1`,
             {
                 method: 'POST',
                 headers: {
@@ -227,6 +227,9 @@ export const TargetDetails = () => {
                 console.log(error);
             })
     }
+
+
+    console.log("leadData" , leadData)
 
 
     return (
@@ -278,47 +281,7 @@ export const TargetDetails = () => {
                                 </div> */}
                             </div>
 
-                            <div className="row mb-3">
-                                <div className="col-md-12">
-                                    <h2 className="mainTitle">
-                                        Target History
-                                    </h2>
-                                </div>
-                                <div className="col-12">
-                                    <CustomTable
-                                        headers={maleHeaders}
-
-                                    >
-                                        <tbody>
-                                            {leadData?.month_target?.map((item, index) => (
-                                                <tr key={index}>
-                                                    <td>{index + 1}</td>
-                                                    <td className="text-capitalize">
-                                                        {leadData?.name}
-                                                    </td>
-                                                    {/* <td>{item?.current_month_target?.target ? `$ ${item?.current_month_target?.target}` : '$0'}</td> */}
-                                                    <td>{item?.target ? `$ ${item?.target}` : '$0'}</td>
-                                                    <td>{`$ ${item?.target_score}`}</td>
-                                                    <td>{month[item?.month]}</td>
-                                                    <td>{item?.year}</td>
-                                                    <td className={item.status == 1 ? 'greenColor' : 'redColor'}>{item.status == 1 ? 'Active' : 'Inactive'}</td>
-                                                    {/* <td>
-                                                        <Dropdown className="tableDropdown">
-                                                            <Dropdown.Toggle variant="transparent" className="notButton classicToggle">
-                                                                <FontAwesomeIcon icon={faEllipsisV} />
-                                                            </Dropdown.Toggle>
-                                                            <Dropdown.Menu align="end" className="tableDropdownMenu">
-                                                                <Link className="tableAction" to={`/target-listing/target-detail/${item?.id}`}><FontAwesomeIcon icon={faEye} className="tableActionIcon" />View Details</Link>
-                                                            </Dropdown.Menu>
-                                                        </Dropdown>
-                                                    </td> */}
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </CustomTable>
-
-                                </div>
-                            </div>
+                           
                         </div>
                     </div>
                 </div>

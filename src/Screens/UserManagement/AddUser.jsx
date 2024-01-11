@@ -158,19 +158,6 @@ export const AddUser = () => {
             })
     };
 
-
-
-
-
-
-
-
-    
-
-
-
-
-
     useEffect(() => {
         fectchBrandData()
         fetchUnitData()

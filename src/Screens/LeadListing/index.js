@@ -133,10 +133,6 @@ export const LeadListing = () => {
       title: "Brand",
     },
     {
-      key: "description",
-      title: "Description",
-    },
-    {
       key: "source",
       title: "Source",
     },
@@ -146,6 +142,8 @@ export const LeadListing = () => {
     },
   ];
 
+
+ 
 
   return (
     <>
@@ -183,10 +181,9 @@ export const LeadListing = () => {
                             <td>{item?.phone}</td>
                             <td>{`$ ${item?.quoted_amount}`}</td>
                             <td>{item?.product}</td>
-                            <td>{`$ ${item?.received}`}</td>
+                            <td>{item?.received === null ? '$ 0' : `$ ${item?.received}`}</td>
                             <td>{item?.unitdetail?.name}</td>
                             <td>{item.getbrand?.name}</td>
-                            <td>{item?.description}</td>
                             <td>{item?.source}</td>
                             {/* <td className={item.status == 1 ? 'greenColor' : "redColor"}>{item.status == 1 ? 'Active' : "Inactive"}</td> */}
                             <td>
@@ -195,8 +192,8 @@ export const LeadListing = () => {
                                   <FontAwesomeIcon icon={faEllipsisV} />
                                 </Dropdown.Toggle>
                                 <Dropdown.Menu align="end" className="tableDropdownMenu">
-                                  <Link to={`/lead-detail/${item?.id}`} className="tableAction"><FontAwesomeIcon icon={faEye} className="tableActionIcon" />View</Link>
-                                  <Link to={`/edit-lead/${item?.id}`} className="tableAction"><FontAwesomeIcon icon={faEdit} className="tableActionIcon" />Edit</Link>
+                                  <Link to={`/lead-detail/${item?.code}`} className="tableAction"><FontAwesomeIcon icon={faEye} className="tableActionIcon" />View</Link>
+                                  <Link to={`/edit-lead/${item?.code}`} className="tableAction"><FontAwesomeIcon icon={faEdit} className="tableActionIcon" />Edit</Link>
                                 </Dropdown.Menu>
                               </Dropdown>
                             </td>

@@ -47,6 +47,10 @@ import { Roles } from "../Screens/Roles";
 import { UnitTarget } from "../Screens/UnitTarget";
 import { TargetDetails } from "../Screens/UnitTarget/targetDetails";
 
+
+import { UserTarget } from "../Screens/UserTarget";
+import { UsertargetDetails } from "../Screens/UserTarget/targetDetails";
+
 import { MerchantManagement } from "../Screens/MerchantManagement";
 
 import Profile from "../Screens/Profile";
@@ -67,20 +71,16 @@ export default function AdminRouter() {
 
   return (
     <BrowserRouter basename="/customProject">
-      <Routes>
-        <Route path="/" element={<AdminLogin />} />
+      <Routes> 
+      {/* <Route path="/" element={<AdminLogin />} /> */}
+      <Route path="/" element={<ProtectedRoutes Components={AdminLogin} />} />
 
-        {/* Protected routes */}
-        {/* <Route
-          path="/customProject"
-          element={
-            isTokenAvailable ? (
-              <Navigate to="/customProject/dashboard" />
-            ) : (
-              <Navigate to="/login"/>
-            )
-          }
-        /> */}
+
+
+      <Route path="/login" element={<ProtectedRoutes Components={AdminLogin} />} />
+
+
+        {/* <Route path="/" element={<ProtectedRoutes Components={AdminLogin} />} /> */}
         <Route path="/forget-password" element={<ForgetPassword />} />
         <Route path="/forget-password2" element={<ForgetPassword2 />} />
         <Route path="/forget-password3" element={<ForgetPassword3 />} />
@@ -106,6 +106,23 @@ export default function AdminRouter() {
 
         <Route path="/target-listing" element={<ProtectedRoutes Components={UnitTarget} />} />
         <Route path="/target-listing/target-detail/:id" element={<ProtectedRoutes Components={TargetDetails} />} />
+
+
+
+
+        <Route path="/Usertarget-listing" element={<ProtectedRoutes Components={UserTarget} />} />
+        <Route path="/Usertarget-listing/target-detail/:id" element={<ProtectedRoutes Components={UsertargetDetails} />} />
+
+
+
+
+
+
+
+
+        {/* user-listing */}
+
+
 
         <Route path="/merchant-management" element={<ProtectedRoutes Components={MerchantManagement} />} />
 

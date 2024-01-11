@@ -8,7 +8,7 @@ import CustomButton from "../../Components/CustomButton";
 export const AddPurchase = () => {
     const [initalRole, setrole] = useState({});
     const [initialunit, setUnit] = useState({});
-    const [merchant, setMerchant]= useState()
+    const [merchant, setMerchant] = useState()
     const [showModal, setShowModal] = useState(false)
     const [formData, setFormData] = useState({});
 
@@ -24,34 +24,34 @@ export const AddPurchase = () => {
     ]
 
 
-    const fetchMerchantData = () =>  {
+    const fetchMerchantData = () => {
         const LogoutData = localStorage.getItem('login');
         document.querySelector('.loaderBox').classList.remove("d-none");
-    
+
         fetch('https://custom3.mystagingserver.site/mtrecords/public/api/admin/merchant-listing',
-          {
-            method: 'GET',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${LogoutData}`
-            },
-          }
+            {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${LogoutData}`
+                },
+            }
         )
-    
-          .then(response =>
-            response.json()
-          )
-          .then((data) => {
-            document.querySelector('.loaderBox').classList.add("d-none");
-            console.log(data)
-            setMerchant(data?.data);
-          })
-          .catch((error) => {
-            document.querySelector('.loaderBox').classList.add("d-none");
-            console.log(error)
-          })
-      }
+
+            .then(response =>
+                response.json()
+            )
+            .then((data) => {
+                document.querySelector('.loaderBox').classList.add("d-none");
+                console.log(data)
+                setMerchant(data?.data);
+            })
+            .catch((error) => {
+                document.querySelector('.loaderBox').classList.add("d-none");
+                console.log(error)
+            })
+    }
 
 
 
@@ -80,11 +80,11 @@ export const AddPurchase = () => {
             body: formDataMethod // Use the FormData object as the request body
         })
             .then((response) => {
-                console.log("purchase_type_response" , response)
+                console.log("purchase_type_response", response)
                 return response.json();
             })
             .then((data) => {
-                console.log("data" , data);
+                console.log("data", data);
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setShowModal(true)
             })
@@ -93,21 +93,138 @@ export const AddPurchase = () => {
                 console.log(error)
             })
     };
-console.log("purchase_type_formDataMethod" , formData)
+    console.log("purchase_type_formDataMethod", formData)
 
     useEffect(() => {
         fetchMerchantData()
     }, [])
 
 
+    // const handleChange = (event) => {
+    //     const { name, value } = event.target;
+    //     setFormData((prevData) => ({
+    //         ...prevData,
+    //         [name]: value,
+    //     }));
+    //     console.log(formData)
+    // };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    const [unitid, setUnitid] = useState();
+
+
+
+    const userData = (uniID) => {
+        console.log("unitid", uniID)
+        document.querySelector('.loaderBox').classList.remove("d-none");
+        fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-units/${uniID}`,
+            {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${LogoutData}`
+                },
+            }
+        )
+
+            .then(response =>
+                response.json()
+            )
+            .then((data) => {
+                console.log('user', data?.data)
+                document.querySelector('.loaderBox').classList.add("d-none");
+                setUnitid(data?.data)
+            })
+            .catch((error) => {
+                document.querySelector('.loaderBox').classList.add("d-none");
+                console.log(error)
+            })
+    }
+
+
+
+    console.log("unitid", unitid)
+
+
+
+
+
+
+
+
+
+
+
+    const [viewleads, setViewleads] = useState('');
+
+
+    const fetchData = async () => {
+        console.log("viewleads", viewleads)
+        try {
+            const response = await fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/view-leads/${viewleads}`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${LogoutData}`
+                },
+            });
+
+            const data = await response.json();
+            console.log("data.leads.unit_id", data)
+
+            console.log("data.leads.unit_id", data?.leads)
+            userData(data?.leads.unit_id);
+            // Process the data as needed
+            console.log(data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
     const handleChange = (event) => {
         const { name, value } = event.target;
+
+        console.log("name", name, value)
+        if (name === 'lead_id') {
+            setViewleads(value);
+        }
+
         setFormData((prevData) => ({
             ...prevData,
             [name]: value,
         }));
-        console.log(formData)
+        console.log(formData);
     };
+
+
+    useEffect(() => {
+        fetchData();
+    }, [viewleads]);
+
 
 
 
@@ -209,10 +326,24 @@ console.log("purchase_type_formDataMethod" , formData)
                                                 />
 
                                             </div> */}
+
+
+                                            <div className="col-md-4 mb-4">
+                                                <SelectBox
+                                                    selectClass="mainInput"
+                                                    name="purchase_user_id"
+                                                    label="User Id"
+                                                    required
+                                                    value={formData.purchase_user_id}
+                                                    option={unitid}
+                                                    onChange={handleChange}
+                                                />
+
+                                            </div>
                                             <div className="col-md-12 mb-4">
                                                 <div className="inputWrapper">
-                                                <label>Reason*</label>
-                                                <textarea value={formData?.reason} name="reason" className="mainInput" onChange={handleChange}></textarea>
+                                                    <label>Reason*</label>
+                                                    <textarea value={formData?.reason} name="reason" className="mainInput" onChange={handleChange}></textarea>
                                                 </div>
                                             </div>
                                             <div className="col-md-12">
