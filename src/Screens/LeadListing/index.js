@@ -230,7 +230,7 @@ export const LeadListing = () => {
                             <td>{ item?.received + item?.recovery}</td>
                             <td>{ item?.salesrep?.name}</td>
 
-                            <td>{ item?.account_rep}</td>
+                            <td>{ item?.accountrepdetail?.name}</td>
                             <td>{ item?.unit_id}</td>
                           
  

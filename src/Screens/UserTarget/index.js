@@ -141,13 +141,8 @@ export const UserTarget = () => {
     setCurrentPage(pageNumber);
   };
 
-
-console.log("units" , units)
-
-  // const handleChange = (e) => {
-  //   setInputValue(e.target.value);
-  // }
-
+ 
+ 
   const filterData = data.filter(item =>
     item?.name.toLowerCase().includes(inputValue.toLowerCase())
   );
@@ -156,24 +151,17 @@ console.log("units" , units)
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filterData.slice(indexOfFirstItem, indexOfLastItem);
 
+ 
 
+  const filterUserdata = userdata.filter(item =>
+    item?.unit_detail?.name?.toLowerCase().includes(inputValue.toLowerCase())
+  );
+  console.log("filterUserdata" , filterUserdata)
 
-  console.log("data", data)
-
-  console.log("userdata", userdata)
-
-  // const filterUserdata = userdata.filter(item =>
-  //   item?.name.toLowerCase().includes(inputValue.toLowerCase())
-  // );
-
-  //   const userindexOfLastItem = currentPage * itemsPerPage;
-  //   const userindexOfFirstItem = indexOfLastItem - itemsPerPage;
-  //   const usercurrentItems = filterUserdata.slice(userindexOfFirstItem, userindexOfLastItem);
-
-  // // console.log("usercurrentItems " , usercurrentItems)
-
-
-  console.log("currentItems", currentItems)
+    const userindexOfLastItem = currentPage * itemsPerPage;
+    const userindexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const usercurrentItems = filterUserdata.slice(userindexOfFirstItem, userindexOfLastItem);
+ 
 
   const fetchData = () => {
     const LogoutData = localStorage.getItem('login');
@@ -322,14 +310,8 @@ console.log("units" , units)
     }));
     console.log(formData)
   };
-console.log("Select User*" , formData)
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-
-  //   console.log(formData)
-  //   rolesLitingResponse(formData);
-  // }
-
+ 
+  
   const LogoutData = localStorage.getItem('login');
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -378,16 +360,13 @@ console.log("Select User*" , formData)
 
       const data = await response.json();
       console.log(data);
-
-      // Assuming fetchData is an asynchronous function
+ 
       await fetchData();
-
-      // Assuming setUser is a function to update user state
+ 
       setUser(false);
     } catch (error) {
       document.querySelector('.loaderBox').classList.add("d-none");
-      console.error(error);
-      // Handle the error appropriately (e.g., display an error message to the user)
+      console.error(error); 
     }
   };
 
@@ -398,38 +377,39 @@ console.log("Select User*" , formData)
   const [viewleads, setViewleads] = useState('');
   const [useresdata, setUserData] = useState();
 
-  const fetchUserData = async () => {
- 
-      try {
-          const response = await fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-units/${viewleads}`, {
-              method: 'GET',
-              headers: {
-                  'Accept': 'application/json',
-                  'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${LogoutData}`
-              },
-          });
 
-          const data = await response.json();
-          console.log("data.leads.unit_id", data)
 
-          // if (data?.status) {
-          //     setMessageShow('Lead Verified')
-          //     setLeadStatus(true)
-          // } else {
-          //     setMessageShow('Lead not exist')
-          //     setLeadStatus(false);
-          // }
 
-          console.log("data.leads.unit_id", data?.data)
-          setUserData(data?.data);
-          // Process the data as needed
-          console.log(data);
-      } catch (error) {
-          console.error('Error fetching data:', error);
-          // userData(0);
-      }
-  };
+  const fetchUserData = () => {
+    console.log("unitid", viewleads)
+    document.querySelector('.loaderBox').classList.remove("d-none");
+    fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-units/${viewleads}`,
+        {
+            method: 'GET',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${LogoutData}`
+            },
+        }
+    )
+
+        .then(response =>
+            response.json()
+        )
+        .then((data) => {
+            console.log('user', data?.data)
+            document.querySelector('.loaderBox').classList.add("d-none");
+            setUserData(data?.data)
+        })
+        .catch((error) => {
+            document.querySelector('.loaderBox').classList.add("d-none");
+            console.log(error)
+        })
+}
+console.log("usedataunitname" , userdata)
+
+
 
 console.log("useresdata" , useresdata)
 useEffect(() => {
@@ -541,7 +521,7 @@ useEffect(() => {
 
                         >
                           <tbody>
-                            {userdata.map((item, index) => (
+                            {usercurrentItems?.map((item, index) => (
                               <tr key={index}>
                                 <td>{index + 1}</td>
                                 <td className="text-uppercase">
