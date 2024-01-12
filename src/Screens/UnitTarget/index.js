@@ -26,6 +26,7 @@ import "./style.css";
 export const UnitTarget = () => {
   const [userdata, setUserdata] = useState([]);
   const [data, setData] = useState([]);
+  const [userinputValue, setuserInputValue] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(8);
   const [inputValue, setInputValue] = useState('');
@@ -156,24 +157,18 @@ export const UnitTarget = () => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filterData.slice(indexOfFirstItem, indexOfLastItem);
 
+  const filterUserdata = userdata.filter(item =>
+    item?.unit_detail?.name?.toLowerCase().includes(inputValue.toLowerCase())
+  );
+  console.log("filterUserdata", filterUserdata)
+
+  const userindexOfLastItem = currentPage * itemsPerPage;
+  const userindexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const usercurrentItems = filterUserdata.slice(userindexOfFirstItem, userindexOfLastItem);
 
 
-  console.log("data" , data)
 
-console.log("userdata" , userdata)
-
-  // const filterUserdata = userdata.filter(item =>
-  //   item?.name.toLowerCase().includes(inputValue.toLowerCase())
-  // );
-
-//   const userindexOfLastItem = currentPage * itemsPerPage;
-//   const userindexOfFirstItem = indexOfLastItem - itemsPerPage;
-//   const usercurrentItems = filterUserdata.slice(userindexOfFirstItem, userindexOfLastItem);
-
-// // console.log("usercurrentItems " , usercurrentItems)
-
-
-console.log("currentItems" , currentItems)
+  console.log("currentItems", currentItems)
 
   const fetchData = () => {
     const LogoutData = localStorage.getItem('login');
@@ -265,10 +260,7 @@ console.log("currentItems" , currentItems)
       key: "status",
       title: "Status",
     },
-    {
-      key: "score_target",
-      title: "SCORE TARGET",
-    },
+   
     {
       key: "action",
       title: "Action",
@@ -279,14 +271,70 @@ console.log("currentItems" , currentItems)
 
 
 
+
+
+  const userHeaders = [
+    {
+      key: "id",
+      title: "S.No",
+    },
+    {
+      key: "username",
+      title: "User Name",
+    },
+    {
+      key: "unitname",
+      title: "Unit Name",
+    },
+    {
+      key: "target",
+      title: "Target",
+    },
+    // {
+    //   key: "targetscore",
+    //   title: "Target Score",
+    // },
+    
+    {
+      key: "status",
+      title: "Status",
+    },
+    {
+      key: "score_target",
+      title: "SCORE TARGET",
+    },
+    {
+      key: "action",
+      title: "Action",
+    },
+
+  ]; 
+
   const handleChange = (event) => {
+    setInputValue(event.target.value);
+    setuserInputValue(event.target.value)
     const { name, value } = event.target;
+    console.log('name' , name)
+    if (name === 'unit_id') {
+      setViewleads(value);
+    } 
+    
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
-    console.log(formData)
   };
+  // const handleChange = (event) => {
+  //   const { name, value } = event.target;
+  //   if (name === 'unit_id') {
+  //     setViewleads(value);
+  //   }
+  //   setFormData((prevData) => ({
+  //     ...prevData,
+  //     [name]: value,
+  //   }));
+    
+  // };
 
   // const handleSubmit = (event) => {
   //   event.preventDefault();
@@ -328,10 +376,10 @@ console.log("currentItems" , currentItems)
         console.log(error);
       })
   }
-
+  const LogoutData = localStorage.getItem('login');
   const deleteTarget = async (id) => {
     try {
-      const LogoutData = localStorage.getItem('login');
+
       const response = await fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/unit-targets-delete/${id}`, {
         method: 'DELETE',
         headers: {
@@ -357,7 +405,49 @@ console.log("currentItems" , currentItems)
   };
 
 
-console.log("userdata" , userdata)
+
+
+  const [viewleads, setViewleads] = useState('');
+  const [useresdata, setUserData] = useState();
+
+
+
+
+  const fetchUserData = () => {
+    console.log("unitid", viewleads)
+    document.querySelector('.loaderBox').classList.remove("d-none");
+    fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-units/${viewleads}`,
+      {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${LogoutData}`
+        },
+      }
+    )
+
+      .then(response =>
+        response.json()
+      )
+      .then((data) => {
+        console.log('user', data?.data)
+        document.querySelector('.loaderBox').classList.add("d-none");
+        setUserData(data?.data)
+      })
+      .catch((error) => {
+        document.querySelector('.loaderBox').classList.add("d-none");
+        console.log(error)
+      })
+  }
+  console.log("usedataunitname", userdata)
+
+
+
+  console.log("useresdata", useresdata)
+  useEffect(() => {
+    fetchUserData();
+  }, [viewleads]);
 
 
 
@@ -377,14 +467,7 @@ console.log("userdata" , userdata)
                   <div className="col-md-6 mb-2">
                     <h2 className="mainTitle">Target Listing</h2>
                   </div>
-                  <div className="col-md-6 mb-2">
-                    <div className="addUser">
-                      <CustomButton text="Add Unit Target" variant='primaryButton' onClick={() => {
-                        setUser(true)
-                      }} />
-                      <CustomInput type="text" placeholder="Search Here..." value={inputValue} inputClass="mainInput" onChange={handleChange} />
-                    </div>
-                  </div>
+
                 </div>
                 <div className="row mb-3">
                   <div className="col-12">
@@ -397,8 +480,17 @@ console.log("userdata" , userdata)
                     >
                       <Tab eventKey="unit" title="Unit">
 
-
-                        <h2 className="mainTitle">Unit Listing</h2>
+                        <div className="d-flex justify-content-between align-items-center">
+                          <h2 className="mainTitle">Unit Listing</h2>
+                          <div className="col-md-6 mb-2">
+                            <div className="addUser">
+                              <CustomButton text="Add Unit Target" variant='primaryButton' onClick={() => {
+                                setUser(true)
+                              }} />
+                              <CustomInput type="text" placeholder="Search Here..." value={inputValue} inputClass="mainInput" onChange={handleChange} />
+                            </div>
+                          </div>
+                        </div>
                         <CustomTable
                           headers={maleHeaders}
 
@@ -406,6 +498,7 @@ console.log("userdata" , userdata)
                           <tbody>
                             {currentItems.map((item, index) => (
                               <tr key={index}>
+
                                 <td>{index + 1}</td>
                                 <td className="text-uppercase">
                                   {item?.name}
@@ -434,60 +527,82 @@ console.log("userdata" , userdata)
                           </tbody>
                         </CustomTable>
 
-
+                        <CustomPagination
+                          itemsPerPage={itemsPerPage}
+                          totalItems={data.length}
+                          currentPage={currentPage}
+                          onPageChange={handlePageChange}
+                        />
                       </Tab>
 
 
 
                       <Tab eventKey="user" title="User">
-                        <h2 className="mainTitle">User Listing</h2>
 
+                        <div className="d-flex justify-content-between align-items-center">
+                          <h2 className="mainTitle">User Listing</h2>
+                          <div className="col-md-6 mb-2">
+                            <div className="addUser">
+                              <CustomButton text="Add User Target" variant='primaryButton' onClick={() => {
+                                setUser(true)
+                              }} />
+                              <CustomInput type="text" placeholder="Search Here..." value={inputValue} inputClass="mainInput" onChange={handleChange} />
+                            </div>
+                          </div>
+                        </div>
                         <CustomTable
-                      headers={maleHeaders}
+                          headers={userHeaders}
 
-                    >
-                      <tbody>
-                        {userdata.map((item, index) => (
-                          <tr key={index}>
-                            <td>{index + 1}</td>
-                            <td className="text-uppercase">
-                            {item?.unit_detail?.name}
-                            </td>
-                            {/* <td>{item?.current_month_target?.target ? `$ ${item?.current_month_target?.target}` : '$0'}</td> */}
-                            <td>{item?.target ? `$ ${item?.target}` : '$0'}</td>
-                            {/* <td>{`$ ${item?.target_score}`}</td> */}
-                            {/* <td>{item?.current_month_target?.month}</td> */}
-                            <td className={item?.isAschived == 1 ? 'greenColor' : 'redColor'}>{item?.isAschived == 1 ? 'Acheived' : 'Not Acheived'}</td>
-                            <td>
-                              <Dropdown className="tableDropdown">
-                                <Dropdown.Toggle variant="transparent" className="notButton classicToggle">
-                                  <FontAwesomeIcon icon={faEllipsisV} />
-                                </Dropdown.Toggle>
-                                <Dropdown.Menu align="end" className="tableDropdownMenu">
-                                  {/* <button onClick={() => {
+                        >
+                          <tbody>
+                            {usercurrentItems?.map((item, index) => (
+                              <tr key={index}>
+                                <td>{index + 1}</td>
+                                <td className="text-uppercase">
+                                  {item?.user_detail?.name}
+                                </td>
+                                <td className="text-uppercase">
+                                  {item?.unit_detail?.name}
+                                </td>
+                                {/* <td>{item?.current_month_target?.target ? `$ ${item?.current_month_target?.target}` : '$0'}</td> */}
+                                <td>{item?.target ? `$ ${item?.target}` : '$0'}</td>
+                                {/* <td>{`$ ${item?.target_score}`}</td> */}
+                                {/* <td>{item?.current_month_target?.month}</td> */}
+                                <td className={item?.isAschived == 1 ? 'greenColor' : 'redColor'}>{item?.isAschived == 1 ? 'Acheived' : 'Not Acheived'}</td>
+                                <td>{`$ ${item?.score_target}`}</td>
+                                <td>
+                                  <Dropdown className="tableDropdown">
+                                    <Dropdown.Toggle variant="transparent" className="notButton classicToggle">
+                                      <FontAwesomeIcon icon={faEllipsisV} />
+                                    </Dropdown.Toggle>
+                                    <Dropdown.Menu align="end" className="tableDropdownMenu">
+                                      {/* <button onClick={() => {
                                     editTarget(item?.id)
                                   }} className="tableAction"><FontAwesomeIcon icon={faPencil} className="tableActionIcon" />Edit</button> */}
 
-                                  <Link className="tableAction" to={`target-detail/${item?.id}`}><FontAwesomeIcon icon={faEye} className="tableActionIcon" />View Details</Link>
-                                </Dropdown.Menu>
-                              </Dropdown>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </CustomTable>
-
+                                      <Link className="tableAction" to={`usertarget-detail/${item?.id}`}><FontAwesomeIcon icon={faEye} className="tableActionIcon" />View Details</Link>
+                                    </Dropdown.Menu>
+                                  </Dropdown>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </CustomTable>
+                        <CustomPagination
+                          itemsPerPage={itemsPerPage}
+                          totalItems={userdata.length}
+                          currentPage={currentPage}
+                          onPageChange={handlePageChange}
+                        />
 
                       </Tab>
 
                     </Tabs>
 
-                    <CustomPagination
-                      itemsPerPage={itemsPerPage}
-                      totalItems={data.length}
-                      currentPage={currentPage}
-                      onPageChange={handlePageChange}
-                    />
+
+
+
+
                   </div>
                 </div>
               </div>
@@ -538,7 +653,16 @@ console.log("userdata" , userdata)
             onChange={handleChange}
 
           />
-
+          <SelectBox
+            selectClass="mainInput"
+            name="user_id"
+            labelClass='mainLabel'
+            label="Select User"
+            required
+            value={formData.user_id}
+            option={useresdata}
+            onChange={handleChange}
+          />
           {/* <div class="inputWrapper">
               <label class="mainLabel">Add brands<span>*</span></label>
               <Select

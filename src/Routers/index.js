@@ -49,7 +49,7 @@ import { TargetDetails } from "../Screens/UnitTarget/targetDetails";
 
 
 import { UserTarget } from "../Screens/UserTarget";
-import { UsertargetDetails } from "../Screens/UserTarget/targetDetails";
+import { UsertargetDetails } from "../Screens/UnitTarget/UsertargetDetails";
 
 import { MerchantManagement } from "../Screens/MerchantManagement";
 
@@ -111,7 +111,7 @@ export default function AdminRouter() {
 
 
         <Route path="/Usertarget-listing" element={<ProtectedRoutes Components={UserTarget} />} />
-        <Route path="/Usertarget-listing/target-detail/:id" element={<ProtectedRoutes Components={UsertargetDetails} />} />
+        <Route path="/target-listing/usertarget-detail/:id" element={<ProtectedRoutes Components={UsertargetDetails} />} />
 
 
 

@@ -123,7 +123,7 @@ export const Sidebar = (props) => {
           </Link>
         </li>
 
-
+{/* 
         <li className="sidebar-li">
           <Link className={`sideLink ${location.pathname.includes('/Usertarget-listing') ? 'active' : ''}`} to="/Usertarget-listing">
             <span className="sideIcon">
@@ -131,7 +131,7 @@ export const Sidebar = (props) => {
             </span>
             <span className="sideLinkText">User Target</span>
           </Link>
-        </li>
+        </li> */}
         <li className="sidebar-li">
           <Link className={`sideLink ${location.pathname.includes('/report-management') ? 'active' : ''}`} to="/report-management">
             <span className="sideIcon">

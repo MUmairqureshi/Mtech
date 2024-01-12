@@ -29,6 +29,7 @@ export const UserTarget = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(8);
   const [inputValue, setInputValue] = useState('');
+  const [userinputValue, setuserInputValue] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [units, setUnits] = useState({});
   const [addUser, setUser] = useState(false);
@@ -142,11 +143,6 @@ export const UserTarget = () => {
   };
 
 
-  console.log("units", units)
-
-  // const handleChange = (e) => {
-  //   setInputValue(e.target.value);
-  // }
 
   const filterData = data.filter(item =>
     item?.name.toLowerCase().includes(inputValue.toLowerCase())
@@ -158,22 +154,15 @@ export const UserTarget = () => {
 
 
 
-  console.log("data", data)
+  const filterUserdata = userdata.filter(item =>
+    item?.unit_detail?.name?.toLowerCase().includes(userinputValue.toLowerCase())
+  );
+  console.log("filterUserdata", filterUserdata)
 
-  console.log("userdata", userdata)
+  const userindexOfLastItem = currentPage * itemsPerPage;
+  const userindexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const usercurrentItems = filterUserdata.slice(userindexOfFirstItem, userindexOfLastItem);
 
-  // const filterUserdata = userdata.filter(item =>
-  //   item?.name.toLowerCase().includes(inputValue.toLowerCase())
-  // );
-
-  //   const userindexOfLastItem = currentPage * itemsPerPage;
-  //   const userindexOfFirstItem = indexOfLastItem - itemsPerPage;
-  //   const usercurrentItems = filterUserdata.slice(userindexOfFirstItem, userindexOfLastItem);
-
-  // // console.log("usercurrentItems " , usercurrentItems)
-
-
-  console.log("currentItems", currentItems)
 
   const fetchData = () => {
     const LogoutData = localStorage.getItem('login');
@@ -312,26 +301,27 @@ export const UserTarget = () => {
     {
       key: "action",
       title: "Action",
+
     },
 
 
-  ]; 
+  ];
   const handleChange = (event) => {
     setInputValue(event.target.value);
+    setuserInputValue(event.target.value)
     const { name, value } = event.target;
+    console.log('name' , name)
     if (name === 'unit_id') {
       setViewleads(value);
-    }
-    else if (name === 'username') {
-      setInputValue(value)
-    }
+    } 
+    
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
-    }));  
+    }));
   };
   console.log("handleChange", handleChange)
- 
+
 
   const LogoutData = localStorage.getItem('login');
   const handleSubmit = (event) => {
@@ -382,15 +372,12 @@ export const UserTarget = () => {
       const data = await response.json();
       console.log(data);
 
-      // Assuming fetchData is an asynchronous function
       await fetchData();
 
-      // Assuming setUser is a function to update user state
       setUser(false);
     } catch (error) {
       document.querySelector('.loaderBox').classList.add("d-none");
       console.error(error);
-      // Handle the error appropriately (e.g., display an error message to the user)
     }
   };
 
@@ -407,38 +394,39 @@ export const UserTarget = () => {
   const [viewleads, setViewleads] = useState('');
   const [useresdata, setUserData] = useState();
 
-  const fetchUserData = async () => {
 
-    try {
-      const response = await fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-units/${viewleads}`, {
+
+
+  const fetchUserData = () => {
+    console.log("unitid", viewleads)
+    document.querySelector('.loaderBox').classList.remove("d-none");
+    fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-units/${viewleads}`,
+      {
         method: 'GET',
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${LogoutData}`
         },
-      });
+      }
+    )
 
-      const data = await response.json();
-      console.log("data.leads.unit_id", data)
+      .then(response =>
+        response.json()
+      )
+      .then((data) => {
+        console.log('user', data?.data)
+        document.querySelector('.loaderBox').classList.add("d-none");
+        setUserData(data?.data)
+      })
+      .catch((error) => {
+        document.querySelector('.loaderBox').classList.add("d-none");
+        console.log(error)
+      })
+  }
+  console.log("usedataunitname", userdata)
 
-      // if (data?.status) {
-      //     setMessageShow('Lead Verified')
-      //     setLeadStatus(true)
-      // } else {
-      //     setMessageShow('Lead not exist')
-      //     setLeadStatus(false);
-      // }
 
-      console.log("data.leads.unit_id", data?.data)
-      setUserData(data?.data);
-      // Process the data as needed
-      console.log(data);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      // userData(0);
-    }
-  };
 
   console.log("useresdata", useresdata)
   useEffect(() => {
@@ -447,11 +435,7 @@ export const UserTarget = () => {
 
 
 
-
-
-  // const handleChange = (e) => {
-  //   setInputValue(e.target.value);
-  // }
+ 
   return (
     <>
       <DashboardLayout>
@@ -482,7 +466,7 @@ export const UserTarget = () => {
                       <Tab eventKey="unit" title="Unit">
 
                         <div className="d-flex justify-content-between align-items-center">
-                          <h2 className="mainTitle">User Listing</h2>
+                          <h2 className="mainTitle">Unit Listing</h2>
                           <div className="col-md-6 mb-2">
                             <div className="addUser">
                               <CustomButton text="Add Unit Target" variant='primaryButton' onClick={() => {
@@ -548,13 +532,13 @@ export const UserTarget = () => {
                       <Tab eventKey="user" title="User">
 
                         <div className="d-flex justify-content-between align-items-center">
-                          <h2 className="mainTitle">Unit Listing</h2>
+                          <h2 className="mainTitle">User Listing</h2>
                           <div className="col-md-6 mb-2">
                             <div className="addUser">
                               <CustomButton text="Add User Target" variant='primaryButton' onClick={() => {
                                 setUser(true)
                               }} />
-                              <CustomInput type="text" placeholder="Search Here..." value={inputValue} inputClass="mainInput" onChange={handleChange} />
+                              <CustomInput type="text" placeholder="Search Here..." value={userinputValue} inputClass="mainInput" onChange={handleChange} />
                             </div>
                           </div>
                         </div>
@@ -563,7 +547,7 @@ export const UserTarget = () => {
 
                         >
                           <tbody>
-                            {userdata.map((item, index) => (
+                            {usercurrentItems?.map((item, index) => (
                               <tr key={index}>
                                 <td>{index + 1}</td>
                                 <td className="text-uppercase">

@@ -96,8 +96,8 @@ export const TargetDetails = () => {
                 document.querySelector('.loaderBox').classList.add("d-none");
                 console.log(data)
 
-                setLeadData(data.data)
-                setFormData(data.data.current_month_target)
+                setLeadData(data?.data)
+                setFormData(data?.data?.current_month_target)
 
             })
             .catch((error) => {
@@ -110,7 +110,8 @@ export const TargetDetails = () => {
         editDetailData()
     }, []);
 
-    console.log(formData)
+
+    console.log("formData ", formData)
 
     const monthList = [
         {
@@ -203,7 +204,7 @@ export const TargetDetails = () => {
         event.preventDefault();
         const userId = leadData?.id
         const LogoutData = localStorage.getItem('login');
-        fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/unit-targets-edit/1`,
+        fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/unit-targets-edit/${id}`,
             {
                 method: 'POST',
                 headers: {
@@ -229,7 +230,7 @@ export const TargetDetails = () => {
     }
 
 
-    console.log("leadData" , leadData)
+    console.log("leadData", leadData)
 
 
     return (
@@ -246,34 +247,59 @@ export const TargetDetails = () => {
                         <div className="col-md-3">
                             <CustomButton variant='primaryButton' text="Edit Target" onClick={() => {
                                 setEditModal(true)
+                                editDetailData()
                             }} />
                         </div>
                     </div>
+
+
+                    {/*  <div className="col-md-4 mb-4">
+                                    <p className="secondaryText">User Name:</p>
+                                    <p>{leadData?.user_detail?.name}</p>
+                                </div>
+                                <div className="col-md-4 mb-4">
+                                    <p className="secondaryText">Unit Name:</p>
+                                    <p>{leadData?.unit_detail?.name}</p>
+                                </div> */}
+
+
                     <div className="row mb-3">
                         <div className="col-12">
 
                             <div className="row">
+                                {/* <div className="col-md-4 mb-4">
+                                    <p className="secondaryText">User Name:</p>
+                                    <p>{leadData?.user_detail?.name}</p>
+                                </div> */}
                                 <div className="col-md-4 mb-4">
                                     <p className="secondaryText">Unit Name:</p>
-                                    <p>{leadData?.name}</p>
+                                    <p>{leadData?.name}</p>  
                                 </div>
                                 <div className="col-md-4 mb-4">
-                                    <p className="secondaryText">Set Target</p>
-                                    <p>{`$ ${leadData?.current_month_target?.target}`}</p>
+                                    <p className="secondaryText">Current Month Target</p>
+                                    <p>{leadData?.current_month_target?.target}</p>
                                 </div>
                                 <div className="col-md-4 mb-4">
                                     <p className="secondaryText">Score Target</p>
-                                    <p>{`$ ${leadData?.current_month_target?.target_score}`}</p>
+                                    <p>{`$ ${leadData?.total_sales}`}</p>
                                 </div>
-                                <div className="col-md-4 mb-4">
+                                {/* <div className="col-md-4 mb-4">
+                                    <p className="secondaryText">Score Target</p>
+                                    <p>${`$ ${leadData?.score_target}`}</p>
+                                </div> */}
+                                {/* current_month_target */}
+                                {/* <div className="col-md-4 mb-4">
                                     <p className="secondaryText">Month</p>
-                                    <p>{month[leadData?.current_month_target?.month]}</p>
-                                </div>
-                                <div className="col-md-4 mb-4">
-                                    <p className="secondaryText">Year</p>
-                                    <p>{leadData?.current_month_target?.year}</p>
+                                    <p>{month[leadData?.month]}</p>
+                                </div> */}
 
-                                </div>
+
+
+                                {/* <div className="col-md-4 mb-4">
+                                    <p className="secondaryText">Year</p>
+                                    <p>{leadData?.year}</p>
+
+                                </div> */}
                                 {/* <div className="col-md-4 mb-4">
                                     <p className="secondaryText">Total Amount</p>
                                     <p>{`$ ${leadData?.total_sales}`}</p>
@@ -281,7 +307,7 @@ export const TargetDetails = () => {
                                 </div> */}
                             </div>
 
-                           
+
                         </div>
                     </div>
                 </div>
@@ -294,29 +320,53 @@ export const TargetDetails = () => {
 
                 <CustomModal show={editModal} close={() => { setEditModal(false) }} heading="Edit Target" >
 
+
+
                     <SelectBox
                         selectClass="mainInput"
                         name="unit_id"
                         label="Select Unit"
                         labelClass='mainLabel'
                         required
-                        value={formData?.unit_id}
+                        value={formData?.id}
+                        disabled
                         option={unitValue}
                         onChange={(event) => {
-                            setFormData({ ...formData, unit_id: event.target.value });
+                            setFormData({ ...formData, id: event.target.value });
 
                         }}
 
                     />
-                    <CustomInput
-                        label="Set Target"
+                    {/* <CustomInput
+                        label="Score Target"
                         type="number"
-                        placeholder="Set Target"
+                        placeholder="Score Target"
                         required
                         name="target"
                         labelClass='mainLabel'
                         inputClass='mainInput'
-                        value={formData?.target}
+                        disabled
+
+                        value={formData?.total_sales}
+                        onChange={(event) => {
+                            setFormData({ ...formData, total_sales: event.target.value });
+
+                        }}
+
+
+                    /> */}
+
+
+                    <CustomInput
+                        label="Current Month Target"
+                        type="number"
+                        placeholder="Current Month Target"
+                        required
+                        name="target"
+                        labelClass='mainLabel'
+                        inputClass='mainInput'
+                        
+                        value={parseInt(formData?.target)}
                         onChange={(event) => {
                             setFormData({ ...formData, target: event.target.value });
 
@@ -324,19 +374,20 @@ export const TargetDetails = () => {
 
 
                     />
-                    <SelectBox
+                    {/* <SelectBox
                         selectClass="mainInput"
                         name="month"
                         labelClass='mainLabel'
-                        label="Select Month"
+                        label="cURRENT Month"
                         required
-                        value={formData?.month}
+                        disabled
+                        value={formData?.current_month_target}
                         option={monthList}
                         onChange={(event) => {
-                            setFormData({ ...formData, month: event.target.value });
+                            setFormData({ ...formData, current_month_target: event.target.value });
                         }}
 
-                    />
+                    /> */}
 
 
                     <CustomButton variant='primaryButton' text='Edit' type='button' onClick={handleEdit} />
