@@ -172,6 +172,7 @@ export const Roles = () => {
                         setUser(true)
                       }} /> */}
                       <CustomInput type="text" placeholder="Search Here..." value={inputValue} inputClass="mainInput" onChange={handleChange} />
+                      
                     </div>
                   </div>
                 </div>

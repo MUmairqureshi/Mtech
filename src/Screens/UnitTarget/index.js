@@ -266,6 +266,10 @@ console.log("currentItems" , currentItems)
       title: "Status",
     },
     {
+      key: "score_target",
+      title: "SCORE TARGET",
+    },
+    {
       key: "action",
       title: "Action",
     },

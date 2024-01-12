@@ -142,7 +142,7 @@ export const UserTarget = () => {
   };
 
 
-console.log("units" , units)
+  console.log("units", units)
 
   // const handleChange = (e) => {
   //   setInputValue(e.target.value);
@@ -239,7 +239,7 @@ console.log("units" , units)
 
 
 
- 
+
   useEffect(() => {
     document.title = 'Mt Records | Unit Target';
 
@@ -273,6 +273,7 @@ console.log("units" , units)
       title: "Action",
     },
 
+
   ];
 
 
@@ -305,30 +306,32 @@ console.log("units" , units)
       title: "Status",
     },
     {
+      key: "score_target",
+      title: "SCORE TARGET",
+    },
+    {
       key: "action",
       title: "Action",
     },
 
-  ];
 
+  ]; 
   const handleChange = (event) => {
+    setInputValue(event.target.value);
     const { name, value } = event.target;
     if (name === 'unit_id') {
       setViewleads(value);
-  }
+    }
+    else if (name === 'username') {
+      setInputValue(value)
+    }
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
-    }));
-    console.log(formData)
+    }));  
   };
-console.log("Select User*" , formData)
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-
-  //   console.log(formData)
-  //   rolesLitingResponse(formData);
-  // }
+  console.log("handleChange", handleChange)
+ 
 
   const LogoutData = localStorage.getItem('login');
   const handleSubmit = (event) => {
@@ -392,6 +395,12 @@ console.log("Select User*" , formData)
   };
 
 
+  // const filterData = data && (
+  //   data.filter(item =>
+  //     item.name.toLowerCase().includes(inputValue.toLowerCase())
+  //   )
+  // )
+
 
 
 
@@ -399,44 +408,50 @@ console.log("Select User*" , formData)
   const [useresdata, setUserData] = useState();
 
   const fetchUserData = async () => {
- 
-      try {
-          const response = await fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-units/${viewleads}`, {
-              method: 'GET',
-              headers: {
-                  'Accept': 'application/json',
-                  'Content-Type': 'application/json',
-                  'Authorization': `Bearer ${LogoutData}`
-              },
-          });
 
-          const data = await response.json();
-          console.log("data.leads.unit_id", data)
+    try {
+      const response = await fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-units/${viewleads}`, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${LogoutData}`
+        },
+      });
 
-          // if (data?.status) {
-          //     setMessageShow('Lead Verified')
-          //     setLeadStatus(true)
-          // } else {
-          //     setMessageShow('Lead not exist')
-          //     setLeadStatus(false);
-          // }
+      const data = await response.json();
+      console.log("data.leads.unit_id", data)
 
-          console.log("data.leads.unit_id", data?.data)
-          setUserData(data?.data);
-          // Process the data as needed
-          console.log(data);
-      } catch (error) {
-          console.error('Error fetching data:', error);
-          // userData(0);
-      }
+      // if (data?.status) {
+      //     setMessageShow('Lead Verified')
+      //     setLeadStatus(true)
+      // } else {
+      //     setMessageShow('Lead not exist')
+      //     setLeadStatus(false);
+      // }
+
+      console.log("data.leads.unit_id", data?.data)
+      setUserData(data?.data);
+      // Process the data as needed
+      console.log(data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      // userData(0);
+    }
   };
 
-console.log("useresdata" , useresdata)
-useEffect(() => {
-  fetchUserData();
-}, [viewleads]);
+  console.log("useresdata", useresdata)
+  useEffect(() => {
+    fetchUserData();
+  }, [viewleads]);
 
 
+
+
+
+  // const handleChange = (e) => {
+  //   setInputValue(e.target.value);
+  // }
   return (
     <>
       <DashboardLayout>
@@ -473,7 +488,10 @@ useEffect(() => {
                               <CustomButton text="Add Unit Target" variant='primaryButton' onClick={() => {
                                 setUser(true)
                               }} />
+
                               <CustomInput type="text" placeholder="Search Here..." value={inputValue} inputClass="mainInput" onChange={handleChange} />
+
+
                             </div>
                           </div>
                         </div>
@@ -494,6 +512,10 @@ useEffect(() => {
                                 {/* <td>{`$ ${item?.target_score}`}</td> */}
                                 {/* <td>{item?.current_month_target?.month}</td> */}
                                 <td className={item?.isAschived == 1 ? 'greenColor' : 'redColor'}>{item?.isAschived == 1 ? 'Acheived' : 'Not Acheived'}</td>
+
+
+
+
                                 <td>
                                   <Dropdown className="tableDropdown">
                                     <Dropdown.Toggle variant="transparent" className="notButton classicToggle">
@@ -555,6 +577,8 @@ useEffect(() => {
                                 {/* <td>{`$ ${item?.target_score}`}</td> */}
                                 {/* <td>{item?.current_month_target?.month}</td> */}
                                 <td className={item?.isAschived == 1 ? 'greenColor' : 'redColor'}>{item?.isAschived == 1 ? 'Acheived' : 'Not Acheived'}</td>
+
+                                <td>$ {item?.score_target}</td>
                                 <td>
                                   <Dropdown className="tableDropdown">
                                     <Dropdown.Toggle variant="transparent" className="notButton classicToggle">

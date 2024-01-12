@@ -257,13 +257,18 @@ console.log("leadDataUSER" , leadData?.user_detail)
                                     <p>{leadData?.user_detail?.name}</p>
                                 </div>
                                 <div className="col-md-4 mb-4">
+                                    <p className="secondaryText">Unit Name:</p>
+                                    <p>{leadData?.unit_detail?.name}</p>
+                                </div>
+
+                                <div className="col-md-4 mb-4">
                                     <p className="secondaryText">Set Target</p>
                                     <p>{`$ ${leadData?.target}`}</p>
                                 </div>
-                                {/* <div className="col-md-4 mb-4">
+                                <div className="col-md-4 mb-4">
                                     <p className="secondaryText">Score Target</p>
-                                    <p>{`$ ${leadData?.user_detail?.current_month_target?.target_score}`}</p>
-                                </div> */}
+                                    <p>${`$ ${leadData?.score_target}`}</p>
+                                </div>
                                 <div className="col-md-4 mb-4">
                                     <p className="secondaryText">Month</p>
                                     <p>{month[leadData?.month]}</p>
