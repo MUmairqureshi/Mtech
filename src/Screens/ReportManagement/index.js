@@ -207,32 +207,32 @@ export const ReportManagement = () => {
 
   const maleHeaders = [
     {
-      key: "id",
-      title: "S.No",
+      key: "unit",
+      title: "UNIT",
     },
     {
-      key: "user_name",
-      title: "User Name",
-    },
-    {
-      key: "gross_sum",
-      title: "Gross Sum",
+      key: "agent",
+      title: "AGENT",
     },
     {
       key: "target",
-      title: "Target",
+      title: "TARGET",
     },
     {
-      key: "refunds",
-      title: "Refunds",
+      key: "gross",
+      title: "GROSS",
     },
     {
-      key: "chargeback",
-      title: "Charge Back",
+      key: "refunt",
+      title: "REFUNDS & CB",
+    },
+    {
+      key: "reversals",
+      title: "REVERSALs",
     },
     {
       key: "purchase",
-      title: "Purchase",
+      title: "PURCHASE",
     },
     {
       key: "net",
@@ -240,11 +240,11 @@ export const ReportManagement = () => {
     },
     {
       key: "acheived",
-      title: "Acheived",
+      title: "ACHEIVED",
     },
     {
       key: "should_be_at",
-      title: "Sould be At",
+      title: "SHOULD BE AT",
     },
 
 
@@ -258,7 +258,7 @@ export const ReportManagement = () => {
 
 
 
-  console.log(formData)
+  console.log("data" , data)
 
   return (
     <>
@@ -323,10 +323,10 @@ export const ReportManagement = () => {
                             </td>
 
                             <td>{item?.user_name}</td>
-                            <td>{`$ ${item?.gross_sum}`}</td>
                             <td>{`$ ${item?.target}`}</td>
+                            <td>{`$ ${item?.gross_sum}`}</td>
                             <td>{`$ ${item?.refunds}`}</td>
-                            <td>{`$ ${item?.chargeback}`}</td>
+                            <td>{`$ ${item?.reversal}`}</td>
                             <td>{`$ ${item?.purchase}`}</td>
                             <td>{`$ ${item?.net}`}</td>
                             <td>{item?.achived}</td>

@@ -199,6 +199,8 @@ export const UsertargetDetails = () => {
     ];
 
 
+
+    console.log("leadData" , leadData)
     const handleEdit = (event) => {
         event.preventDefault();
         const userId = leadData?.id
@@ -256,19 +258,19 @@ console.log("leadDataUSER" , leadData?.user_detail)
                                 </div>
                                 <div className="col-md-4 mb-4">
                                     <p className="secondaryText">Set Target</p>
-                                    <p>{`$ ${leadData?.user_detail?.current_month_target?.target}`}</p>
+                                    <p>{`$ ${leadData?.target}`}</p>
                                 </div>
-                                <div className="col-md-4 mb-4">
+                                {/* <div className="col-md-4 mb-4">
                                     <p className="secondaryText">Score Target</p>
                                     <p>{`$ ${leadData?.user_detail?.current_month_target?.target_score}`}</p>
-                                </div>
+                                </div> */}
                                 <div className="col-md-4 mb-4">
                                     <p className="secondaryText">Month</p>
-                                    <p>{month[leadData?.user_detail?.current_month_target?.month]}</p>
+                                    <p>{month[leadData?.month]}</p>
                                 </div>
                                 <div className="col-md-4 mb-4">
                                     <p className="secondaryText">Year</p>
-                                    <p>{leadData?.user_detail?.current_month_target?.year}</p>
+                                    <p>{leadData?.year}</p>
 
                                 </div>
                                 {/* <div className="col-md-4 mb-4">

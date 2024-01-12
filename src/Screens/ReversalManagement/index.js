@@ -98,8 +98,8 @@ export const ReversalManagement = () => {
       title: "S.No",
     },
     {
-      key: "leadid",
-      title: "Lead Id",
+      key: "lead code",
+      title: "LEAD CODE",
     },
     {
       key: "reversalAmount",
