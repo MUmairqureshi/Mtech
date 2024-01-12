@@ -227,7 +227,7 @@ export const UsertargetDetails = () => {
                 console.log(error);
             })
     }
-console.log("leadDataUSER" , leadData?.user_detail)
+console.log("leadDataUSER" , leadData)
 
     return (
         <>
