@@ -77,7 +77,7 @@ export const TargetDetails = () => {
 
     const editDetailData = () => {
         const LogoutData = localStorage.getItem('login');
-        document.title = 'Mt Records | Lead Management Detail';
+        document.title = 'Tim Admin | Chapter  Detail';
         document.querySelector('.loaderBox').classList.remove("d-none");
         fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/get-unit-targets_details/${id}`,
             {
