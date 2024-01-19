@@ -4,6 +4,8 @@ import BackButton from "../../Components/BackButton";
 import CustomModal from "../../Components/CustomModal";
 import CustomInput from '../../Components/CustomInput';
 import { SelectBox } from "../../Components/CustomSelect";
+import { useNavigate } from "react-router";
+
 import CustomButton from "../../Components/CustomButton";
 export const AddRefund = () => {
     const [initalRole, setrole] = useState({});
@@ -45,12 +47,12 @@ export const AddRefund = () => {
           )
           .then((data) => {
             document.querySelector('.loaderBox').classList.add("d-none");
-            console.log(data)
+            
             setMerchant(data?.data);
           })
           .catch((error) => {
             document.querySelector('.loaderBox').classList.add("d-none");
-            console.log(error)
+            
           })
       }
 
@@ -75,12 +77,12 @@ export const AddRefund = () => {
             )
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(data)
+                
                 setrole(data.roles);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+                
             })
     }
 
@@ -103,13 +105,13 @@ export const AddRefund = () => {
                 response.json()
             )
             .then((data) => {
-                console.log(data)
+                
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setUnit(data.units);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+                
             })
     }
 
@@ -127,7 +129,7 @@ export const AddRefund = () => {
             formDataMethod.append(key, formData[key]);
         }
 
-        console.log("formData" , formData)
+         
         document.querySelector('.loaderBox').classList.remove("d-none");
         // Make the fetch request
         fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/refund-add-edit`, {
@@ -138,12 +140,10 @@ export const AddRefund = () => {
             },
             body: formDataMethod // Use the FormData object as the request body
         })
-            .then((response) => {
-                console.log("formDataresponse" ,response )
+            .then((response) => { 
                 return response.json();
             })
-            .then((data) => {
-                console.log(data?.status);
+            .then((data) => { 
                     document.querySelector('.loaderBox').classList.add("d-none");
                     data?.status ? setSuccessStatus(data?.msg) : setSuccessStatus(data?.msg)
                     setShowModal(true)
@@ -151,7 +151,7 @@ export const AddRefund = () => {
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+                
             })
     };
 
@@ -169,9 +169,12 @@ export const AddRefund = () => {
             ...prevData,
             [name]: value,
         }));
-        console.log(formData)
     };
-
+    
+    const navigate = useNavigate();
+    const goBack = () => {
+        navigate(-1)
+      };
 
 
     return (
@@ -220,6 +223,9 @@ export const AddRefund = () => {
                                                     onChange={handleChange}
                                                 />
                                             </div>
+
+
+                                      
                                             <div className="col-md-4 mb-4">
                                                 <CustomInput
                                                     label='Refund Date'
@@ -288,7 +294,7 @@ export const AddRefund = () => {
                         </div>
                     </div>
                 </div>
-                <CustomModal show={showModal} close={() => { setShowModal(false) }} success heading={successStatus} />
+                <CustomModal show={showModal} close={() => { setShowModal(false) ; goBack() }} success heading={successStatus} />
 
 
             </DashboardLayout>

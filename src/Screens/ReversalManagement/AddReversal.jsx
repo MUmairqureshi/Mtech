@@ -4,6 +4,8 @@ import BackButton from "../../Components/BackButton";
 import CustomModal from "../../Components/CustomModal";
 import CustomInput from '../../Components/CustomInput';
 import { SelectBox } from "../../Components/CustomSelect";
+import { useNavigate } from "react-router";
+
 import CustomButton from "../../Components/CustomButton";
 export const AddReversal = () => {
     const [initalRole, setrole] = useState({});
@@ -24,7 +26,10 @@ export const AddReversal = () => {
             name: 'Full'
         }
     ]
-
+    const navigate = useNavigate();
+    const goBack = () => {
+        navigate(-1)
+      };
 
     const fetchMerchantData = () => {
         const LogoutData = localStorage.getItem('login');
@@ -148,6 +153,7 @@ export const AddReversal = () => {
             if (data?.status) {
                 setMessageShow('Lead Verified')
                 setLeadStatus(true)
+                setView(data)
             } else {
                 setMessageShow('Lead not exist')
                 setLeadStatus(false);
@@ -232,6 +238,10 @@ export const AddReversal = () => {
 
 
 
+    const [viewl, setView] = useState('');
+
+
+console.log("viewl" , viewl)
 
 
 
@@ -284,6 +294,52 @@ export const AddReversal = () => {
                                                     inputClass='mainInput'
                                                     name="reversal_amount"
                                                     value={formData.reversal_amount}
+                                                    onChange={handleChange}
+                                                />
+                                            </div>
+
+
+
+                                            <div className="col-md-4 mb-4">
+                                                <CustomInput
+                                                    label='Name'
+                                                    required
+                                                    id='name'
+                                                    type='text'
+                                                    placeholder='Enter Name'
+                                                    labelClass='mainLabel'
+                                                    inputClass='mainInput'
+                                                    name="name"
+                                                    value={viewl?.leads?.name}
+                                                    onChange={handleChange}
+                                                />
+                                            </div>
+                                            <div className="col-md-4 mb-4">
+                                                <CustomInput
+                                                    label='Enter Email'
+                                                    required
+                                                    id='amount'
+                                                     
+                                                    type='email'
+                                                    placeholder='Enter Email'
+                                                    labelClass='mainLabel'
+                                                    inputClass='mainInput'
+                                                    name="email"
+                                                    value={viewl?.leads?.email}
+                                                    onChange={handleChange}
+                                                />
+                                            </div>
+                                            <div className="col-md-4 mb-4">
+                                                <CustomInput
+                                                    label='Net Amount'
+                                                    required
+                                                    id='netamount'
+                                                    type='number'
+                                                    placeholder='Enter Net Amount'
+                                                    labelClass='mainLabel'
+                                                    inputClass='mainInput'
+                                                    name="net_amount"
+                                                    value={viewl?.leads?.gross}
                                                     onChange={handleChange}
                                                 />
                                             </div>
@@ -369,7 +425,7 @@ export const AddReversal = () => {
                         </div>
                     </div>
                 </div>
-                <CustomModal show={showModal} close={() => { setShowModal(false) }} success heading='Reversal has been Successfully Added.' />
+                <CustomModal show={showModal} close={() => { setShowModal(false) ; goBack() }} success heading='Reversal has been Successfully Added.' />
 
 
             </DashboardLayout>

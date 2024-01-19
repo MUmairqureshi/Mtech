@@ -121,13 +121,13 @@ export const ReportManagement = () => {
         response.json()
       )
       .then((data) => {
-        console.log(data)
+         
         document.querySelector('.loaderBox').classList.add("d-none");
         setBrands(data.brands);
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error)
+        
       })
   }
 
@@ -150,13 +150,13 @@ export const ReportManagement = () => {
         response.json()
       )
       .then((data) => {
-        console.log(data)
+         
         document.querySelector('.loaderBox').classList.add("d-none");
         setUnit(data.units);
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error)
+        
       })
   }
 
@@ -189,12 +189,12 @@ export const ReportManagement = () => {
       )
       .then((data) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(data)
+         
         setData(data?.data);
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error)
+        
       })
   }
 
@@ -258,8 +258,6 @@ export const ReportManagement = () => {
 
 
 
-  console.log("data" , data)
-
   return (
     <>
       <DashboardLayout>
@@ -282,7 +280,7 @@ export const ReportManagement = () => {
                         option={unit}
                         onChange={(event) => {
                           setFormData({ ...formData, unit_id: event.target.value });
-                          console.log(formData);
+                           
                         }}
                       />
 
@@ -295,7 +293,7 @@ export const ReportManagement = () => {
                         option={monthList}
                         onChange={(event) => {
                           setFormData({ ...formData, month: event.target.value });
-                          console.log(formData);
+                           
                         }}
                       />
 
@@ -303,7 +301,7 @@ export const ReportManagement = () => {
                         label="Year"
                         inputClass="mainInput" onChange={(event) => {
                           setFormData({ ...formData, year: event.target.value });
-                          console.log(formData);
+                           
                         }} /> */}
                       <CustomButton variant='primaryButton' text='Search' type='button' onClick={fetchData} />
                     </div>

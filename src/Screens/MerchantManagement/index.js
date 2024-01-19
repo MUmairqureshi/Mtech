@@ -83,12 +83,12 @@ export const MerchantManagement = () => {
       )
       .then((data) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(data)
+         
         setData(data?.data);
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error)
+        
       })
   }
 
@@ -123,7 +123,7 @@ export const MerchantManagement = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    console.log(formData)
+     
     document.querySelector('.loaderBox').classList.remove("d-none");
     const LogoutData = localStorage.getItem('login');
     fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/merchant-add-edit`,
@@ -141,7 +141,7 @@ export const MerchantManagement = () => {
         return response.json()
       })
       .then((data) => {
-        console.log(data)
+         
         document.querySelector('.loaderBox').classList.add("d-none");
         setShowModal(true)
         setUser(false)
@@ -153,7 +153,7 @@ export const MerchantManagement = () => {
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error);
+        ;
       })
   }
 
@@ -174,7 +174,7 @@ export const MerchantManagement = () => {
         return response.json()
       })
       .then((data) => {
-        console.log(data)
+         
         document.querySelector('.loaderBox').classList.add("d-none");
         setIdUser(unitID)
         setFormData({
@@ -187,13 +187,13 @@ export const MerchantManagement = () => {
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error);
+        ;
       })
   }
 
   const handleEditSubmit = (event) => {
     event.preventDefault();
-    console.log(formData)
+     
     document.querySelector('.loaderBox').classList.remove("d-none");
     const LogoutData = localStorage.getItem('login');
     fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/merchant-add-edit/${idUser}`,
@@ -211,7 +211,7 @@ export const MerchantManagement = () => {
         return response.json()
       })
       .then((data) => {
-        console.log(data)
+         
         document.querySelector('.loaderBox').classList.add("d-none");
         setFormData({
           name: ''
@@ -223,13 +223,13 @@ export const MerchantManagement = () => {
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error);
+        ;
       })
   }
 
 
 
-  console.log(formData)
+   
 
   return (
     <>
@@ -309,7 +309,7 @@ export const MerchantManagement = () => {
               value={formData.name}
               onChange={(event) => {
                 setFormData({ ...formData, name: event.target.value });
-                console.log(formData);
+                 ;
               }}
 
             />
@@ -328,7 +328,7 @@ export const MerchantManagement = () => {
               value={formData.name}
               onChange={(event) => {
                 setFormData({ ...formData, name: event.target.value });
-                console.log(formData);
+                 ;
               }}
 
             />
@@ -342,7 +342,7 @@ export const MerchantManagement = () => {
               option={optionData}
               onChange={(event) => {
                 setFormData({ ...formData, status: event.target.value });
-                console.log(formData);
+                 ;
               }}
             /> */}
             <CustomButton variant='primaryButton' text='Add' type='button' onClick={handleEditSubmit} />

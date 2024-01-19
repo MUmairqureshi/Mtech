@@ -3,6 +3,8 @@ import { DashboardLayout } from "../../Components/Layout/DashboardLayout";
 import BackButton from "../../Components/BackButton";
 import CustomModal from "../../Components/CustomModal";
 import CustomInput from '../../Components/CustomInput';
+import { useNavigate } from "react-router";
+
 import { SelectBox } from "../../Components/CustomSelect";
 import CustomButton from "../../Components/CustomButton";
 export const AddPurchase = () => {
@@ -45,12 +47,12 @@ export const AddPurchase = () => {
             )
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(data)
+                 
                 setMerchant(data?.data);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+                 
             })
     }
 
@@ -69,7 +71,7 @@ export const AddPurchase = () => {
             formDataMethod.append(key, formData[key]);
         }
 
-        console.log(formData)
+         
         document.querySelector('.loaderBox').classList.remove("d-none");
         // Make the fetch request
         fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/purchase-add-edit`, {
@@ -81,21 +83,20 @@ export const AddPurchase = () => {
             body: formDataMethod // Use the FormData object as the request body
         })
             .then((response) => {
-                console.log("purchase_type_response", response)
+                
                 return response.json();
             })
             .then((data) => {
-                console.log("data", data);
+                 
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setShowModal(true)
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+                 
             })
     };
-    console.log("purchase_type_formDataMethod", formData)
-
+ 
     useEffect(() => {
         fetchMerchantData()
     }, [])
@@ -107,7 +108,7 @@ export const AddPurchase = () => {
     //         ...prevData,
     //         [name]: value,
     //     }));
-    //     console.log(formData)
+    //      
     // };
 
 
@@ -119,6 +120,7 @@ export const AddPurchase = () => {
 
 
 
+    const [viewl, setView] = useState('');
 
 
 
@@ -144,7 +146,7 @@ export const AddPurchase = () => {
 
 
     const userData = (uniID) => {
-        console.log("unitid", uniID)
+   
         document.querySelector('.loaderBox').classList.remove("d-none");
         fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-units/${uniID}`,
             {
@@ -161,19 +163,19 @@ export const AddPurchase = () => {
                 response.json()
             )
             .then((data) => {
-                console.log('user', data?.data)
+                 
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setUnitid(data?.data)
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+                 
             })
     }
 
 
 
-    console.log("unitid", unitid)
+     
 
 
 
@@ -189,7 +191,7 @@ export const AddPurchase = () => {
 
 
     const fetchData = async () => {
-        console.log("viewleads", viewleads)
+         
         try {
             const response = await fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/view-leads/${viewleads}`, {
                 method: 'GET',
@@ -201,20 +203,19 @@ export const AddPurchase = () => {
             });
 
             const data = await response.json();
-            console.log("data.leads.unit_id", data)
-
+ 
             if (data?.status) {
                 setMessageShow('Lead Verified')
                 setLeadStatus(true)
+                setView(data)
             } else {
                 setMessageShow('Lead not exist')
                 setLeadStatus(false);
             }
 
-            console.log("data.leads.unit_id", data?.leads)
             userData(data?.leads.unit_id);
             // Process the data as needed
-            console.log(data);
+
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -223,7 +224,7 @@ export const AddPurchase = () => {
     const handleChange = (event) => {
         const { name, value } = event.target;
 
-        console.log("name", name, value)
+
         if (name === 'lead_id') {
             setViewleads(value);
         }
@@ -232,13 +233,24 @@ export const AddPurchase = () => {
             ...prevData,
             [name]: value,
         }));
-        console.log(formData);
+         
     };
 
 
     useEffect(() => {
         fetchData();
     }, [viewleads]);
+
+
+
+
+
+    const navigate = useNavigate();
+
+    const goBack = () => {
+        navigate(-1)
+    };
+
 
 
 
@@ -261,7 +273,7 @@ export const AddPurchase = () => {
                                 <div className="row">
                                     <div className="col-lg-12">
                                         <div className="row">
-                                        <div className="col-md-4 mb-4">
+                                            <div className="col-md-4 mb-4">
                                                 <CustomInput
                                                     label='Lead Code'
                                                     required
@@ -292,6 +304,49 @@ export const AddPurchase = () => {
                                                     inputClass='mainInput'
                                                     name="purchase_amount"
                                                     value={formData.purchase_amount}
+                                                    onChange={handleChange}
+                                                />
+                                            </div>
+                                            <div className="col-md-4 mb-4">
+                                                <CustomInput
+                                                    label='Name'
+                                                    required
+                                                    id='name'
+                                                    type='text'
+                                                    placeholder='Enter Name'
+                                                    labelClass='mainLabel'
+                                                    inputClass='mainInput'
+                                                    name="name"
+                                                    value={viewl?.leads.name}
+                                                    onChange={handleChange}
+                                                />
+                                            </div>
+                                            <div className="col-md-4 mb-4">
+                                                <CustomInput
+                                                    label='Enter Email'
+                                                    required
+                                                    id='amount'
+                                                     
+                                                    type='email'
+                                                    placeholder='Enter Email'
+                                                    labelClass='mainLabel'
+                                                    inputClass='mainInput'
+                                                    name="email"
+                                                    value={viewl?.leads.email}
+                                                    onChange={handleChange}
+                                                />
+                                            </div>
+                                            <div className="col-md-4 mb-4">
+                                                <CustomInput
+                                                    label='Net Amount'
+                                                    required
+                                                    id='netamount'
+                                                    type='number'
+                                                    placeholder='Enter Net Amount'
+                                                    labelClass='mainLabel'
+                                                    inputClass='mainInput'
+                                                    name="net_amount"
+                                                    value={viewl?.leads.gross}
                                                     onChange={handleChange}
                                                 />
                                             </div>
@@ -377,7 +432,10 @@ export const AddPurchase = () => {
                         </div>
                     </div>
                 </div>
-                <CustomModal show={showModal} close={() => { setShowModal(false) }} success heading='Purchase has been Successfully Added.' />
+                <CustomModal show={showModal} close={() => {
+                    setShowModal(false);
+                    goBack();
+                }} success heading='Purchase has been Successfully Added.' />
 
 
             </DashboardLayout>

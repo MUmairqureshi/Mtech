@@ -6,6 +6,8 @@ import CustomModal from "../../Components/CustomModal";
 import CustomInput from '../../Components/CustomInput';
 import { SelectBox } from "../../Components/CustomSelect";
 import CustomButton from "../../Components/CustomButton";
+import { useNavigate } from "react-router";
+
 export const EditLead = () => {
     const { id } = useParams();
     const [showModal, setShowModal] = useState(false);
@@ -37,13 +39,13 @@ export const EditLead = () => {
                 response.json()
             )
             .then((data) => {
-                console.log(data)
+                 
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setBrands(data.brands);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+                 
             })
     }
 
@@ -66,17 +68,20 @@ export const EditLead = () => {
                 response.json()
             )
             .then((data) => {
-                console.log(data)
+                 
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setUnit(data.units);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+                 
             })
     }
+    const navigate = useNavigate();
 
-
+    const goBack = () => {
+        navigate(-1)
+    };
     const getUserData = () => {
         const LogoutData = localStorage.getItem('login');
         document.querySelector('.loaderBox').classList.remove("d-none");
@@ -95,14 +100,14 @@ export const EditLead = () => {
                 response.json()
             )
             .then((data) => {
-                console.log(data)
+                 
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setFormData(data?.leads);
                 userData(data?.leads?.unit_id)
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+                 
             })
     }
 
@@ -119,7 +124,7 @@ export const EditLead = () => {
             formDataMethod.append(key, formData[key]);
         }
 
-        console.log(formData)
+         
         document.querySelector('.loaderBox').classList.remove("d-none");
         // Make the fetch request
         fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/leads-add-edit/${id}`, {
@@ -136,11 +141,11 @@ export const EditLead = () => {
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setShowModal(true)
-                console.log(data);
+                 ;
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+                 
             })
     };
 
@@ -149,7 +154,7 @@ export const EditLead = () => {
         getUserData()
         fectchBrandData()
         fetchUnitData()
-        
+
     }, [])
 
 
@@ -162,7 +167,7 @@ export const EditLead = () => {
             ...prevData,
             [name]: value,
         }));
-        console.log(formData)
+         
     };
 
 
@@ -183,16 +188,16 @@ export const EditLead = () => {
                 response.json()
             )
             .then((data) => {
-                console.log('user', data?.data)
+                 
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setUser(data?.data)
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+                 
             })
     }
-console.log("formData " , formData)
+     
 
 
     return (
@@ -295,7 +300,7 @@ console.log("formData " , formData)
                         <div className="col-md-4 mb-4">
                             <CustomInput
                                 label='Amount Received'
-                                
+
                                 id='received'
                                 type='number'
                                 placeholder='Enter Received Amount'
@@ -309,7 +314,7 @@ console.log("formData " , formData)
                         <div className="col-md-4 mb-4">
                             <CustomInput
                                 label='Amount Recovery'
-                                
+
                                 id='recovery'
                                 type='number'
                                 placeholder='Enter Recovery Amount'
@@ -392,7 +397,10 @@ console.log("formData " , formData)
                         </div>
                     </div>
                 </div>
-                <CustomModal show={showModal} close={() => { setShowModal(false) }} success heading='Lead Update Successfully.' />
+                <CustomModal show={showModal} close={() => {
+                    setShowModal(false);
+                    goBack();
+                }} success heading='Lead Update Successfully.' />
 
             </DashboardLayout>
         </>

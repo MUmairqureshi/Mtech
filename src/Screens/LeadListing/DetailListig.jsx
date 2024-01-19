@@ -48,14 +48,14 @@ export const DetailListing = () => {
             })
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(data)
+               
 
                 setLead(data.leads)
 
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error);
+             
             })
     }, [id]);
 

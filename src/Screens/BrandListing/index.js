@@ -83,12 +83,12 @@ export const BrandListing = () => {
       )
       .then((data) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(data)
+
         setData(data.brands);
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error)
+
       })
   }
 
@@ -123,7 +123,7 @@ export const BrandListing = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    console.log(formData)
+
     document.querySelector('.loaderBox').classList.remove("d-none");
     const LogoutData = localStorage.getItem('login');
     fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/brand-add-edit`,
@@ -141,7 +141,7 @@ export const BrandListing = () => {
         return response.json()
       })
       .then((data) => {
-        console.log(data)
+
         document.querySelector('.loaderBox').classList.add("d-none");
         setShowModal(true)
         setUser(false)
@@ -153,7 +153,7 @@ export const BrandListing = () => {
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error);
+
       })
   }
 
@@ -174,7 +174,7 @@ export const BrandListing = () => {
         return response.json()
       })
       .then((data) => {
-        console.log(data)
+
         document.querySelector('.loaderBox').classList.add("d-none");
         setIdUser(unitID)
         setFormData({
@@ -187,13 +187,13 @@ export const BrandListing = () => {
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error);
+
       })
   }
 
   const handleEditSubmit = (event) => {
     event.preventDefault();
-    console.log(formData)
+
     document.querySelector('.loaderBox').classList.remove("d-none");
     const LogoutData = localStorage.getItem('login');
     fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/brand-add-edit/${idUser}`,
@@ -211,7 +211,7 @@ export const BrandListing = () => {
         return response.json()
       })
       .then((data) => {
-        console.log(data)
+
         document.querySelector('.loaderBox').classList.add("d-none");
         setFormData({
           name: ''
@@ -223,13 +223,12 @@ export const BrandListing = () => {
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error);
       })
   }
 
 
 
-  console.log(formData)
+  
 
   return (
     <>
@@ -308,7 +307,6 @@ export const BrandListing = () => {
               value={formData.name}
               onChange={(event) => {
                 setFormData({ ...formData, name: event.target.value });
-                console.log(formData);
               }}
 
             />
@@ -327,7 +325,6 @@ export const BrandListing = () => {
               value={formData.name}
               onChange={(event) => {
                 setFormData({ ...formData, name: event.target.value });
-                console.log(formData);
               }}
 
             />
@@ -341,7 +338,6 @@ export const BrandListing = () => {
               option={optionData}
               onChange={(event) => {
                 setFormData({ ...formData, status: event.target.value });
-                console.log(formData);
               }}
             />
             <CustomButton variant='primaryButton' text='Add' type='button' onClick={handleEditSubmit} />

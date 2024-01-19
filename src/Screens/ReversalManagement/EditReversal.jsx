@@ -5,6 +5,8 @@ import BackButton from "../../Components/BackButton";
 import CustomModal from "../../Components/CustomModal";
 import CustomInput from '../../Components/CustomInput';
 import { SelectBox } from "../../Components/CustomSelect";
+import { useNavigate } from "react-router";
+
 import CustomButton from "../../Components/CustomButton";
 export const EditReversal = () => {
     const { id } = useParams();
@@ -24,7 +26,10 @@ export const EditReversal = () => {
             name: 'Full'
         }
     ]
-
+    const navigate = useNavigate();
+    const goBack = () => {
+        navigate(-1)
+    };
 
     const fetchMerchantData = () => {
         const LogoutData = localStorage.getItem('login');
@@ -272,7 +277,7 @@ export const EditReversal = () => {
                                     <div className="col-lg-12">
                                         <div className="row">
                                             <div className="col-md-4 mb-4">
-                                                
+
 
 
 
@@ -426,7 +431,7 @@ export const EditReversal = () => {
                         </div>
                     </div>
                 </div>
-                <CustomModal show={showModal} close={() => { setShowModal(false) }} success heading='Reversal Update Successfully.' />
+                <CustomModal show={showModal} close={() => { setShowModal(false); goBack() }} success heading='Reversal Update Successfully.' />
 
             </DashboardLayout>
         </>

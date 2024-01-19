@@ -47,14 +47,16 @@ export const RefundDetail = () => {
                 return response.json()
             })
             .then((data) => {
-                console.log(data)
+              
+                
                 document.querySelector('.loaderBox').classList.add("d-none");
                 SetUser(data.data)
 
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error);
+             
+                
             })
     }, [id]);
 

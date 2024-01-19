@@ -78,13 +78,13 @@ export const LeadListing = () => {
         response.json()
       )
       .then((data) => {
-        console.log(data)
+         
         document.querySelector('.loaderBox').classList.add("d-none");
         setData(data.leads);
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error)
+      
       })
 
   }

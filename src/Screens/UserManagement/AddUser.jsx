@@ -4,6 +4,8 @@ import BackButton from "../../Components/BackButton";
 import CustomModal from "../../Components/CustomModal";
 import CustomInput from '../../Components/CustomInput';
 import { SelectBox } from "../../Components/CustomSelect";
+import { useNavigate } from "react-router";
+
 import CustomButton from "../../Components/CustomButton";
 import Select from 'react-select'
 import { json } from "react-router";
@@ -19,6 +21,10 @@ export const AddUser = () => {
         unit_id: [],
         user_role: ''
     });
+    const navigate = useNavigate();
+    const goBack = () => {
+        navigate(-1)
+    };
 
     const userRole = [
         {
@@ -295,7 +301,7 @@ export const AddUser = () => {
                         </div>
                     </div>
                 </div>
-                <CustomModal show={showModal} close={() => { setShowModal(false) }} success heading='User has been Successfully Added.' />
+                <CustomModal show={showModal} close={() => { setShowModal(false) ; goBack() }} success heading='User has been Successfully Added.' />
 
 
             </DashboardLayout>

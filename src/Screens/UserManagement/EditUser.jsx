@@ -5,6 +5,8 @@ import BackButton from "../../Components/BackButton";
 import CustomModal from "../../Components/CustomModal";
 import CustomInput from '../../Components/CustomInput';
 import { SelectBox } from "../../Components/CustomSelect";
+import { useNavigate } from "react-router";
+
 import CustomButton from "../../Components/CustomButton";
 import Select from 'react-select'
 export const EditUser = () => {
@@ -20,6 +22,10 @@ export const EditUser = () => {
         unit_id: [],
         user_role: ''
     });
+    const navigate = useNavigate();
+    const goBack = () => {
+        navigate(-1)
+    };
 
 
     const SelectOptions = []
@@ -348,7 +354,7 @@ export const EditUser = () => {
                         </div>
                     </div>
                 </div>
-                <CustomModal show={showModal} close={() => { setShowModal(false) }} success heading='User Edit Successfully.' />
+                <CustomModal show={showModal} close={() => { setShowModal(false) ; goBack() }} success heading='User Edit Successfully.' />
 
             </DashboardLayout>
         </>

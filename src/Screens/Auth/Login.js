@@ -18,7 +18,6 @@ const AdminLogin = () => {
 
   
 
-    console.log(formData.password);
 
     useEffect(() => {
         document.title = 'Project Camp | Login';
@@ -30,7 +29,6 @@ const AdminLogin = () => {
         const formDataMethod = new FormData();
         formDataMethod.append('email', formData.email);
         formDataMethod.append('password', formData.password);
-        console.log(formData)
         document.querySelector('.loaderBox').classList.remove("d-none");
 
         const apiUrl = 'https://custom3.mystagingserver.site/mtrecords/public/api/auth/login';
@@ -46,7 +44,7 @@ const AdminLogin = () => {
                
                 const responseData = await response.json();
                 localStorage.setItem('login', responseData.data.token);
-                console.log('Login Response:', responseData);
+
                 document.querySelector('.loaderBox').classList.add("d-none");
                 navigate('/dashboard')
                 
@@ -77,7 +75,7 @@ const AdminLogin = () => {
                         inputClass='mainInput'
                         onChange={(event) => {
                             setFormData({ ...formData, email: event.target.value });
-                            console.log(event.target.value);
+
                         }}
                     />
                     <CustomInput
@@ -90,7 +88,7 @@ const AdminLogin = () => {
                         inputClass='mainInput'
                         onChange={(event) => {
                             setFormData({ ...formData, password: event.target.value });
-                            console.log(event.target.value);
+
                         }}
                     />
                     <div className="d-flex align-items-baseline justify-content-between mt-1">

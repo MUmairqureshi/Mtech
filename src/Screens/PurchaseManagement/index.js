@@ -50,12 +50,10 @@ export const PurchaseManagement = () => {
   const handleChange = (e) => {
     setInputValue(e.target.value);
   }
-  console.log("data" , data)
 
   const filterData = data.filter(item =>
     item?.leaddetail?.name.toLowerCase().includes(inputValue.toLowerCase())
   );
-console.log("filterData" , filterData)
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filterData.slice(indexOfFirstItem, indexOfLastItem);
@@ -81,13 +79,13 @@ console.log("filterData" , filterData)
         response.json()
       )
       .then((data) => {
-        console.log(data)
+         
         document.querySelector('.loaderBox').classList.add("d-none");
         setData(data?.data);
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error)
+        
       })
 
 

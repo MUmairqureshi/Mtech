@@ -5,6 +5,8 @@ import BackButton from "../../Components/BackButton";
 import CustomModal from "../../Components/CustomModal";
 import CustomInput from '../../Components/CustomInput';
 import { SelectBox } from "../../Components/CustomSelect";
+import { useNavigate } from "react-router";
+
 import CustomButton from "../../Components/CustomButton";
 export const EditRefund = () => {
     const { id } = useParams();
@@ -25,7 +27,10 @@ export const EditRefund = () => {
         }
     ]
 
-
+    const navigate = useNavigate();
+    const goBack = () => {
+        navigate(-1)
+      };
     const fetchMerchantData = () => {
         const LogoutData = localStorage.getItem('login');
         document.querySelector('.loaderBox').classList.remove("d-none");
@@ -46,12 +51,12 @@ export const EditRefund = () => {
             )
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(data)
+               
                 setMerchant(data?.data);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+                 
             })
     }
 
@@ -77,14 +82,13 @@ export const EditRefund = () => {
                 response.json()
             )
             .then((data) => {
-                console.log('re', data)
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setFormData(data?.data);
                 setViewleads(data?.data?.lead_code);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+                
             })
     }
 
@@ -102,7 +106,7 @@ export const EditRefund = () => {
             formDataMethod.append(key, formData[key]);
         }
 
-        console.log(formData)
+         
         document.querySelector('.loaderBox').classList.remove("d-none");
         // Make the fetch request
         fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/refund-add-edit/${id}`, {
@@ -119,11 +123,11 @@ export const EditRefund = () => {
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setShowModal(true)
-                console.log(data);
+                 
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+                 
             })
     };
 
@@ -140,7 +144,7 @@ export const EditRefund = () => {
 
 
     const userData = (uniID) => {
-        console.log("unitid", uniID)
+         
         document.querySelector('.loaderBox').classList.remove("d-none");
         fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-units/${uniID}`,
             {
@@ -157,13 +161,13 @@ export const EditRefund = () => {
                 response.json()
             )
             .then((data) => {
-                console.log('user', data?.data)
+                 
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setUnitid(data?.data)
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+                 
             })
     }
 
@@ -192,7 +196,7 @@ export const EditRefund = () => {
    
 
     const fetchData = async () => {
-        console.log("viewleads" ,viewleads)
+        
         try {
             const response = await fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/view-leads/${viewleads}`, {
                 method: 'GET',
@@ -204,12 +208,10 @@ export const EditRefund = () => {
             });
 
             const data = await response.json();
-        //  console.log("data.leads.unit_id" , data)
          
-        //  console.log("data.leads.unit_id" , data?.leads)
             userData(data?.leads.unit_id);  
             // Process the data as needed
-            // console.log(data);
+            //  
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -218,7 +220,7 @@ export const EditRefund = () => {
     const handleChange = (event) => {
         const { name, value } = event.target;
 
-        // console.log("name", name, value)
+
         if (name === 'lead_code') {
             setViewleads(value);
         }
@@ -227,7 +229,7 @@ export const EditRefund = () => {
             ...prevData,
             [name]: value,
         }));
-        // console.log(formData);
+        //  ;
     };
 
  
@@ -419,7 +421,7 @@ export const EditRefund = () => {
                         </div>
                     </div>
                 </div>
-                <CustomModal show={showModal} close={() => { setShowModal(false) }} success heading='Refund Edit Successfully.' />
+                <CustomModal show={showModal} close={() => { setShowModal(false) ; goBack() }} success heading='Refund Edit Successfully.' />
 
             </DashboardLayout>
         </>

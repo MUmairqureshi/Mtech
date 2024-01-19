@@ -50,8 +50,8 @@ export const UnitTarget = () => {
 
   const handleEditTarget = (event) => {
     event.preventDefault();
-    console.log(editFormData)
 
+    
     TargetEditData(idUser);
     targetUpdateData(editFormData);
   }
@@ -160,16 +160,16 @@ export const UnitTarget = () => {
   const filterUserdata = userdata.filter(item =>
     item?.unit_detail?.name?.toLowerCase().includes(inputValue.toLowerCase())
   );
-  console.log("filterUserdata", filterUserdata)
 
+  
   const userindexOfLastItem = currentPage * itemsPerPage;
   const userindexOfFirstItem = indexOfLastItem - itemsPerPage;
   const usercurrentItems = filterUserdata.slice(userindexOfFirstItem, userindexOfLastItem);
 
 
 
-  console.log("currentItems", currentItems)
 
+  
   const fetchData = () => {
     const LogoutData = localStorage.getItem('login');
     document.querySelector('.loaderBox').classList.remove("d-none");
@@ -191,12 +191,13 @@ export const UnitTarget = () => {
         document.querySelector('.loaderBox').classList.add("d-none");
 
 
-        console.log(data?.data)
+
         setData(data?.data);
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error)
+
+        
       })
   }
 
@@ -223,12 +224,12 @@ export const UnitTarget = () => {
         document.querySelector('.loaderBox').classList.add("d-none");
 
 
-        console.log(data?.data)
+
         setUserdata(data?.data);
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error)
+
       })
   }
 
@@ -256,10 +257,10 @@ export const UnitTarget = () => {
     //   key: "targetscore",
     //   title: "Target Score",
     // },
-    {
-      key: "status",
-      title: "Status",
-    },
+    // {
+    //   key: "status",
+    //   title: "Status",
+    // },
    
     {
       key: "action",
@@ -299,10 +300,10 @@ export const UnitTarget = () => {
       key: "status",
       title: "Status",
     },
-    {
-      key: "score_target",
-      title: "SCORE TARGET",
-    },
+    // {
+    //   key: "score_target",
+    //   title: "SCORE TARGET",
+    // },
     {
       key: "action",
       title: "Action",
@@ -314,8 +315,7 @@ export const UnitTarget = () => {
     setInputValue(event.target.value);
     setuserInputValue(event.target.value)
     const { name, value } = event.target;
-    console.log('name' , name)
-    if (name === 'unit_id') {
+     if (name === 'unit_id') {
       setViewleads(value);
     } 
     
@@ -346,7 +346,8 @@ export const UnitTarget = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(formData)
+
+    
 
     const LogoutData = localStorage.getItem('login');
     fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/set-unit-target`,
@@ -364,7 +365,7 @@ export const UnitTarget = () => {
         return response.json()
       })
       .then((data) => {
-        console.log(data)
+
         fetchData()
         setUser(false)
 
@@ -373,7 +374,7 @@ export const UnitTarget = () => {
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error);
+
       })
   }
   const LogoutData = localStorage.getItem('login');
@@ -390,8 +391,8 @@ export const UnitTarget = () => {
       });
 
       const data = await response.json();
-      console.log(data);
 
+      
       // Assuming fetchData is an asynchronous function
       await fetchData();
 
@@ -414,7 +415,7 @@ export const UnitTarget = () => {
 
 
   const fetchUserData = () => {
-    console.log("unitid", viewleads)
+
     document.querySelector('.loaderBox').classList.remove("d-none");
     fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-units/${viewleads}`,
       {
@@ -431,20 +432,20 @@ export const UnitTarget = () => {
         response.json()
       )
       .then((data) => {
-        console.log('user', data?.data)
+
         document.querySelector('.loaderBox').classList.add("d-none");
         setUserData(data?.data)
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error)
+
       })
   }
-  console.log("usedataunitname", userdata)
+
+  
 
 
 
-  console.log("useresdata", useresdata)
   useEffect(() => {
     fetchUserData();
   }, [viewleads]);
@@ -507,7 +508,7 @@ export const UnitTarget = () => {
                                 <td>{item?.target_amount ? `$ ${item?.target_amount}` : '$0'}</td>
                                 {/* <td>{`$ ${item?.target_score}`}</td> */}
                                 {/* <td>{item?.current_month_target?.month}</td> */}
-                                <td className={item?.isAschived == 1 ? 'greenColor' : 'redColor'}>{item?.isAschived == 1 ? 'Acheived' : 'Not Acheived'}</td>
+                                {/* <td className={item?.isAschived == 1 ? 'greenColor' : 'redColor'}>{item?.isAschived == 1 ? 'Acheived' : 'Not Acheived'}</td> */}
                                 <td>
                                   <Dropdown className="tableDropdown">
                                     <Dropdown.Toggle variant="transparent" className="notButton classicToggle">
@@ -569,7 +570,7 @@ export const UnitTarget = () => {
                                 {/* <td>{`$ ${item?.target_score}`}</td> */}
                                 {/* <td>{item?.current_month_target?.month}</td> */}
                                 <td className={item?.isAschived == 1 ? 'greenColor' : 'redColor'}>{item?.isAschived == 1 ? 'Acheived' : 'Not Acheived'}</td>
-                                <td>{`$ ${item?.score_target}`}</td>
+                                {/* <td>{`$ ${item?.score_target}`}</td> */}
                                 <td>
                                   <Dropdown className="tableDropdown">
                                     <Dropdown.Toggle variant="transparent" className="notButton classicToggle">
@@ -637,7 +638,7 @@ export const UnitTarget = () => {
             value={formData.target}
             onChange={(event) => {
               setFormData({ ...formData, target: event.target.value });
-              console.log(formData);
+
             }}
 
 

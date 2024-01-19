@@ -5,6 +5,8 @@ import BackButton from "../../Components/BackButton";
 import CustomModal from "../../Components/CustomModal";
 import CustomInput from '../../Components/CustomInput';
 import { SelectBox } from "../../Components/CustomSelect";
+import { useNavigate } from "react-router";
+
 import CustomButton from "../../Components/CustomButton";
 export const EditChargeBack = () => {
     const { id } = useParams();
@@ -24,6 +26,18 @@ export const EditChargeBack = () => {
             name: 'Full'
         }
     ]
+
+
+
+
+    const navigate = useNavigate();
+
+    const goBack = () => {
+        navigate(-1)
+    };
+
+
+
 
 
     const fetchMerchantData = () => {
@@ -46,12 +60,12 @@ export const EditChargeBack = () => {
             )
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(data)
+                 
                 setMerchant(data?.data);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+                 
             })
     }
 
@@ -73,14 +87,14 @@ export const EditChargeBack = () => {
                 response.json()
             )
             .then((data) => {
-                console.log(data)
+                 
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setFormData(data?.data);
                 setViewleads(data?.data?.lead_code);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+                 
             })
     }
 
@@ -114,11 +128,11 @@ export const EditChargeBack = () => {
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setShowModal(true)
-                console.log(data);
+                 ;
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+                 
             })
     };
 
@@ -149,7 +163,7 @@ export const EditChargeBack = () => {
 
 
     const userData = (uniID) => {
-        console.log("unitid", uniID)
+         
         document.querySelector('.loaderBox').classList.remove("d-none");
         fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-units/${uniID}`,
             {
@@ -166,19 +180,17 @@ export const EditChargeBack = () => {
                 response.json()
             )
             .then((data) => {
-                console.log('user', data?.data)
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setUnitid(data?.data)
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+                 
             })
     }
 
 
 
-    console.log("unitid", unitid)
 
 
 
@@ -211,7 +223,7 @@ export const EditChargeBack = () => {
             console.log("data.leads.unit_id", data?.leads)
             userData(data?.leads.unit_id);
             // Process the data as needed
-            console.log(data);
+             ;
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -220,7 +232,7 @@ export const EditChargeBack = () => {
     const handleChange = (event) => {
         const { name, value } = event.target;
 
-        console.log("name", name, value)
+         
         if (name === 'lead_code') {
             setViewleads(value);
         }
@@ -229,7 +241,7 @@ export const EditChargeBack = () => {
             ...prevData,
             [name]: value,
         }));
-        console.log(formData);
+         
     };
 
 
@@ -256,7 +268,7 @@ export const EditChargeBack = () => {
                                     <div className="col-lg-12">
                                         <div className="row">
                                             <div className="col-md-4 mb-4">
-                                            
+
 
 
                                                 <CustomInput
@@ -408,7 +420,10 @@ export const EditChargeBack = () => {
                         </div>
                     </div>
                 </div>
-                <CustomModal show={showModal} close={() => { setShowModal(false) }} success heading='ChargeBack Edit Successfully.' />
+                <CustomModal show={showModal} close={() => {
+                    setShowModal(false);
+                    goBack();
+                }} success heading='ChargeBack Edit Successfully.' />
 
             </DashboardLayout>
         </>
