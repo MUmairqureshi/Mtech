@@ -24,10 +24,30 @@ export const ProtectedRoutes = (props) => {
 
 
 
+    // useEffect(() => {
+    //     if (!login) {
+    //         navigate('/login');
+    //     }else if(login && location.pathname === '/') {
+    //         navigate('/dashboard');
+    //       }
+    // }, [navigate,login , location.pathname]);
+
+
+
+
+
+
+
+
+
     useEffect(() => {
         if (!login) {
             navigate('/login');
-        }else if(login && location.pathname === '/') {
+        } else if(!login) {
+            navigate('/customProject');
+          }
+        
+        else if(login && location.pathname === '/') {
             navigate('/dashboard');
           }
     }, [navigate,login , location.pathname]);

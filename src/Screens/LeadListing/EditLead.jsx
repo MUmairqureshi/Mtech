@@ -39,13 +39,13 @@ export const EditLead = () => {
                 response.json()
             )
             .then((data) => {
-                 
+
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setBrands(data.brands);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                 
+
             })
     }
 
@@ -68,13 +68,13 @@ export const EditLead = () => {
                 response.json()
             )
             .then((data) => {
-                 
+
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setUnit(data.units);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                 
+
             })
     }
     const navigate = useNavigate();
@@ -100,14 +100,14 @@ export const EditLead = () => {
                 response.json()
             )
             .then((data) => {
-                 
+
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setFormData(data?.leads);
                 userData(data?.leads?.unit_id)
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                 
+
             })
     }
 
@@ -124,7 +124,7 @@ export const EditLead = () => {
             formDataMethod.append(key, formData[key]);
         }
 
-         
+
         document.querySelector('.loaderBox').classList.remove("d-none");
         // Make the fetch request
         fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/leads-add-edit/${id}`, {
@@ -141,11 +141,11 @@ export const EditLead = () => {
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setShowModal(true)
-                 ;
+                    ;
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                 
+
             })
     };
 
@@ -167,7 +167,7 @@ export const EditLead = () => {
             ...prevData,
             [name]: value,
         }));
-         
+
     };
 
 
@@ -188,18 +188,63 @@ export const EditLead = () => {
                 response.json()
             )
             .then((data) => {
-                 
+
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setUser(data?.data)
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                 
+
             })
     }
-     
 
 
+    const sourcename = [
+        {
+            id: '1',
+            name: 'PPC'
+        },
+        {
+            id: '2',
+            name: 'Organic  '
+        },
+        {
+            id: '3',
+            name: 'SMS'
+        },
+        {
+            id: '4',
+            name: 'OB'
+        },
+        {
+            id: '5',
+            name: 'SMM'
+        },
+        {
+            id: '6',
+            name: 'Up-Sell'
+        },
+        {
+            id: '7',
+            name: 'Org-Up-Sell'
+        },
+        {
+            id: '8',
+            name: 'OB-Up-Sell'
+        },
+        {
+            id: '9',
+            name: 'SMM-Up-Sell'
+        }
+        ,
+        {
+            id: '10',
+            name: 'Other'
+        }
+
+    ]
+
+    console.log("formData", formData)
     return (
         <>
             <DashboardLayout>
@@ -213,8 +258,8 @@ export const EditLead = () => {
                         </div>
                     </div>
                     <div className="row">
-                        <div className="col-md-4 mb-4">
-                            <CustomInput
+                        {/* <div className="col-md-4 mb-4">
+                            <SelectBox
                                 label='Source Name'
                                 required
                                 id='name'
@@ -224,9 +269,41 @@ export const EditLead = () => {
                                 inputClass='mainInput'
                                 name="source"
                                 value={formData?.source}
+                                option={sourcename}
                                 onChange={handleChange}
                             />
+                        </div> */}
+
+                        {/* <div className="col-md-4 mb-4">
+
+
+                            <SelectBox
+                                type='text'
+                                selectClass="mainInput"
+                                name="source"
+                                label="Source Name"
+                                value={formData?.source}
+                                option={sourcename}
+                                onChange={handleChange}
+                            />
+
+                        </div> */}
+                        <div className="col-md-4 mb-4">
+                            <SelectBox
+                             type='text'
+                                selectClass="mainInput"
+                                name="source"
+                                label="Source Name"
+                                required
+                                
+                                value={"2"}
+                       
+                                option={sourcename}
+                                onChange={handleChange}
+                            />
+    
                         </div>
+
                         <div className="col-md-4 mb-4">
                             <CustomInput
                                 label='Enter Product'

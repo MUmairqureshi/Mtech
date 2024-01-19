@@ -37,7 +37,7 @@ export const EditChargeBack = () => {
     };
 
 
-
+console.log("formDatq   a" , formData)
 
 
     const fetchMerchantData = () => {
@@ -196,7 +196,7 @@ export const EditChargeBack = () => {
 
 
 
-
+console.log("setFormDataqqqqz   " , formData)
 
 
 

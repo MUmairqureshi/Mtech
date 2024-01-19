@@ -33,7 +33,7 @@ export const AddLead = () => {
             name: 'PPC'
         },
         {
-            id: '  2',
+            id: '2',
             name: 'Organic  '
         },
         {
@@ -71,7 +71,6 @@ export const AddLead = () => {
         }
 
     ]
-
 
     const fectchBrandData = () => {
         const LogoutData = localStorage.getItem('login');
