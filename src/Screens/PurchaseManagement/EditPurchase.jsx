@@ -270,7 +270,7 @@ export const EditPurchase = () => {
                         <div className="col-12 mb-2">
                             <h2 className="mainTitle">
                                 <BackButton />
-                                Edit Purchase Detail
+                                Edit Purchase
                             </h2>
                         </div>
                     </div>
@@ -300,12 +300,12 @@ export const EditPurchase = () => {
                                                     required
                                                     id='name'
                                                     disabled
-                                                    type='number'
+                                                    type='text'
                                                     placeholder='Enter Lead ID'
                                                     labelClass='mainLabel'
                                                     inputClass='mainInput'
-                                                    name="lead_id"
-                                                    value={formData.lead_id}
+                                                    name="lead_code"
+                                                    value={formData.lead_code}
                                                 // onChange={handleChange}
                                                 />
                                             </div>

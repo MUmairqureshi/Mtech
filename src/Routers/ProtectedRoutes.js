@@ -7,50 +7,76 @@ export const ProtectedRoutes = (props) => {
     const location = useLocation()
     console.log('params', location.pathname);
     let login = localStorage.getItem('login');
-    // useEffect(() => {
-    //     let login = localStorage.getItem('login');
-    //     if (!login) {
-    //         navigate('/login');
-           
-    //     }
-     
-        
+    // https://custom3.mystagingserver.site/mtrecords/public/api/auth/check-token
 
-    //     // Cleanup function to avoid memory leaks
-    //     return () => {
-    //         // Cleanup code if needed
-    //     };
-    // }, []); // Added an empty dependency array
+
 
 
 
     // useEffect(() => {
     //     if (!login) {
     //         navigate('/login');
-    //     }else if(login && location.pathname === '/') {
+    //     } else if(!login) {
+    //         navigate('/customProject');
+    //       }
+
+    //     else if(login && location.pathname === '/') {
     //         navigate('/dashboard');
     //       }
     // }, [navigate,login , location.pathname]);
-
-
-
-
-
+    // return (
+    //     <>
+    //         <Components />
+    //     </>
+    // );
+    // }
 
 
 
 
     useEffect(() => {
-        if (!login) {
-            navigate('/login');
-        } else if(!login) {
-            navigate('/customProject');
-          }
-        
-        else if(login && location.pathname === '/') {
-            navigate('/dashboard');
-          }
-    }, [navigate,login , location.pathname]);
+        const checkToken = async () => {
+            try {
+                if (!login) {
+                    navigate('/login');
+                } else {
+                    const token = login
+                    console.log("login", token)
+                    const response = await fetch('https://custom3.mystagingserver.site/mtrecords/public/api/auth/check-token', {
+                        method: 'POST',
+                        body: token
+
+                    });
+                    const data = await response.json();
+                    console.log("data" , data?.data)
+                   
+                    console.log("data" , data?.data.status)
+                    console.log("dashboard", data.status)
+                    if (data?.data.status === true) {
+                        navigate('/dashboard');
+                    } else {
+
+                        localStorage.removeItem('login');
+                    }
+                }
+            } catch (error) {
+                console.error('Error checking token:', error);
+            }
+        };
+
+        checkToken();
+    }, [navigate, login]);
+
+
+
+
+
+
+
+
+
+
+
     return (
         <>
             <Components />

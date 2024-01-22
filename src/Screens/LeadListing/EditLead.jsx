@@ -9,6 +9,10 @@ import CustomButton from "../../Components/CustomButton";
 import { useNavigate } from "react-router";
 
 export const EditLead = () => {
+    const [remainingWords, setRemainingWords] = useState(100);
+
+    const [remainingNumber, setRemainingNumber] = useState(12);
+
     const { id } = useParams();
     const [showModal, setShowModal] = useState(false);
     const [formData, setFormData] = useState({
@@ -19,12 +23,12 @@ export const EditLead = () => {
     const [brands, setBrands] = useState({});
     const [unit, setUnit] = useState({});
 
+console.log("brands" ,brands)
 
-
-    const fectchBrandData = () => {
+    const fectchBrandData = (brandID) => {
         const LogoutData = localStorage.getItem('login');
         document.querySelector('.loaderBox').classList.remove("d-none");
-        fetch('https://custom3.mystagingserver.site/mtrecords/public/api/admin/brand-listing',
+        fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/unit-brands/${brandID}`,
             {
                 method: 'GET',
                 headers: {
@@ -41,7 +45,7 @@ export const EditLead = () => {
             .then((data) => {
 
                 document.querySelector('.loaderBox').classList.add("d-none");
-                setBrands(data.brands);
+                setBrands(data?.data);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
@@ -104,13 +108,14 @@ export const EditLead = () => {
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setFormData(data?.leads);
                 userData(data?.leads?.unit_id)
+                fectchBrandData(data?.leads?.unit_id)
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
 
             })
     }
-
+console.log("brands")
 
     const LogoutData = localStorage.getItem('login');
 
@@ -152,23 +157,23 @@ export const EditLead = () => {
 
     useEffect(() => {
         getUserData()
-        fectchBrandData()
+        // fectchBrandData()
         fetchUnitData()
 
     }, [])
 
 
-    const handleChange = (event) => {
-        const { name, value } = event.target;
-        if (name === 'unit_id') {
-            userData(value)
-        }
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
+    // const handleChange = (event) => {
+    //     const { name, value } = event.target;
+    //     if (name === 'unit_id') {
+    //         userData(value)
+    //     }
+    //     setFormData((prevData) => ({
+    //         ...prevData,
+    //         [name]: value,
+    //     }));
 
-    };
+    // };
 
 
     const userData = (uniID) => {
@@ -243,8 +248,86 @@ export const EditLead = () => {
         }
 
     ]
+ 
 
-    console.log("formData", formData)
+
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+
+        if (event.target.tagName === "TEXTAREA") {
+            const wordLimit = 100;
+            const wordCount = value.trim().split(/\s+/).length;
+
+            if (wordCount <= wordLimit) {
+                setFormData((prevData) => ({
+                    ...prevData,
+                    [name]: value,
+                }));
+                setRemainingWords(wordLimit - wordCount);
+            } else {
+                const truncatedText = value
+                    .trim()
+                    .split(/\s+/)
+                    .slice(0, wordLimit)
+                    .join(' ');
+
+                setFormData((prevData) => ({
+                    ...prevData,
+                    [name]: truncatedText,
+                }));
+
+                setRemainingWords(0);
+            }
+        } else {
+            if (name === 'unit_id') {
+ 
+                setFormData((prevData) => ({
+                    ...prevData,
+                    [name]: value,
+                }));
+                userData(value);
+                fectchBrandData(value)
+
+            } else if (name === 'email') {
+                // For 'email', set the value directly without word limit
+                setFormData((prevData) => ({
+                    ...prevData,
+                    [name]: value,
+                }));
+            } else if (
+                name === 'phone' ||
+                name === 'quoted_amount' ||
+                name === 'received' ||
+                name === 'recovery'
+            ) {
+                const characterLimit = 12;
+
+                if (value.length <= characterLimit) {
+                    setFormData((prevData) => ({
+                        ...prevData,
+                        [name]: value,
+                    }));
+                    setRemainingNumber(characterLimit - value.length);
+                } else {
+                    setRemainingNumber(0);
+                }
+            } else {
+                // Handle other input fields here
+                // You may want to set a default character limit for other fields
+                const defaultCharacterLimit = 20;
+
+                if (value.length <= defaultCharacterLimit) {
+                    setFormData((prevData) => ({
+                        ...prevData,
+                        [name]: value,
+                    }));
+                    // Set remaining for other fields if needed
+                }
+            }
+        }
+    };
+console.log("formData" , formData   )
+
     return (
         <>
             <DashboardLayout>
@@ -290,18 +373,18 @@ export const EditLead = () => {
                         </div> */}
                         <div className="col-md-4 mb-4">
                             <SelectBox
-                             type='text'
+                                type='text'
                                 selectClass="mainInput"
                                 name="source"
                                 label="Source Name"
                                 required
-                                
-                                value={"2"}
-                       
+
+                                value={formData?.source}
+
                                 option={sourcename}
                                 onChange={handleChange}
                             />
-    
+
                         </div>
 
                         <div className="col-md-4 mb-4">
@@ -342,7 +425,7 @@ export const EditLead = () => {
                                 labelClass='mainLabel'
                                 inputClass='mainInput'
                                 name="name"
-                                value={formData?.name}
+                                value={formData?.id}
                                 onChange={handleChange}
                             />
                         </div>
@@ -405,18 +488,6 @@ export const EditLead = () => {
                         <div className="col-md-4 mb-4">
                             <SelectBox
                                 selectClass="mainInput"
-                                name="brand"
-                                label="Brand"
-                                required
-                                value={formData?.brand}
-                                option={brands}
-                                onChange={handleChange}
-                            />
-
-                        </div>
-                        <div className="col-md-4 mb-4">
-                            <SelectBox
-                                selectClass="mainInput"
                                 name="unit_id"
                                 label="Unit"
                                 required
@@ -426,6 +497,20 @@ export const EditLead = () => {
                             />
 
                         </div>
+                        <div className="col-md-4 mb-4">
+                            <SelectBox
+                                selectClass="mainInput"
+                                name="brand"
+                                label="Brand"
+                                required
+                                value={parseInt(formData?.brand)}
+                                option={brands}
+                                onChange={handleChange}
+                            />
+
+
+                        </div>
+                   
                         <div className="col-md-4 mb-4">
                             <SelectBox
                                 selectClass="mainInput"
@@ -451,19 +536,20 @@ export const EditLead = () => {
                         </div>
                         <div className="col-md-12 mb-4">
                             <div className="inputWrapper">
+                            
                                 <div className="form-controls">
-                                    <label htmlFor="">Description</label>
+                                    <label htmlFor="description">Description</label>
                                     <textarea
                                         name="description"
                                         className="form-control shadow border-0"
-                                        id=""
+                                        id="description"
                                         cols="30"
                                         rows="10"
-                                        value={formData?.description}
+                                        value={formData.description}
                                         onChange={handleChange}
-                                    >
-
-                                    </textarea>
+                                    // disabled={remainingWords <= 0}
+                                    />
+                                    <p>Remaining words: {remainingWords}</p>
                                 </div>
                             </div>
 

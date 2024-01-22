@@ -72,10 +72,10 @@ export const AddLead = () => {
 
     ]
 
-    const fectchBrandData = () => {
+    const fectchBrandData = (brandID) => {
         const LogoutData = localStorage.getItem('login');
         document.querySelector('.loaderBox').classList.remove("d-none");
-        fetch('https://custom3.mystagingserver.site/mtrecords/public/api/admin/brand-listing',
+        fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/unit-brands/${brandID}`,
             {
                 method: 'GET',
                 headers: {
@@ -90,13 +90,13 @@ export const AddLead = () => {
                 response.json()
             )
             .then((data) => {
-                
+                console.log(data)
                 document.querySelector('.loaderBox').classList.add("d-none");
-                setBrands(data.brands);
+                setBrands(data?.data);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                 
+
             })
     }
 
@@ -119,13 +119,13 @@ export const AddLead = () => {
                 response.json()
             )
             .then((data) => {
-                
+
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setUnit(data.units);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                 
+
             })
     }
 
@@ -145,39 +145,90 @@ export const AddLead = () => {
 
     const [remainingWords, setRemainingWords] = useState(100);
 
+ 
+    
 
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+    
+        if (event.target.tagName === "TEXTAREA") {
+            const wordLimit = 100;
+            const wordCount = value.trim().split(/\s+/).length;
+    
+            if (wordCount <= wordLimit) {
+                setFormData((prevData) => ({
+                    ...prevData,
+                    [name]: value,
+                }));
+                setRemainingWords(wordLimit - wordCount);
+            } else {
+                const truncatedText = value
+                    .trim()
+                    .split(/\s+/)
+                    .slice(0, wordLimit)
+                    .join(' ');
+    
+                setFormData((prevData) => ({
+                    ...prevData,
+                    [name]: truncatedText,
+                }));
+    
+                setRemainingWords(0);
+            }
+        } else {
+            if (name === 'unit_id') {
+ 
+                setFormData((prevData) => ({
+                    ...prevData,
+                    [name]: value,
+                }));
+                userData(value);
+                fectchBrandData(value)
+                
+            } else if (name === 'email') {
+                 setFormData((prevData) => ({
+                    ...prevData,
+                    [name]: value,
+                }));
+            } else if (
+                name === 'phone' ||
+                name === 'quoted_amount' ||
+                name === 'received' ||
+                name === 'recovery'
+            ) {
+                const characterLimit = 12;
+    
+                if (value.length <= characterLimit) {
+                    setFormData((prevData) => ({
+                        ...prevData,
+                        [name]: value,
+                    }));
+                    setRemainingNumber(characterLimit - value.length);
+                } else {
+                    setRemainingNumber(0);
+                }
+            } else {
+                // Handle other input fields here
+                // You may want to set a default character limit for other fields
+                const defaultCharacterLimit = 20;
+    
+                if (value.length <= defaultCharacterLimit) {
+                    setFormData((prevData) => ({
+                        ...prevData,
+                        [name]: value,
+                    }));
+                    // Set remaining for other fields if needed
+                }
+            }
+        }
+    };
+    
 
+    const [remainingNumber, setRemainingNumber] = useState(12);
     // const handleChange = (event) => {
     //     const { name, value } = event.target;
-    //     const wordCount = value.trim().split(/\s+/).length; // Counting words
 
-    //     if (wordCount <= 100) { // Change 100 to your desired word limit
-    //         setFormData((prevData) => ({
-    //             ...prevData,
-    //             [name]: value,
-    //         }));
-    //         setRemainingWords(100 - wordCount); // Change 100 to your desired word limit
-    //     } else {
-    //         // Truncate the text to the specified word limit
-    //         const truncatedText = value
-    //             .trim()
-    //             .split(/\s+/)
-    //             .slice(0, 100)
-    //             .join(' ');
-
-    //         setFormData((prevData) => ({
-    //             ...prevData,
-    //             [name]: truncatedText,
-    //         }));
-
-    //         setRemainingWords(0);  
-    //     }
-    // };
-
-    // const handleChange = (event) => {
-    //     const { name, value } = event.target;
-
-    //      if (event.target.tagName === "TEXTAREA") {
+    //     if (event.target.tagName === 'TEXTAREA') {
     //         const wordLimit = 100;
     //         const wordCount = value.trim().split(/\s+/).length;
 
@@ -201,89 +252,35 @@ export const AddLead = () => {
 
     //             setRemainingWords(0);
     //         }
-    //     } else {  
-    //         const characterLimit = 12;  
+    //     } else if (
+    //         name === 'phone' ||
+    //         name === 'quoted_amount' ||
+    //         name === 'received' ||
+    //         name === 'recovery'
+    //     ) {
+    //         const characterLimit = 12;
 
-    //         if (name  === phone && name  === quoted_amount && name  === received ) {
-
-    //             if (value <= characterLimit) {
+    //         if (value.length <= characterLimit) {
     //             setFormData((prevData) => ({
     //                 ...prevData,
     //                 [name]: value,
     //             }));
+    //             setRemainingNumber(characterLimit - value.length);
+    //         } else {
+    //             setRemainingNumber(0);
+    //         }
+    //     } else if (name === 'unit_id') {
+    //                 userData(value)
+    //             }
+    //      else {
+    //         setFormData((prevData) => ({
+    //             ...prevData,
+    //             [name]: value,
 
 
-
-    //     }
-    //             setFormData((prevData) => ({
-    //                 ...prevData,
-    //                 [name]: value,
-    //             }));
-    //         // }
+    //         }));
     //     }
     // };
-
-
-
-
-
-    const [remainingNumber, setRemainingNumber] = useState(12);
-    const handleChange = (event) => {
-        const { name, value } = event.target;
-
-        if (event.target.tagName === 'TEXTAREA') {
-            const wordLimit = 100;
-            const wordCount = value.trim().split(/\s+/).length;
-
-            if (wordCount <= wordLimit) {
-                setFormData((prevData) => ({
-                    ...prevData,
-                    [name]: value,
-                }));
-                setRemainingWords(wordLimit - wordCount);
-            } else {
-                const truncatedText = value
-                    .trim()
-                    .split(/\s+/)
-                    .slice(0, wordLimit)
-                    .join(' ');
-
-                setFormData((prevData) => ({
-                    ...prevData,
-                    [name]: truncatedText,
-                }));
-
-                setRemainingWords(0);
-            }
-        } else if (
-            name === 'phone' ||
-            name === 'quoted_amount' ||
-            name === 'received' ||
-            name === 'recovery'
-        ) {
-            const characterLimit = 12;
-
-            if (value.length <= characterLimit) {
-                setFormData((prevData) => ({
-                    ...prevData,
-                    [name]: value,
-                }));
-                setRemainingNumber(characterLimit - value.length);
-            } else {
-                setRemainingNumber(0);
-            }
-        } else if (name === 'unit_id') {
-                    userData(value)
-                }
-         else {
-            setFormData((prevData) => ({
-                ...prevData,
-                [name]: value,
-
-
-            }));
-        }
-    };
 
 
 
@@ -307,13 +304,13 @@ export const AddLead = () => {
                 response.json()
             )
             .then((data) => {
-                 
+
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setUser(data?.data)
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                 
+
             })
     }
 
@@ -324,7 +321,7 @@ export const AddLead = () => {
         const formDataMethod = new FormData();
         for (const key in formData) {
             formDataMethod.append(key, formData[key]);
-        } 
+        }
         document.querySelector('.loaderBox').classList.remove("d-none");
         // Make the fetch request
         fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/leads-add-edit`, {
@@ -345,13 +342,13 @@ export const AddLead = () => {
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                 
+
             })
     };
 
 
     useEffect(() => {
-        fectchBrandData()
+        // fectchBrandData()
         fetchUnitData()
         // userData()
     }, [])
@@ -381,7 +378,7 @@ export const AddLead = () => {
                                     <div className="col-lg-12">
                                         <div className="row">
                                             <div className="col-md-4 mb-4">
-                                            
+
 
                                                 <SelectBox
                                                     type='text'
@@ -439,111 +436,7 @@ export const AddLead = () => {
                                                     onChange={handleChange}
                                                 />
                                             </div>
-                                            {/* <div className="col-md-4 mb-4">
-                                                <CustomInput
-                                                    label='Phone'
-                                                    required
-                                                    id='phone'
-                                                    type='number'
-                                                    placeholder='Enter phone'
-                                                    labelClass='mainLabel'
-                                                    inputClass='mainInput'
-                                                    name="phone"
-                                                    value={formData.phone}
-                                                    onChange={handleChange}
-                                                />
-                                            </div>
-                                            <div className="col-md-4 mb-4">
-                                                <CustomInput
-                                                    label='Quoted Amount'
-                                                    required
-                                                    id='amount'
-                                                    type='number'
-                                                    placeholder='Enter Quoted Amount'
-                                                    labelClass='mainLabel'
-                                                    inputClass='mainInput'
-                                                    name="quoted_amount"
-                                                    value={formData.quoted_amount}
-                                                    onChange={handleChange}
-                                                />
-                                            </div>
-                                            <div className="col-md-4 mb-4">
-                                                <CustomInput
-                                                    label='Amount Received'
-                                                    id='received'
-                                                    required
-                                                    type='number'
-                                                    placeholder='Enter Received Amount'
-                                                    labelClass='mainLabel'
-                                                    inputClass='mainInput'
-                                                    name="received"
-                                                    value={formData.received}
-                                                    onChange={handleChange}
-                                                />
-                                            </div>
-                                            <div className="col-md-4 mb-4">
-                                                <CustomInput
-                                                    label='Amount Recovery'
-                                                    id='recovery'
-                                                    required
-                                                    type='number'
-                                                    placeholder='Enter Recovery Amount'
-                                                    labelClass='mainLabel'
-                                                    inputClass='mainInput'
-                                                    name="recovery"
-                                                    value={formData.recovery}
-                                                    onChange={handleChange}
-                                                />
-                                            </div>
-                                            <div className="col-md-4 mb-4">
-                                                <SelectBox
-                                                    selectClass="mainInput"
-                                                    name="brand"
-                                                    label="Brand"
-                                                    required
-                                                    value={formData.brand}
-                                                    option={brands}
-                                                    onChange={handleChange}
-                                                />
-
-                                            </div>
-                                            <div className="col-md-4 mb-4">
-                                                <SelectBox
-                                                    selectClass="mainInput"
-                                                    name="unit_id"
-                                                    label="Unit"
-                                                    required
-                                                    value={formData.unit_id}
-                                                    option={unit}
-                                                    onChange={handleChange}
-                                                />
-
-                                            </div>
-
-                                            <div className="col-md-4 mb-4">
-                                                <SelectBox
-                                                    selectClass="mainInput"
-                                                    name="sales_rep"
-                                                    label="Sales Rep"
-                                                    required
-                                                    value={formData.sales_rep}
-                                                    option={user}
-                                                    onChange={handleChange}
-                                                />
-
-                                            </div>
-                                            <div className="col-md-4 mb-4">
-                                                <SelectBox
-                                                    selectClass="mainInput"
-                                                    name="account_rep"
-                                                    label="Account Rep"
-                                                    value={formData.account_rep}
-                                                    option={user}
-                                                    onChange={handleChange}
-                                                />
-
-                                            </div>
-                                             */}
+                                       
 
 
 
@@ -609,18 +502,7 @@ export const AddLead = () => {
 
 
 
-                                            <div className="col-md-4 mb-4">
-                                                <SelectBox
-                                                    selectClass="mainInput"
-                                                    name="brand"
-                                                    label="Brand"
-                                                    required
-                                                    value={formData.brand}
-                                                    option={brands}
-                                                    onChange={handleChange}
-                                                />
-
-                                            </div>
+                                          
                                             <div className="col-md-4 mb-4">
                                                 <SelectBox
                                                     selectClass="mainInput"
@@ -633,7 +515,18 @@ export const AddLead = () => {
                                                 />
 
                                             </div>
+                                            <div className="col-md-4 mb-4">
+                                                <SelectBox
+                                                    selectClass="mainInput"
+                                                    name="brand"
+                                                    label="Brand"
+                                                    required
+                                                    value={formData.brand}
+                                                    option={brands}
+                                                    onChange={handleChange}
+                                                />
 
+                                            </div>
                                             <div className="col-md-4 mb-4">
                                                 <SelectBox
                                                     selectClass="mainInput"
@@ -667,21 +560,7 @@ export const AddLead = () => {
 
                                             <div className="col-md-12 mb-4">
                                                 <div className="inputWrapper">
-                                                    {/* <div className="form-controls">
-                                                        <label htmlFor="">Description</label>
-                                                        <textarea
-                                                            name="description"
-                                                            className="form-control shadow border-0"
-                                                            id=""
-                                                            cols="30"
-                                                            rows="10"
-                                                            value={formData.description}
-                                                            onChange={handleChange}
-                                                        >
-
-                                                        </textarea>
-                                                    </div> */}
-
+                                                 
 
                                                     <div className="form-controls">
                                                         <label htmlFor="description">Description</label>

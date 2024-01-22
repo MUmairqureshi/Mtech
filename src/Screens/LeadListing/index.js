@@ -175,7 +175,7 @@ export const LeadListing = () => {
       title: "Action",
     },
   ];
-
+console.log("currentItems" ,currentItems)
 
  
 

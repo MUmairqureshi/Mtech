@@ -8,13 +8,16 @@ import { useNavigate } from "react-router";
 
 import CustomButton from "../../Components/CustomButton";
 export const AddRefund = () => {
+    const [messgaeShow, setMessageShow] = useState();
     const [initalRole, setrole] = useState({});
     const [initialunit, setUnit] = useState({});
-    const [merchant, setMerchant]= useState()
+    const [merchant, setMerchant] = useState()
     const [showModal, setShowModal] = useState(false)
     const [formData, setFormData] = useState({});
     const [successStatus, setSuccessStatus] = useState('Server Error!');
-
+    const [viewl, setView] = useState('');
+    const [leadStatus, setLeadStatus] = useState(false);
+    const [viewleads, setViewleads] = useState('');
     const refundType = [
         {
             id: 'Partial',
@@ -27,34 +30,34 @@ export const AddRefund = () => {
     ]
 
 
-    const fetchMerchantData = () =>  {
+    const fetchMerchantData = () => {
         const LogoutData = localStorage.getItem('login');
         document.querySelector('.loaderBox').classList.remove("d-none");
-    
+
         fetch('https://custom3.mystagingserver.site/mtrecords/public/api/admin/merchant-listing',
-          {
-            method: 'GET',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${LogoutData}`
-            },
-          }
+            {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${LogoutData}`
+                },
+            }
         )
-    
-          .then(response =>
-            response.json()
-          )
-          .then((data) => {
-            document.querySelector('.loaderBox').classList.add("d-none");
-            
-            setMerchant(data?.data);
-          })
-          .catch((error) => {
-            document.querySelector('.loaderBox').classList.add("d-none");
-            
-          })
-      }
+
+            .then(response =>
+                response.json()
+            )
+            .then((data) => {
+                document.querySelector('.loaderBox').classList.add("d-none");
+
+                setMerchant(data?.data);
+            })
+            .catch((error) => {
+                document.querySelector('.loaderBox').classList.add("d-none");
+
+            })
+    }
 
 
     const fectchBrandData = () => {
@@ -77,12 +80,12 @@ export const AddRefund = () => {
             )
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                
+
                 setrole(data.roles);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                
+
             })
     }
 
@@ -105,13 +108,13 @@ export const AddRefund = () => {
                 response.json()
             )
             .then((data) => {
-                
+
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setUnit(data.units);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                
+
             })
     }
 
@@ -129,7 +132,7 @@ export const AddRefund = () => {
             formDataMethod.append(key, formData[key]);
         }
 
-         
+
         document.querySelector('.loaderBox').classList.remove("d-none");
         // Make the fetch request
         fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/refund-add-edit`, {
@@ -140,18 +143,18 @@ export const AddRefund = () => {
             },
             body: formDataMethod // Use the FormData object as the request body
         })
-            .then((response) => { 
+            .then((response) => {
                 return response.json();
             })
-            .then((data) => { 
-                    document.querySelector('.loaderBox').classList.add("d-none");
-                    data?.status ? setSuccessStatus(data?.msg) : setSuccessStatus(data?.msg)
-                    setShowModal(true)
-               
+            .then((data) => {
+                document.querySelector('.loaderBox').classList.add("d-none");
+                data?.status ? setSuccessStatus(data?.msg) : setSuccessStatus(data?.msg)
+                setShowModal(true)
+
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                
+
             })
     };
 
@@ -170,13 +173,48 @@ export const AddRefund = () => {
             [name]: value,
         }));
     };
-    
+
     const navigate = useNavigate();
     const goBack = () => {
         navigate(-1)
-      };
+    };
+
+    const handleFetch = (event) => {
+        const { name, value } = event.target;
+        if (name === 'lead_code') {
+            setViewleads(value);
+        }
+    };
+    const fetchData = async () => {
+        try {
+            const response = await fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/view-leads/${viewleads}`, {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${LogoutData}`
+                },
+            });
+
+            const data = await response.json();
+
+            if (data?.status) {
+                setMessageShow('Lead Verified')
+                setLeadStatus(true)
+                setView(data)
+            } else {
+                setMessageShow('Lead not exist')
+                setLeadStatus(false);
+            }
 
 
+            // userData(data?.leads.unit_id);
+              ;
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            // userData(0);
+        }
+    };
     return (
         <>
             <DashboardLayout>
@@ -207,7 +245,17 @@ export const AddRefund = () => {
                                                     name="lead_code"
                                                     value={formData?.lead_code}
                                                     onChange={handleChange}
+                                                    onBlur={handleFetch}
+
                                                 />
+                                                {
+                                                    messgaeShow && (
+                                                        <p className={leadStatus ? 'text-success' : 'text-danger'}>{messgaeShow}</p>
+                                                    )
+
+                                                }
+
+
                                             </div>
                                             <div className="col-md-4 mb-4">
                                                 <CustomInput
@@ -225,7 +273,7 @@ export const AddRefund = () => {
                                             </div>
 
 
-                                      
+
                                             <div className="col-md-4 mb-4">
                                                 <CustomInput
                                                     label='Refund Date'
@@ -280,8 +328,8 @@ export const AddRefund = () => {
                                             </div>
                                             <div className="col-md-12 mb-4">
                                                 <div className="inputWrapper">
-                                                <label>Reason*</label>
-                                                <textarea value={formData?.reason} name="reason" className="mainInput" onChange={handleChange}></textarea>
+                                                    <label>Reason*</label>
+                                                    <textarea value={formData?.reason} name="reason" className="mainInput" onChange={handleChange}></textarea>
                                                 </div>
                                             </div>
                                             <div className="col-md-12">
@@ -294,7 +342,7 @@ export const AddRefund = () => {
                         </div>
                     </div>
                 </div>
-                <CustomModal show={showModal} close={() => { setShowModal(false) ; goBack() }} success heading={successStatus} />
+                <CustomModal show={showModal} close={() => { setShowModal(false); goBack() }} success heading={successStatus} />
 
 
             </DashboardLayout>
