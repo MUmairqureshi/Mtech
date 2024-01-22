@@ -145,16 +145,16 @@ export const AddLead = () => {
 
     const [remainingWords, setRemainingWords] = useState(100);
 
- 
-    
+
+
 
     const handleChange = (event) => {
         const { name, value } = event.target;
-    
+
         if (event.target.tagName === "TEXTAREA") {
             const wordLimit = 100;
             const wordCount = value.trim().split(/\s+/).length;
-    
+
             if (wordCount <= wordLimit) {
                 setFormData((prevData) => ({
                     ...prevData,
@@ -167,26 +167,26 @@ export const AddLead = () => {
                     .split(/\s+/)
                     .slice(0, wordLimit)
                     .join(' ');
-    
+
                 setFormData((prevData) => ({
                     ...prevData,
                     [name]: truncatedText,
                 }));
-    
+
                 setRemainingWords(0);
             }
         } else {
             if (name === 'unit_id') {
- 
+
                 setFormData((prevData) => ({
                     ...prevData,
                     [name]: value,
                 }));
                 userData(value);
                 fectchBrandData(value)
-                
+
             } else if (name === 'email') {
-                 setFormData((prevData) => ({
+                setFormData((prevData) => ({
                     ...prevData,
                     [name]: value,
                 }));
@@ -197,7 +197,7 @@ export const AddLead = () => {
                 name === 'recovery'
             ) {
                 const characterLimit = 12;
-    
+
                 if (value.length <= characterLimit) {
                     setFormData((prevData) => ({
                         ...prevData,
@@ -211,7 +211,7 @@ export const AddLead = () => {
                 // Handle other input fields here
                 // You may want to set a default character limit for other fields
                 const defaultCharacterLimit = 20;
-    
+
                 if (value.length <= defaultCharacterLimit) {
                     setFormData((prevData) => ({
                         ...prevData,
@@ -222,66 +222,12 @@ export const AddLead = () => {
             }
         }
     };
-    
+    const isReceivedEmpty = formData.received === '';
+    const isRecoveryEmpty = formData.recovery === '';
+
 
     const [remainingNumber, setRemainingNumber] = useState(12);
-    // const handleChange = (event) => {
-    //     const { name, value } = event.target;
-
-    //     if (event.target.tagName === 'TEXTAREA') {
-    //         const wordLimit = 100;
-    //         const wordCount = value.trim().split(/\s+/).length;
-
-    //         if (wordCount <= wordLimit) {
-    //             setFormData((prevData) => ({
-    //                 ...prevData,
-    //                 [name]: value,
-    //             }));
-    //             setRemainingWords(wordLimit - wordCount);
-    //         } else {
-    //             const truncatedText = value
-    //                 .trim()
-    //                 .split(/\s+/)
-    //                 .slice(0, wordLimit)
-    //                 .join(' ');
-
-    //             setFormData((prevData) => ({
-    //                 ...prevData,
-    //                 [name]: truncatedText,
-    //             }));
-
-    //             setRemainingWords(0);
-    //         }
-    //     } else if (
-    //         name === 'phone' ||
-    //         name === 'quoted_amount' ||
-    //         name === 'received' ||
-    //         name === 'recovery'
-    //     ) {
-    //         const characterLimit = 12;
-
-    //         if (value.length <= characterLimit) {
-    //             setFormData((prevData) => ({
-    //                 ...prevData,
-    //                 [name]: value,
-    //             }));
-    //             setRemainingNumber(characterLimit - value.length);
-    //         } else {
-    //             setRemainingNumber(0);
-    //         }
-    //     } else if (name === 'unit_id') {
-    //                 userData(value)
-    //             }
-    //      else {
-    //         setFormData((prevData) => ({
-    //             ...prevData,
-    //             [name]: value,
-
-
-    //         }));
-    //     }
-    // };
-
+ 
 
 
     const LogoutData = localStorage.getItem('login');
@@ -359,6 +305,7 @@ export const AddLead = () => {
     const goBack = () => {
         navigate(-1)
     };
+    console.log("formData", formData)
     return (
         <>
             <DashboardLayout>
@@ -436,7 +383,7 @@ export const AddLead = () => {
                                                     onChange={handleChange}
                                                 />
                                             </div>
-                                       
+
 
 
 
@@ -458,11 +405,11 @@ export const AddLead = () => {
 
                                             <div className="col-md-4 mb-4">
                                                 <CustomInput
-                                                    label="Quoted Amount"
+                                                    label=" Amount"
                                                     required
                                                     id="amount"
                                                     type="number"
-                                                    placeholder="Enter Quoted Amount"
+                                                    placeholder="Enter  Amount"
                                                     labelClass="mainLabel"
                                                     inputClass="mainInput"
                                                     name="quoted_amount"
@@ -470,11 +417,12 @@ export const AddLead = () => {
                                                     onChange={handleChange}
                                                 />
                                             </div>
+                                    
                                             <div className="col-md-4 mb-4">
                                                 <CustomInput
                                                     label="Amount Received"
                                                     id="received"
-                                                    required={!formData.recovery}
+                                                    required
                                                     type="number"
                                                     placeholder="Enter Received Amount"
                                                     labelClass="mainLabel"
@@ -482,14 +430,17 @@ export const AddLead = () => {
                                                     name="received"
                                                     value={formData.received}
                                                     onChange={handleChange}
+                                                    disabled={!isRecoveryEmpty}
+                                                    
                                                 />
                                             </div>
 
                                             <div className="col-md-4 mb-4">
                                                 <CustomInput
+                                                    required
                                                     label="Amount Recovery"
                                                     id="recovery"
-                                                    required={!formData.received}
+                                                     
                                                     type="number"
                                                     placeholder="Enter Recovery Amount"
                                                     labelClass="mainLabel"
@@ -497,12 +448,12 @@ export const AddLead = () => {
                                                     name="recovery"
                                                     value={formData.recovery}
                                                     onChange={handleChange}
+                                                    disabled={!isReceivedEmpty}
                                                 />
+
                                             </div>
 
 
-
-                                          
                                             <div className="col-md-4 mb-4">
                                                 <SelectBox
                                                     selectClass="mainInput"
@@ -560,7 +511,7 @@ export const AddLead = () => {
 
                                             <div className="col-md-12 mb-4">
                                                 <div className="inputWrapper">
-                                                 
+
 
                                                     <div className="form-controls">
                                                         <label htmlFor="description">Description</label>

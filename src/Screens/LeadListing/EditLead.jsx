@@ -23,7 +23,7 @@ export const EditLead = () => {
     const [brands, setBrands] = useState({});
     const [unit, setUnit] = useState({});
 
-console.log("brands" ,brands)
+    console.log("brands", brands)
 
     const fectchBrandData = (brandID) => {
         const LogoutData = localStorage.getItem('login');
@@ -115,7 +115,7 @@ console.log("brands" ,brands)
 
             })
     }
-console.log("brands")
+    console.log("brands")
 
     const LogoutData = localStorage.getItem('login');
 
@@ -248,7 +248,7 @@ console.log("brands")
         }
 
     ]
- 
+
 
 
     const handleChange = (event) => {
@@ -280,7 +280,7 @@ console.log("brands")
             }
         } else {
             if (name === 'unit_id') {
- 
+
                 setFormData((prevData) => ({
                     ...prevData,
                     [name]: value,
@@ -326,7 +326,9 @@ console.log("brands")
             }
         }
     };
-console.log("formData" , formData   )
+    const isReceivedEmpty = formData.received === '';
+    const isRecoveryEmpty = formData.recovery === '';
+
 
     return (
         <>
@@ -341,36 +343,7 @@ console.log("formData" , formData   )
                         </div>
                     </div>
                     <div className="row">
-                        {/* <div className="col-md-4 mb-4">
-                            <SelectBox
-                                label='Source Name'
-                                required
-                                id='name'
-                                type='text'
-                                placeholder='Enter source'
-                                labelClass='mainLabel'
-                                inputClass='mainInput'
-                                name="source"
-                                value={formData?.source}
-                                option={sourcename}
-                                onChange={handleChange}
-                            />
-                        </div> */}
-
-                        {/* <div className="col-md-4 mb-4">
-
-
-                            <SelectBox
-                                type='text'
-                                selectClass="mainInput"
-                                name="source"
-                                label="Source Name"
-                                value={formData?.source}
-                                option={sourcename}
-                                onChange={handleChange}
-                            />
-
-                        </div> */}
+                      
                         <div className="col-md-4 mb-4">
                             <SelectBox
                                 type='text'
@@ -445,11 +418,11 @@ console.log("formData" , formData   )
                         </div>
                         <div className="col-md-4 mb-4">
                             <CustomInput
-                                label='Quoted Amount'
+                                label=' Amount'
                                 required
                                 id='amount'
                                 type='number'
-                                placeholder='Enter Quoted Amount'
+                                placeholder='Enter  Amount'
                                 labelClass='mainLabel'
                                 inputClass='mainInput'
                                 name="quoted_amount"
@@ -459,31 +432,37 @@ console.log("formData" , formData   )
                         </div>
                         <div className="col-md-4 mb-4">
                             <CustomInput
-                                label='Amount Received'
-
-                                id='received'
-                                type='number'
-                                placeholder='Enter Received Amount'
-                                labelClass='mainLabel'
-                                inputClass='mainInput'
+                                label="Amount Received"
+                                id="received"
+                                required
+                                type="number"
+                                placeholder="Enter Received Amount"
+                                labelClass="mainLabel"
+                                inputClass="mainInput"
                                 name="received"
-                                value={formData?.received}
+                                value={formData.received}
                                 onChange={handleChange}
+                                disabled={!isRecoveryEmpty}
+
                             />
                         </div>
+
                         <div className="col-md-4 mb-4">
                             <CustomInput
-                                label='Amount Recovery'
+                                required
+                                label="Amount Recovery"
+                                id="recovery"
 
-                                id='recovery'
-                                type='number'
-                                placeholder='Enter Recovery Amount'
-                                labelClass='mainLabel'
-                                inputClass='mainInput'
+                                type="number"
+                                placeholder="Enter Recovery Amount"
+                                labelClass="mainLabel"
+                                inputClass="mainInput"
                                 name="recovery"
-                                value={formData?.recovery}
+                                value={formData.recovery}
                                 onChange={handleChange}
+                                disabled={!isReceivedEmpty}
                             />
+
                         </div>
                         <div className="col-md-4 mb-4">
                             <SelectBox
@@ -510,7 +489,7 @@ console.log("formData" , formData   )
 
 
                         </div>
-                   
+
                         <div className="col-md-4 mb-4">
                             <SelectBox
                                 selectClass="mainInput"
@@ -536,7 +515,7 @@ console.log("formData" , formData   )
                         </div>
                         <div className="col-md-12 mb-4">
                             <div className="inputWrapper">
-                            
+
                                 <div className="form-controls">
                                     <label htmlFor="description">Description</label>
                                     <textarea

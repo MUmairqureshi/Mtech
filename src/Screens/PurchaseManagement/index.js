@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisV, faEye, faCheck, faTimes, faFilter, faPencil, faChainSlash } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisV, faEye, faCheck, faTimes, faFilter, faPencil, faChainSlash, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 import { DashboardLayout } from "../../Components/Layout/DashboardLayout";
 import CustomTable from "../../Components/CustomTable";
@@ -58,10 +58,10 @@ export const PurchaseManagement = () => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filterData.slice(indexOfFirstItem, indexOfLastItem);
 
-  
+  const purchase = () => {
 
-  useEffect(() => {
-    document.title = 'Mt Records | Purchase Management';
+
+
     const LogoutData = localStorage.getItem('login');
     document.querySelector('.loaderBox').classList.remove("d-none");
     fetch('https://custom3.mystagingserver.site/mtrecords/public/api/admin/purchase-listing',
@@ -79,18 +79,81 @@ export const PurchaseManagement = () => {
         response.json()
       )
       .then((data) => {
-         
+
         document.querySelector('.loaderBox').classList.add("d-none");
         setData(data?.data);
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        
-      })
 
+      })
+  }
+
+
+  // const leadData = () => {
+  //   const LogoutData = localStorage.getItem('login');
+  //   document.querySelector('.loaderBox').classList.remove("d-none");
+  //   fetch('https://custom3.mystagingserver.site/mtrecords/public/api/admin/leads-listing',
+  //     {
+  //       method: 'GET',
+  //       headers: {
+  //         'Accept': 'application/json',
+  //         'Content-Type': 'application/json',
+  //         'Authorization': `Bearer ${LogoutData}`
+  //       },
+  //     }
+  //   )
+
+  //     .then(response =>
+  //       response.json()
+  //     )
+  //     .then((data) => {
+
+  //       document.querySelector('.loaderBox').classList.add("d-none");
+  //       setData(data.leads);
+  //     })
+  //     .catch((error) => {
+  //       document.querySelector('.loaderBox').classList.add("d-none");
+
+  //     })
+
+  // }
+
+
+  useEffect(() => {
+
+    document.title = 'Mt Records | Purchase Management';
+    purchase()
 
   }, []);
-  
+  const removeItem = (catId) => {
+    const LogoutData = localStorage.getItem('login');
+    document.querySelector('.loaderBox').classList.remove("d-none");
+    fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/purchase-delete/${catId}`,
+      {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${LogoutData}`
+        },
+      }
+    )
+
+      .then(response =>
+        response.json()
+      )
+      .then((data) => {
+        purchase()
+        document.querySelector('.loaderBox').classList.add("d-none");
+        console.log(data)
+      })
+      .catch((error) => {
+        document.querySelector('.loaderBox').classList.add("d-none");
+        console.log(error)
+      })
+  }
+
   const maleHeaders = [
     {
       key: "id",
@@ -127,7 +190,7 @@ export const PurchaseManagement = () => {
     },
   ];
 
-console.log("currentItems" , currentItems)
+  console.log("currentItems", currentItems)
   return (
     <>
       <DashboardLayout>
@@ -141,7 +204,7 @@ console.log("currentItems" , currentItems)
                   </div>
                   <div className="col-md-6 mb-2">
                     <div className="addUser">
-                      <CustomButton text="Add New Purchase" variant='primaryButton' onClick={hanldeRoute}/>
+                      <CustomButton text="Add New Purchase" variant='primaryButton' onClick={hanldeRoute} />
                       <CustomInput type="text" placeholder="Search Here..." value={inputValue} inputClass="mainInput" onChange={handleChange} />
                     </div>
                   </div>
@@ -163,7 +226,7 @@ console.log("currentItems" , currentItems)
                             <td>{`$ ${item?.purchase_amount}`}</td>
                             <td>{item?.purchase_date}</td>
                             <td>{item?.leaddetail?.email}</td>
-                            <td>{item?.purchase_type}</td> 
+                            <td>{item?.purchase_type}</td>
                             {/* <td>{item?.merchantdetail?.name}</td>  */}
                             {/* <td className={item?.status == 1 ? 'greenColor' : "redColor"}>{item?.status == 1 ? 'Active' : "Inactive"}</td> */}
                             <td>
@@ -174,6 +237,7 @@ console.log("currentItems" , currentItems)
                                 <Dropdown.Menu align="end" className="tableDropdownMenu">
                                   <Link to={`/purchase-detail/${item?.id}`} className="tableAction"><FontAwesomeIcon icon={faEye} className="tableActionIcon" />View</Link>
                                   <Link to={`/edit-purchase/${item?.id}`} className="tableAction"><FontAwesomeIcon icon={faPencil} className="tableActionIcon" />Edit</Link>
+                                  <button type="button" className="bg-transparent border-0 ps-lg-3 pt-1" onClick={() => { removeItem(item?.id) }}><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon> Delete</button>
                                 </Dropdown.Menu>
 
                               </Dropdown>

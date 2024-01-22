@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisV, faEye, faCheck, faTimes, faFilter, faPencil } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisV, faEye, faCheck, faTimes, faFilter, faPencil  ,faTrash} from "@fortawesome/free-solid-svg-icons";
 
 import { DashboardLayout } from "../../Components/Layout/DashboardLayout";
 import CustomTable from "../../Components/CustomTable";
@@ -59,13 +59,49 @@ export const ReversalManagement = () => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filterData.slice(indexOfFirstItem, indexOfLastItem);
 
-  
+const reversal = () =>{
+  const LogoutData = localStorage.getItem('login');
+  document.querySelector('.loaderBox').classList.remove("d-none");
+  fetch('https://custom3.mystagingserver.site/mtrecords/public/api/admin/reversal-listing',
+    {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${LogoutData}`
+      },
+    }
+  )
+
+    .then(response =>
+      response.json()
+    )
+    .then((data) => {
+      console.log(data)
+      document.querySelector('.loaderBox').classList.add("d-none");
+      setData(data?.data);
+    })
+    .catch((error) => {
+      document.querySelector('.loaderBox').classList.add("d-none");
+      console.log(error)
+    })
+
+}  
 
   useEffect(() => {
     document.title = 'Mt Records | reversal Management';
+
+    reversal()
+  }, []);
+  
+
+
+
+  
+  const removeItem = (catId) => {
     const LogoutData = localStorage.getItem('login');
     document.querySelector('.loaderBox').classList.remove("d-none");
-    fetch('https://custom3.mystagingserver.site/mtrecords/public/api/admin/reversal-listing',
+    fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/purchase-delete${catId}`,
       {
         method: 'GET',
         headers: {
@@ -80,18 +116,17 @@ export const ReversalManagement = () => {
         response.json()
       )
       .then((data) => {
-        console.log(data)
+        reversal()
         document.querySelector('.loaderBox').classList.add("d-none");
-        setData(data?.data);
+        console.log(data)
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
         console.log(error)
       })
-
-
-  }, []);
+  }
   
+
   const maleHeaders = [
     {
       key: "id",
@@ -175,6 +210,7 @@ export const ReversalManagement = () => {
                                 <Dropdown.Menu align="end" className="tableDropdownMenu">
                                   <Link to={`/reversal-detail/${item?.id}`} className="tableAction"><FontAwesomeIcon icon={faEye} className="tableActionIcon" />View</Link>
                                   <Link to={`/edit-reversal/${item?.id}`} className="tableAction"><FontAwesomeIcon icon={faPencil} className="tableActionIcon" />Edit</Link>
+                                  <button type="button" className="bg-transparent border-0 ps-lg-3 pt-1" onClick={() => { removeItem(item?.id) }}><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon> Delete</button>
                                 </Dropdown.Menu>
 
                               </Dropdown>

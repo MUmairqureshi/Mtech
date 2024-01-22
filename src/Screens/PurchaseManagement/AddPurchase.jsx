@@ -317,7 +317,7 @@ export const AddPurchase = () => {
                                                     labelClass='mainLabel'
                                                     inputClass='mainInput'
                                                     name="name"
-                                                    value={viewl?.leads.name}
+                                                    value={viewl?.leads?.name}
                                                     onChange={handleChange}
                                                 />
                                             </div>
@@ -332,7 +332,7 @@ export const AddPurchase = () => {
                                                     labelClass='mainLabel'
                                                     inputClass='mainInput'
                                                     name="email"
-                                                    value={viewl?.leads.email}
+                                                    value={viewl?.leads?.email}
                                                     onChange={handleChange}
                                                 />
                                             </div>
@@ -346,7 +346,7 @@ export const AddPurchase = () => {
                                                     labelClass='mainLabel'
                                                     inputClass='mainInput'
                                                     name="net_amount"
-                                                    value={viewl?.leads.gross}
+                                                    value={viewl?.leads?.gross}
                                                     onChange={handleChange}
                                                 />
                                             </div>
@@ -360,7 +360,7 @@ export const AddPurchase = () => {
                                                     labelClass='mainLabel'
                                                     inputClass='mainInput'
                                                     name="purchase_date"
-                                                    value={formData.purchase_date}
+                                                    value={formData?.purchase_date}
                                                     onChange={handleChange}
                                                 />
                                             </div>

@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisV, faEye, faCheck, faTimes, faFilter, faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisV, faEye, faCheck, faTimes, faFilter, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+
 
 import { DashboardLayout } from "../../Components/Layout/DashboardLayout";
 import CustomTable from "../../Components/CustomTable";
@@ -78,13 +79,13 @@ export const LeadListing = () => {
         response.json()
       )
       .then((data) => {
-         
+
         document.querySelector('.loaderBox').classList.add("d-none");
         setData(data.leads);
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-      
+
       })
 
   }
@@ -138,7 +139,7 @@ export const LeadListing = () => {
     },
     {
       key: "tamout",
-      title: "Quoted Amount",
+      title: " Amount",
     },
     {
       key: "received",
@@ -169,15 +170,43 @@ export const LeadListing = () => {
       key: "unit",
       title: "Unit",
     },
-   
+
     {
       key: "action",
       title: "Action",
     },
   ];
-console.log("currentItems" ,currentItems)
 
+  const removeItem = (catId) => {
+    const LogoutData = localStorage.getItem('login');
+    document.querySelector('.loaderBox').classList.remove("d-none");
+    fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/delete-leads/${catId}`,
+      {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${LogoutData}`
+        },
+      }
+    )
+
+      .then(response =>
+        response.json()
+      )
+      .then((data) => {
+        document.querySelector('.loaderBox').classList.add("d-none");
+        console.log(data)
+        leadData()
  
+      })
+      .catch((error) => {
+        document.querySelector('.loaderBox').classList.add("d-none");
+        console.log(error)
+      })
+  }
+
+
 
   return (
     <>
@@ -227,14 +256,14 @@ console.log("currentItems" ,currentItems)
 
                             <td>{item?.received === null ? '$ 0' : `$ ${item?.received}`}</td>
                             <td>{item?.recovery}</td>
-                            <td>{ item?.received + item?.recovery}</td>
-                            <td>{ item?.salesrep?.name}</td>
+                            <td>{item?.received + item?.recovery}</td>
+                            <td>{item?.salesrep?.name}</td>
 
-                            <td>{ item?.accountrepdetail?.name}</td>
-                            <td>{ item?.unitdetail.name}</td>
-                          
- 
- 
+                            <td>{item?.accountrepdetail?.name}</td>
+                            <td>{item?.unitdetail.name}</td>
+
+
+
                             {/* <td className={item.status == 1 ? 'greenColor' : "redColor"}>{item.status == 1 ? 'Active' : "Inactive"}</td> */}
                             <td>
                               <Dropdown className="tableDropdown">
@@ -244,6 +273,7 @@ console.log("currentItems" ,currentItems)
                                 <Dropdown.Menu align="end" className="tableDropdownMenu">
                                   <Link to={`/lead-detail/${item?.code}`} className="tableAction"><FontAwesomeIcon icon={faEye} className="tableActionIcon" />View</Link>
                                   <Link to={`/edit-lead/${item?.code}`} className="tableAction"><FontAwesomeIcon icon={faEdit} className="tableActionIcon" />Edit</Link>
+                                  <button type="button" className="bg-transparent border-0 ps-lg-3 pt-1" onClick={() => { removeItem(item?.code) }}><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon> Delete</button>
                                 </Dropdown.Menu>
                               </Dropdown>
                             </td>

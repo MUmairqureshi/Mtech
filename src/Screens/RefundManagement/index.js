@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisV, faEye, faCheck, faTimes, faFilter, faPencil } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisV, faEye, faCheck, faTimes, faFilter, faPencil , faTrash } from "@fortawesome/free-solid-svg-icons";
 
 import { DashboardLayout } from "../../Components/Layout/DashboardLayout";
 import CustomTable from "../../Components/CustomTable";
@@ -59,37 +59,39 @@ export const RefundManagement = () => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filterData.slice(indexOfFirstItem, indexOfLastItem);
 
+const refund = () =>{
+  const LogoutData = localStorage.getItem('login');
+  document.querySelector('.loaderBox').classList.remove("d-none");
+  fetch('https://custom3.mystagingserver.site/mtrecords/public/api/admin/refund-listing',
+    {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${LogoutData}`
+      },
+    }
+  )
 
+    .then(response =>
+      response.json()
+    )
+    .then((data) => {
+  
+      document.querySelector('.loaderBox').classList.add("d-none");
+      setData(data?.data);
+    })
+    .catch((error) => {
+      document.querySelector('.loaderBox').classList.add("d-none");
+
+    })
+
+
+}
 
   useEffect(() => {
     document.title = 'Mt Records | Refund Management';
-    const LogoutData = localStorage.getItem('login');
-    document.querySelector('.loaderBox').classList.remove("d-none");
-    fetch('https://custom3.mystagingserver.site/mtrecords/public/api/admin/refund-listing',
-      {
-        method: 'GET',
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${LogoutData}`
-        },
-      }
-    )
-
-      .then(response =>
-        response.json()
-      )
-      .then((data) => {
-    
-        document.querySelector('.loaderBox').classList.add("d-none");
-        setData(data?.data);
-      })
-      .catch((error) => {
-        document.querySelector('.loaderBox').classList.add("d-none");
-  
-      })
-
-
+    refund()
   }, []);
 
   const maleHeaders = [
@@ -127,7 +129,33 @@ export const RefundManagement = () => {
       title: "Action",
     },
   ];
+  const removeItem = (catId) => {
+    const LogoutData = localStorage.getItem('login');
+    document.querySelector('.loaderBox').classList.remove("d-none");
+    fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/refund-delete/${catId}`,
+      {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${LogoutData}`
+        },
+      }
+    )
 
+      .then(response =>
+        response.json()
+      )
+      .then((data) => {
+        refund()
+        document.querySelector('.loaderBox').classList.add("d-none");
+        console.log(data)  
+      })
+      .catch((error) => {
+        document.querySelector('.loaderBox').classList.add("d-none");
+        console.log(error)
+      })
+  }
 
   return (
     <>
@@ -175,6 +203,7 @@ export const RefundManagement = () => {
                                 <Dropdown.Menu align="end" className="tableDropdownMenu">
                                   <Link to={`/refund-detail/${item?.id}`} className="tableAction"><FontAwesomeIcon icon={faEye} className="tableActionIcon" />View</Link>
                                   <Link to={`/edit-refund/${item?.id}`} className="tableAction"><FontAwesomeIcon icon={faPencil} className="tableActionIcon" />Edit</Link>
+                                  <button type="button" className="bg-transparent border-0 ps-lg-3 pt-1" onClick={() => { removeItem(item?.id) }}><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon> Delete</button>
                                 </Dropdown.Menu>
 
                               </Dropdown>
