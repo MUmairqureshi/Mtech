@@ -101,7 +101,7 @@ const reversal = () =>{
   const removeItem = (catId) => {
     const LogoutData = localStorage.getItem('login');
     document.querySelector('.loaderBox').classList.remove("d-none");
-    fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/purchase-delete${catId}`,
+    fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/purchase-delete/${catId}`,
       {
         method: 'GET',
         headers: {
