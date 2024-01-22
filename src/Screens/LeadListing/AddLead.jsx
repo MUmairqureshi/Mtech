@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
-
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 import { DashboardLayout } from "../../Components/Layout/DashboardLayout";
 import BackButton from "../../Components/BackButton";
 import CustomModal from "../../Components/CustomModal";
@@ -90,13 +91,13 @@ export const AddLead = () => {
                 response.json()
             )
             .then((data) => {
-                
+
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setBrands(data.brands);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                 
+
             })
     }
 
@@ -119,13 +120,13 @@ export const AddLead = () => {
                 response.json()
             )
             .then((data) => {
-                
+
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setUnit(data.units);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                 
+
             })
     }
 
@@ -273,9 +274,9 @@ export const AddLead = () => {
                 setRemainingNumber(0);
             }
         } else if (name === 'unit_id') {
-                    userData(value)
-                }
-         else {
+            userData(value)
+        }
+        else {
             setFormData((prevData) => ({
                 ...prevData,
                 [name]: value,
@@ -307,16 +308,28 @@ export const AddLead = () => {
                 response.json()
             )
             .then((data) => {
-                 
+
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setUser(data?.data)
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                 
+
             })
     }
-
+    // const handleSubmit = async (values) => {
+    //     try {
+    //         setSubmitting(true);
+    //         // Perform form submission logic here
+    //         console.log(values);
+    //         // Set submitting to false after successful submission
+    //         setSubmitting(false);
+    //     } catch (error) {
+    //         // Handle form submission error
+    //         console.error(error);
+    //         setSubmitting(false);
+    //     }
+    // };
     const handleSubmit = (event) => {
         event.preventDefault();
 
@@ -324,7 +337,7 @@ export const AddLead = () => {
         const formDataMethod = new FormData();
         for (const key in formData) {
             formDataMethod.append(key, formData[key]);
-        } 
+        }
         document.querySelector('.loaderBox').classList.remove("d-none");
         // Make the fetch request
         fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/leads-add-edit`, {
@@ -345,7 +358,7 @@ export const AddLead = () => {
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                 
+
             })
     };
 
@@ -362,6 +375,70 @@ export const AddLead = () => {
     const goBack = () => {
         navigate(-1)
     };
+
+
+
+    // const validationSchema = Yup.object().shape({
+    //     name: Yup.string().required('name is required'),
+    //     product: Yup.string()
+    //         .min(2, 'product must be minimum 2')
+    //         .max(10, 'product must not be more than 10 characters')
+    //         .required('product is required'),
+    //     email: Yup.string().email('Invalid email').required('Email is required'),
+    //     phone: Yup.number().required('phone is required'),
+    //     password: Yup.string()
+    //         .min(6, 'Password must be at least 6 characters')
+    //         .required('Password is required'),
+    //     confirmPassword: Yup.string()
+    //         .oneOf([Yup.ref('password')], 'Passwords must match')
+    //         .required('Confirm Password is required'),
+    // });
+    const validationSchema = Yup.object().shape({
+        phone: Yup.number()
+            .min(2, 'product must be minimum 2')
+            .max(10, 'must not be more than 10 characters')
+            .required('Enter Product is required'),
+
+        email: Yup.string().email('Invalid email').required('Email is required'),
+        source: Yup.string().required('Source Name is required'),
+        brand: Yup.string().required('Brand is required'),
+        name: Yup.string().required('name is required'),
+        // recovery: Yup.string().required('recovery is required'),
+        product: Yup.number()
+            .min(2, 'product must be minimum 2')
+            .max(10, 'must not be more than 10 characters')
+            .required('Enter Product is required'),
+        description: Yup.string()
+            .min(2, ' must be minimum 10')
+            .max(10, 'description must not be more than 100 characters'),
+
+        quoted_amount: Yup.number()
+            .min(2, ' must be minimum 2')
+            .max(10, 'must not be more than 10 characters')
+            .required('Quoted Amount is required'),
+        received: Yup.number().min(2, ' must be minimum 2')
+            .max(10, 'must not be more than 10 characters')
+            .required('received Amount is required'),
+    });
+    const formik = useFormik({
+        initialValues: {
+            source: '',
+            brand: '',
+            product: '',
+            email: '',
+            name: '',
+            phone: '',
+            quoted_amount: '',
+            received: '',
+            recovery: '',
+            sales_rep: '',
+            account_rep: '',
+            description: '',
+        },
+        validationSchema,
+        onSubmit: handleSubmit
+    });
+    console.log("formik", formik)
     return (
         <>
             <DashboardLayout>
@@ -376,21 +453,21 @@ export const AddLead = () => {
                     </div>
                     <div className="row mb-3">
                         <div className="col-12">
-                            <form onSubmit={handleSubmit}>
+                            <form onSubmit={formik.handleSubmit}>
                                 <div className="row">
                                     <div className="col-lg-12">
                                         <div className="row">
                                             <div className="col-md-4 mb-4">
-                                            
+
 
                                                 <SelectBox
                                                     type='text'
                                                     selectClass="mainInput"
                                                     name="source"
                                                     label="Source Name"
-                                                    value={formData.source}
+                                                    value={formik?.values.source}
                                                     option={sourcename}
-                                                    onChange={handleChange}
+                                                    onChange={formik?.handleChange}
                                                 />
 
                                             </div>
@@ -407,9 +484,14 @@ export const AddLead = () => {
                                                     labelClass='mainLabel'
                                                     inputClass='mainInput'
                                                     name="product"
-                                                    value={formData.product}
-                                                    onChange={handleChange}
+                                                    value={formik?.values.product}
+                                                    onChange={formik?.handleChange}
+                                                    onBlur={formik?.handleBlur}
                                                 />
+                                                {formik.errors.product && formik.touched.product && (
+                                                    <div className="error">{formik.errors.product}</div>
+                                                )}
+                                                {console.log("formik.errors.product", formik.errors.product)}
                                             </div>
                                             <div className="col-md-4 mb-4">
                                                 <CustomInput
@@ -421,9 +503,12 @@ export const AddLead = () => {
                                                     labelClass='mainLabel'
                                                     inputClass='mainInput'
                                                     name="email"
-                                                    value={formData.email}
-                                                    onChange={handleChange}
+                                                    value={formik?.values.email}
+                                                    onChange={formik?.handleChange}
                                                 />
+                                                {formik.errors.email && formik.touched.email && (
+                                                    <div className="error">{formik?.errors.email}</div>
+                                                )}
                                             </div>
                                             <div className="col-md-4 mb-4">
                                                 <CustomInput
@@ -435,118 +520,13 @@ export const AddLead = () => {
                                                     labelClass='mainLabel'
                                                     inputClass='mainInput'
                                                     name="name"
-                                                    value={formData.name}
-                                                    onChange={handleChange}
+                                                    value={formik?.values.name}
+                                                    onChange={formik?.handleChange}
                                                 />
-                                            </div>
-                                            {/* <div className="col-md-4 mb-4">
-                                                <CustomInput
-                                                    label='Phone'
-                                                    required
-                                                    id='phone'
-                                                    type='number'
-                                                    placeholder='Enter phone'
-                                                    labelClass='mainLabel'
-                                                    inputClass='mainInput'
-                                                    name="phone"
-                                                    value={formData.phone}
-                                                    onChange={handleChange}
-                                                />
-                                            </div>
-                                            <div className="col-md-4 mb-4">
-                                                <CustomInput
-                                                    label='Quoted Amount'
-                                                    required
-                                                    id='amount'
-                                                    type='number'
-                                                    placeholder='Enter Quoted Amount'
-                                                    labelClass='mainLabel'
-                                                    inputClass='mainInput'
-                                                    name="quoted_amount"
-                                                    value={formData.quoted_amount}
-                                                    onChange={handleChange}
-                                                />
-                                            </div>
-                                            <div className="col-md-4 mb-4">
-                                                <CustomInput
-                                                    label='Amount Received'
-                                                    id='received'
-                                                    required
-                                                    type='number'
-                                                    placeholder='Enter Received Amount'
-                                                    labelClass='mainLabel'
-                                                    inputClass='mainInput'
-                                                    name="received"
-                                                    value={formData.received}
-                                                    onChange={handleChange}
-                                                />
-                                            </div>
-                                            <div className="col-md-4 mb-4">
-                                                <CustomInput
-                                                    label='Amount Recovery'
-                                                    id='recovery'
-                                                    required
-                                                    type='number'
-                                                    placeholder='Enter Recovery Amount'
-                                                    labelClass='mainLabel'
-                                                    inputClass='mainInput'
-                                                    name="recovery"
-                                                    value={formData.recovery}
-                                                    onChange={handleChange}
-                                                />
-                                            </div>
-                                            <div className="col-md-4 mb-4">
-                                                <SelectBox
-                                                    selectClass="mainInput"
-                                                    name="brand"
-                                                    label="Brand"
-                                                    required
-                                                    value={formData.brand}
-                                                    option={brands}
-                                                    onChange={handleChange}
-                                                />
-
-                                            </div>
-                                            <div className="col-md-4 mb-4">
-                                                <SelectBox
-                                                    selectClass="mainInput"
-                                                    name="unit_id"
-                                                    label="Unit"
-                                                    required
-                                                    value={formData.unit_id}
-                                                    option={unit}
-                                                    onChange={handleChange}
-                                                />
-
-                                            </div>
-
-                                            <div className="col-md-4 mb-4">
-                                                <SelectBox
-                                                    selectClass="mainInput"
-                                                    name="sales_rep"
-                                                    label="Sales Rep"
-                                                    required
-                                                    value={formData.sales_rep}
-                                                    option={user}
-                                                    onChange={handleChange}
-                                                />
-
-                                            </div>
-                                            <div className="col-md-4 mb-4">
-                                                <SelectBox
-                                                    selectClass="mainInput"
-                                                    name="account_rep"
-                                                    label="Account Rep"
-                                                    value={formData.account_rep}
-                                                    option={user}
-                                                    onChange={handleChange}
-                                                />
-
-                                            </div>
-                                             */}
+                                                {formik.errors.name}
 
 
-
+                                            </div>
 
                                             <div className="col-md-4 mb-4">
                                                 <CustomInput
@@ -558,9 +538,11 @@ export const AddLead = () => {
                                                     labelClass="mainLabel"
                                                     inputClass="mainInput"
                                                     name="phone"
-                                                    value={formData.phone}
-                                                    onChange={handleChange}
+                                                    value={formik?.values.phone}
+                                                    onChange={formik?.handleChange}
                                                 />
+                                                {formik.errors.phone}
+
                                             </div>
 
                                             <div className="col-md-4 mb-4">
@@ -573,9 +555,10 @@ export const AddLead = () => {
                                                     labelClass="mainLabel"
                                                     inputClass="mainInput"
                                                     name="quoted_amount"
-                                                    value={formData.quoted_amount}
-                                                    onChange={handleChange}
+                                                    value={formik?.values.quoted_amount}
+                                                    onChange={formik?.handleChange}
                                                 />
+                                                {formik.errors.quoted_amount}
                                             </div>
                                             <div className="col-md-4 mb-4">
                                                 <CustomInput
@@ -587,9 +570,10 @@ export const AddLead = () => {
                                                     labelClass="mainLabel"
                                                     inputClass="mainInput"
                                                     name="received"
-                                                    value={formData.received}
-                                                    onChange={handleChange}
+                                                    value={formik?.values.received}
+                                                    onChange={formik?.handleChange}
                                                 />
+                                                {formik.errors.received}
                                             </div>
 
                                             <div className="col-md-4 mb-4">
@@ -602,8 +586,8 @@ export const AddLead = () => {
                                                     labelClass="mainLabel"
                                                     inputClass="mainInput"
                                                     name="recovery"
-                                                    value={formData.recovery}
-                                                    onChange={handleChange}
+                                                    value={formik?.values.recovery}
+                                                    onChange={formik.handleChange}
                                                 />
                                             </div>
 
@@ -615,9 +599,9 @@ export const AddLead = () => {
                                                     name="brand"
                                                     label="Brand"
                                                     required
-                                                    value={formData.brand}
+                                                    value={formik?.values.brand}
                                                     option={brands}
-                                                    onChange={handleChange}
+                                                    onChange={formik?.handleChange}
                                                 />
 
                                             </div>
@@ -627,9 +611,9 @@ export const AddLead = () => {
                                                     name="unit_id"
                                                     label="Unit"
                                                     required
-                                                    value={formData.unit_id}
+                                                    value={formik?.values.unit_id}
                                                     option={unit}
-                                                    onChange={handleChange}
+                                                    onChange={formik.handleChange}
                                                 />
 
                                             </div>
@@ -640,9 +624,9 @@ export const AddLead = () => {
                                                     name="sales_rep"
                                                     label="Sales Rep"
                                                     required
-                                                    value={formData.sales_rep}
+                                                    value={formik?.values.sales_rep}
                                                     option={user}
-                                                    onChange={handleChange}
+                                                    onChange={formik?.handleChange}
                                                 />
 
                                             </div>
@@ -651,9 +635,9 @@ export const AddLead = () => {
                                                     selectClass="mainInput"
                                                     name="account_rep"
                                                     label="Account Rep"
-                                                    value={formData.account_rep}
+                                                    value={formik?.values.account_rep}
                                                     option={user}
-                                                    onChange={handleChange}
+                                                    onChange={formik.handleChange}
                                                 />
 
                                             </div>
@@ -691,12 +675,12 @@ export const AddLead = () => {
                                                             id="description"
                                                             cols="30"
                                                             rows="10"
-                                                            value={formData.description}
-                                                            onChange={handleChange}
-                                                        // disabled={remainingWords <= 0}
+                                                            value={formik?.values.description}
+                                                            onChange={formik?.handleChange}
                                                         />
-                                                        <p>Remaining words: {remainingWords}</p>
+                                                        {formik.errors.description}
                                                     </div>
+
                                                 </div>
 
 
