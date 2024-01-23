@@ -296,10 +296,10 @@ export const UnitTarget = () => {
     //   title: "Target Score",
     // },
     
-    {
-      key: "status",
-      title: "Status",
-    },
+    // {
+    //   key: "status",
+    //   title: "Status",
+    // },
     // {
     //   key: "score_target",
     //   title: "SCORE TARGET",
@@ -569,7 +569,7 @@ export const UnitTarget = () => {
                                 <td>{item?.target ? `$ ${item?.target}` : '$0'}</td>
                                 {/* <td>{`$ ${item?.target_score}`}</td> */}
                                 {/* <td>{item?.current_month_target?.month}</td> */}
-                                <td className={item?.isAschived == 1 ? 'greenColor' : 'redColor'}>{item?.isAschived == 1 ? 'Acheived' : 'Not Acheived'}</td>
+                                {/* <td className={item?.isAschived == 1 ? 'greenColor' : 'redColor'}>{item?.isAschived == 1 ? 'Acheived' : 'Not Acheived'}</td> */}
                                 {/* <td>{`$ ${item?.score_target}`}</td> */}
                                 <td>
                                   <Dropdown className="tableDropdown">

@@ -193,10 +193,10 @@ console.log("username" , username)
             key: "target",
             title: "Target",
         },
-        {
-            key: "targetscore",
-            title: "Target Score",
-        },
+        // {
+        //     key: "targetscore",
+        //     title: "Target Score",
+        // },
         {
             key: "month",
             title: "Month"
@@ -327,10 +327,10 @@ console.log("unitValue" , unitValue )
                                     <p className="secondaryText">Set Target</p>
                                     <p>{`$ ${leadData?.target}`}</p>
                                 </div>
-                                <div className="col-md-4 mb-4">
+                                {/* <div className="col-md-4 mb-4">
                                     <p className="secondaryText">Score Target</p>
                                     <p>{`$ ${leadData?.score_target}`}</p>
-                                </div>
+                                </div> */}
                                 <div className="col-md-4 mb-4">
                                     <p className="secondaryText">Month</p>
                                     <p>{month[leadData?.month]}</p>

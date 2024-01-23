@@ -213,7 +213,7 @@ console.log("currentItems" ,currentItems)
                             <td className="text-capitalize">
                               {item?.date}
                             </td>
-                            <td>{item?.source}</td>
+                            <td>{item?.getsource.name}</td>
                             <td>{item.getbrand?.name}</td>
                             <td>{item?.product}</td>
                             <td className="text-capitalize">

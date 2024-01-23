@@ -176,10 +176,10 @@ export const TargetDetails = () => {
             key: "target",
             title: "Target",
         },
-        {
-            key: "targetscore",
-            title: "Target Score",
-        },
+        // {
+        //     key: "targetscore",
+        //     title: "Target Score",
+        // },
         {
             key: "month",
             title: "Month"
@@ -188,10 +188,10 @@ export const TargetDetails = () => {
             key: "year",
             title: "Year"
         },
-        {
-            key: "status",
-            title: "Status",
-        },
+        // {
+        //     key: "status",
+        //     title: "Status",
+        // },
         // {
         //     key: "action",
         //     title: "Action",
@@ -279,10 +279,10 @@ export const TargetDetails = () => {
                                     <p className="secondaryText">Current Month Target</p>
                                     <p>{leadData?.current_month_target?.target}</p>
                                 </div>
-                                <div className="col-md-4 mb-4">
+                                {/* <div className="col-md-4 mb-4">
                                     <p className="secondaryText">Score Target</p>
                                     <p>{`$ ${leadData?.total_sales}`}</p>
-                                </div>
+                                </div> */}
                                 {/* <div className="col-md-4 mb-4">
                                     <p className="secondaryText">Score Target</p>
                                     <p>${`$ ${leadData?.score_target}`}</p>
