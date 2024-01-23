@@ -13,23 +13,23 @@ export const ProtectedRoutes = (props) => {
 
 
 
-    useEffect(() => {
-        if (!login) {
-            navigate('/login');
-        } else if(!login) {
-            navigate('/customProject');
-          }
+    // useEffect(() => {
+    //     if (!login) {
+    //         navigate('/login');
+    //     } else if(!login) {
+    //         navigate('/customProject');
+    //       }
 
-        else if(login && location.pathname === '/') {
-            navigate('/dashboard');
-          }
-    }, [navigate,login , location.pathname]);
-    return (
-        <>
-            <Components />
-        </>
-    );
-    }
+    //     else if(login && location.pathname === '/') {
+    //         navigate('/dashboard');
+    //       }
+    // }, [navigate,login , location.pathname]);
+    // return (
+    //     <>
+    //         <Components />
+    //     </>
+    // );
+    // }
 
 
 
@@ -71,6 +71,46 @@ export const ProtectedRoutes = (props) => {
 
 
 
+
+    useEffect(() => {
+        const checkToken = async () => {
+            try {
+                if (!login) {
+                    navigate('/login');
+                } else {
+                    const token = login;
+    
+                    const response = await fetch('https://custom3.mystagingserver.site/mtrecords/public/api/auth/check-token', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json', 
+                        },
+                        body: JSON.stringify({ token }),  
+                    });
+    
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! Status: ${response.status}`);
+                    }
+    
+                    const data = await response.json();
+    
+                    console.log("data", data);
+                    console.log("data status", data);
+    
+                    if (data?.status === true) {
+                        navigate('/dashboard');
+                    } else {
+                        localStorage.removeItem('login');
+                        navigate('/login');
+                    }
+                }
+            } catch (error) {
+                console.error('Error checking token:', error); 
+            }
+        };
+    
+        checkToken();
+    }, [navigate, login]);
     
 
 
