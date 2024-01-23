@@ -7,7 +7,9 @@ import { useNavigate } from "react-router";
 
 import { SelectBox } from "../../Components/CustomSelect";
 import CustomButton from "../../Components/CustomButton";
+
 export const AddPurchase = () => {
+    const [successStatus, setSuccessStatus] = useState('Server Error!');
     const [initalRole, setrole] = useState({});
     const [initialunit, setUnit] = useState({});
     const [merchant, setMerchant] = useState()
@@ -90,6 +92,7 @@ export const AddPurchase = () => {
                  
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setShowModal(true)
+                data?.status ? setSuccessStatus(data?.msg) : setSuccessStatus(data?.msg)
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
@@ -289,7 +292,7 @@ export const AddPurchase = () => {
                                                 />
                                                 {
                                                     messgaeShow && (
-                                                        <p className={leadStatus ? 'text-success' : 'text-danger'}>{messgaeShow}</p>
+                                                        <p className={leadStatus ? 'text-dark' : 'text-dark'}>{messgaeShow}</p>
                                                     )
                                                 }
                                             </div>
@@ -435,7 +438,7 @@ export const AddPurchase = () => {
                 <CustomModal show={showModal} close={() => {
                     setShowModal(false);
                     goBack();
-                }} success heading='Purchase has been Successfully Added.' />
+                }} success heading={successStatus}  />
 
 
             </DashboardLayout>

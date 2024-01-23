@@ -259,7 +259,7 @@ export const AddRefund = () => {
                                                 />
                                                 {
                                                     messgaeShow && (
-                                                        <p className={leadStatus ? 'text-success' : 'text-danger'}>{messgaeShow}</p>
+                                                        <p className={leadStatus ? 'text-dark' : 'text-dark'}>{messgaeShow}</p>
                                                     )
 
                                                 }

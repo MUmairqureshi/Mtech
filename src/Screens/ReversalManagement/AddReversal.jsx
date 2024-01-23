@@ -10,6 +10,7 @@ import CustomButton from "../../Components/CustomButton";
 export const AddReversal = () => {
     const [initalRole, setrole] = useState({});
     const [initialunit, setUnit] = useState({});
+    const [successStatus, setSuccessStatus] = useState('Server Error!');
     const [merchant, setMerchant] = useState()
     const [showModal, setShowModal] = useState(false)
     const [formData, setFormData] = useState({});
@@ -93,6 +94,8 @@ export const AddReversal = () => {
             .then((data) => {
                 console.log("data", data);
                 document.querySelector('.loaderBox').classList.add("d-none");
+                data?.status ? setSuccessStatus(data?.msg) : setSuccessStatus(data?.msg)
+
                 setShowModal(true)
             })
             .catch((error) => {
@@ -279,7 +282,7 @@ console.log("viewl" , viewl)
                                                 />
                                                 {
                                                     messgaeShow && (
-                                                        <p className={leadStatus ? 'text-success' : 'text-danger'}>{messgaeShow}</p>
+                                                        <p className={leadStatus ? 'text-dark' : 'text-danger'}>{messgaeShow}</p>
                                                     )
                                                 }
                                             </div>
@@ -425,7 +428,7 @@ console.log("viewl" , viewl)
                         </div>
                     </div>
                 </div>
-                <CustomModal show={showModal} close={() => { setShowModal(false) ; goBack() }} success heading='Reversal has been Successfully Added.' />
+                <CustomModal show={showModal} close={() => { setShowModal(false) ; goBack() }} success  heading={successStatus} />
 
 
             </DashboardLayout>

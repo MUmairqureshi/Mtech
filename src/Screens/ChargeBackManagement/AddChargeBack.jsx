@@ -360,7 +360,7 @@ console.log("viewl" , viewl?.leads)
                                                 />
                                                 {
                                                     messgaeShow && (
-                                                        <p className={leadStatus ? 'text-success' : 'text-danger'}>{messgaeShow}</p>
+                                                        <p className={leadStatus ? 'text-dark' : 'text-danger'}>{messgaeShow}</p>
                                                     )
                                                 }
                                             </div>

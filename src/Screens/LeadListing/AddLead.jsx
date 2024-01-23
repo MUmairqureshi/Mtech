@@ -71,6 +71,8 @@ export const AddLead = () => {
         }
 
     ]
+    const [successStatus, setSuccessStatus] = useState('Server Error!');
+
 
     const fectchBrandData = (brandID) => {
         const LogoutData = localStorage.getItem('login');
@@ -283,7 +285,8 @@ export const AddLead = () => {
             })
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                ;
+                data?.status ? setSuccessStatus(data?.msg) : setSuccessStatus(data?.msg)
+
                 setShowModal(true)
             })
             .catch((error) => {
@@ -549,7 +552,7 @@ export const AddLead = () => {
                         goBack();
                     }}
                     success
-                    heading='Lead added Successfully.'
+                    heading={successStatus}
                 />
             </DashboardLayout>
         </>
