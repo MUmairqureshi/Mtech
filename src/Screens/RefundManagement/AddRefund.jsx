@@ -185,6 +185,8 @@ export const AddRefund = () => {
             setViewleads(value);
         }
     };
+    console.log("viewleads", viewleads)
+    // console.log("handleFetch" , handleFetch)
     const fetchData = async () => {
         try {
             const response = await fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/view-leads/${viewleads}`, {
@@ -209,12 +211,19 @@ export const AddRefund = () => {
 
 
             // userData(data?.leads.unit_id);
-              ;
+            ;
         } catch (error) {
             console.error('Error fetching data:', error);
             // userData(0);
         }
     };
+
+    useEffect(() => {
+        fetchData();
+    }, [viewleads]);
+
+
+    console.log("messgaeShow", messgaeShow)
     return (
         <>
             <DashboardLayout>
@@ -259,7 +268,54 @@ export const AddRefund = () => {
                                             </div>
                                             <div className="col-md-4 mb-4">
                                                 <CustomInput
+                                                    label='Name'
+                                                    disabled
+                                                    required
+                                                    id='name'
+                                                    type='text'
+                                                    placeholder='Enter Name'
+                                                    labelClass='mainLabel'
+                                                    inputClass='mainInput'
+                                                    name="name"
+                                                    value={viewl?.leads?.name}
+                                                    onChange={handleChange}
+                                                />
+                                            </div>
+                                            <div className="col-md-4 mb-4">
+                                                <CustomInput
+                                                    label='Enter Email'
+                                                    required
+                                                    id='amount'
+                                                    disabled
+                                                    type='email'
+                                                    placeholder='Enter Email'
+                                                    labelClass='mainLabel'
+                                                    inputClass='mainInput'
+                                                    name="email"
+                                                    value={viewl?.leads?.email}
+                                                    onChange={handleChange}
+                                                />
+                                            </div>
+                                            <div className="col-md-4 mb-4">
+                                                <CustomInput
+                                                    disabled
+                                                    label='  Amount'
+                                                    required
+                                                    id='netamount'
+                                                    type='number'
+                                                    placeholder='Enter Net Amount'
+                                                    labelClass='mainLabel'
+                                                    inputClass='mainInput'
+                                                    name="net_amount"
+                                                    value={viewl?.leads?.gross}
+                                                    onChange={handleChange}
+                                                />
+                                            </div>
+
+                                            <div className="col-md-4 mb-4">
+                                                <CustomInput
                                                     label='Refund Amount'
+ 
                                                     required
                                                     id='amount'
                                                     type='number'

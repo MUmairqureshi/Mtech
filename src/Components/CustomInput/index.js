@@ -19,7 +19,7 @@ const CustomInput = (props) => {
         {props?.type === 'password'
           ?
           <div className="passwordWrapper">
-            <input type={typePass ? 'password' : 'text'} placeholder={props?.placeholder} required={props?.required} id={props?.id} name={props?.name} className={`${props?.inputClass} passInput`} onChange={props?.onChange} value={props.value} />
+            <input type={typePass ? 'password' : 'text'}  placeholder={props?.placeholder} required={props?.required} id={props?.id} name={props?.name} className={`${props?.inputClass} passInput`} onChange={props?.onChange} value={props.value} />
             <button type='button' className='eyeButton' onClick={togglePassType}><FontAwesomeIcon icon={typePass ? faEyeSlash : faEye} /></button>
           </div>
           :
