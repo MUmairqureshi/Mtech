@@ -71,14 +71,12 @@ export default function AdminRouter() {
 
   return (
     <BrowserRouter basename="/customProject">
-      <Routes> 
-      {/* <Route path="/" element={<AdminLogin />} /> */}
-      <Route path="/" element={<ProtectedRoutes Components={AdminLogin} />} />
+      <Routes>
+        {/* <Route path="/" element={<AdminLogin />} /> */}
+        {/* <Route path="/" element={<ProtectedRoutes Components={AdminLogin} />} /> */}
 
-
-
-      <Route path="/login" element={<ProtectedRoutes Components={AdminLogin} />} />
-
+        <Route path="/login" element={<AdminLogin />} />
+        <Route path="/" element={<AdminLogin />} />
 
         {/* <Route path="/" element={<ProtectedRoutes Components={AdminLogin} />} /> */}
         <Route path="/forget-password" element={<ForgetPassword />} />
