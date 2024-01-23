@@ -15,6 +15,7 @@ export const EditReversal = () => {
     const [merchant, setMerchant] = useState()
     const [showModal, setShowModal] = useState(false);
     const [formData, setFormData] = useState({});
+    const [successStatus, setSuccessStatus] = useState('Server Error!');
 
     const reversalType = [
         {
@@ -120,7 +121,8 @@ export const EditReversal = () => {
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setShowModal(true)
-                console.log(data);
+                data?.status ? setSuccessStatus(data?.msg) : setSuccessStatus(data?.msg)
+
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
@@ -431,7 +433,7 @@ export const EditReversal = () => {
                         </div>
                     </div>
                 </div>
-                <CustomModal show={showModal} close={() => { setShowModal(false); goBack() }} success heading='Reversal Update Successfully.' />
+                <CustomModal show={showModal} close={() => { setShowModal(false); goBack() }} success heading={successStatus} />
 
             </DashboardLayout>
         </>

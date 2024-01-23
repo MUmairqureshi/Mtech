@@ -13,6 +13,8 @@ export const EditRefund = () => {
     const [initalRole, setrole] = useState({});
     const [initialunit, setUnit] = useState({});
     const [merchant, setMerchant] = useState()
+    const [successStatus, setSuccessStatus] = useState('Server Error!');
+
     const [showModal, setShowModal] = useState(false);
     const [formData, setFormData] = useState({});
 
@@ -122,6 +124,8 @@ export const EditRefund = () => {
             })
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
+                
+                data?.status ? setSuccessStatus(data?.msg) : setSuccessStatus(data?.msg)
                 setShowModal(true)
                  
             })
@@ -421,23 +425,9 @@ export const EditRefund = () => {
                         </div>
                     </div>
                 </div>
-                <CustomModal show={showModal} close={() => { setShowModal(false) ; goBack() }} success heading='Refund Edit Successfully.' />
+                <CustomModal show={showModal} close={() => { setShowModal(false) ; goBack() }} success heading={successStatus}  />
 
             </DashboardLayout>
         </>
     );
 };
-
-
-
-// https://custom3.mystagingserver.site/mtrecords/public/api/admin/get-user/3
-
-
-// https://custom3.mystagingserver.site/mtrecords/public/api/admin/refund-add-edit/1
-//
-
-
-// https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-units/1
-
-
-// https://custom3.mystagingserver.site/mtrecords/public/api/admin/view-leads/8
