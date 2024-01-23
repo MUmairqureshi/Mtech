@@ -13,62 +13,65 @@ export const ProtectedRoutes = (props) => {
 
 
 
-    // useEffect(() => {
-    //     if (!login) {
-    //         navigate('/login');
-    //     } else if(!login) {
-    //         navigate('/customProject');
-    //       }
-
-    //     else if(login && location.pathname === '/') {
-    //         navigate('/dashboard');
-    //       }
-    // }, [navigate,login , location.pathname]);
-    // return (
-    //     <>
-    //         <Components />
-    //     </>
-    // );
-    // }
-
-
-
-
     useEffect(() => {
-        const checkToken = async () => {
-            try {
-                if (!login) {
-                    navigate('/login');
-                } else {
-                    const token = login
-                    console.log("login", token)
-                    const response = await fetch('https://custom3.mystagingserver.site/mtrecords/public/api/auth/check-token', {
-                        method: 'POST',
-                        body: token
+        if (!login) {
+            navigate('/login');
+        } else if(!login) {
+            navigate('/customProject');
+          }
 
-                    });
-                    const data = await response.json();
-                    console.log("data" , data?.data)
+        else if(login && location.pathname === '/') {
+            navigate('/dashboard');
+          }
+    }, [navigate,login , location.pathname]);
+    return (
+        <>
+            <Components />
+        </>
+    );
+    }
+
+
+
+
+    // useEffect(() => {
+    //     const checkToken = async () => {
+    //         try {
+    //             if (!login) {
+    //                 navigate('/login');
+    //             } else {
+    //                 const token = login
+    //                 console.log("login", token)
+    //                 const response = await fetch('https://custom3.mystagingserver.site/mtrecords/public/api/auth/check-token', {
+    //                     method: 'POST',
+    //                     body: token
+
+    //                 });
+    //                 const data = await response.json();
+    //                 console.log("data" , data)
                    
-                    console.log("data" , data?.data.status)
-                    console.log("dashboard", data.status)
-                    if (data?.data.status === true) {
-                        navigate('/dashboard');
-                    } else {
+    //                 console.log("data" , data?.data.status)
+    //                 console.log("dashboard", data.status)
+    //                 if (data?.status === true) {
+    //                     navigate('/dashboard');
+    //                 } else {
 
-                        localStorage.removeItem('login');
-                    }
-                }
-            } catch (error) {
-                console.error('Error checking token:', error);
-            }
-        };
+    //                     localStorage.removeItem('login');
+    //                     navigate('/login');
+    //                 }
+    //             }
+    //         } catch (error) {
+    //             console.error('Error checking token:', error);
+    //         }
+    //     };
 
-        checkToken();
-    }, [navigate, login]);
+    //     checkToken();
+    // }, [navigate, login]);
 
 
 
+
+    
 
 
 
