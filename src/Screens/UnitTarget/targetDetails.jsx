@@ -94,7 +94,7 @@ export const TargetDetails = () => {
             })
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(data)
+             
 
                 setLeadData(data?.data)
                 setFormData(data?.data?.current_month_target)
@@ -102,7 +102,7 @@ export const TargetDetails = () => {
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error);
+            
             })
     }
 
@@ -111,7 +111,7 @@ export const TargetDetails = () => {
     }, []);
 
 
-    console.log("formData ", formData)
+   
 
     const monthList = [
         {
@@ -219,18 +219,16 @@ export const TargetDetails = () => {
                 return response.json()
             })
             .then((data) => {
-                console.log(data)
+          
                 editDetailData()
                 setEditModal(false)
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error);
+        
             })
     }
 
-
-    console.log("leadData", leadData)
 
 
     return (

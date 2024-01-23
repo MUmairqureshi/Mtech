@@ -122,13 +122,11 @@ export const UnitReportManagement = () => {
         response.json()
       )
       .then((data) => {
-        console.log(data)
         document.querySelector('.loaderBox').classList.add("d-none");
         setBrands(data.brands);
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error)
       })
   }
 
@@ -151,13 +149,11 @@ export const UnitReportManagement = () => {
         response.json()
       )
       .then((data) => {
-        console.log(data)
         document.querySelector('.loaderBox').classList.add("d-none");
         setUnit(data.units);
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error)
       })
   }
 
@@ -190,13 +186,11 @@ export const UnitReportManagement = () => {
       )
       .then((data) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log('rep', data)
         setData(data?.data);
         setTotal(data?.grand_total)
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error)
       })
   }
 
@@ -229,7 +223,6 @@ export const UnitReportManagement = () => {
 
 
 
-  console.log(formData)
 
   return (
     <>
@@ -255,7 +248,7 @@ export const UnitReportManagement = () => {
                         option={monthList}
                         onChange={(event) => {
                           setFormData({ ...formData, month: event.target.value });
-                          console.log(formData);
+                       
                         }}
                       />
                       <CustomButton variant='primaryButton' text='Search' type='button' onClick={fetchData} />

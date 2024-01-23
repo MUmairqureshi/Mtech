@@ -146,11 +146,11 @@ export const PurchaseManagement = () => {
       .then((data) => {
         purchase()
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(data)
+       
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error)
+     
       })
   }
 
@@ -190,7 +190,7 @@ export const PurchaseManagement = () => {
     },
   ];
 
-  console.log("currentItems", currentItems)
+
   return (
     <>
       <DashboardLayout>

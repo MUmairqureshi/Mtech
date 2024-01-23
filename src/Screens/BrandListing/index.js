@@ -250,11 +250,9 @@ export const BrandListing = () => {
       .then((data) => {
         fetchData()
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(data)
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error)
       })
   }
   return (

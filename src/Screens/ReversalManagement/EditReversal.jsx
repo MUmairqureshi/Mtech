@@ -52,12 +52,12 @@ export const EditReversal = () => {
             )
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(data)
+       
                 setMerchant(data?.data);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+           
             })
     }
 
@@ -80,14 +80,14 @@ export const EditReversal = () => {
                 response.json()
             )
             .then((data) => {
-                console.log(data)
+           
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setFormData(data?.data);
                 setViewleads(data?.data?.lead_code);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+            
             })
     }
 
@@ -104,7 +104,7 @@ export const EditReversal = () => {
             formDataMethod.append(key, formData[key]);
         }
 
-        console.log(formData)
+  
         document.querySelector('.loaderBox').classList.remove("d-none");
         // Make the fetch request
         fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/reversal-add-edit/${id}`, {
@@ -126,7 +126,7 @@ export const EditReversal = () => {
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+             
             })
     };
 
@@ -168,7 +168,7 @@ export const EditReversal = () => {
 
 
     const userData = (uniID) => {
-        console.log("unitid", uniID)
+    
         document.querySelector('.loaderBox').classList.remove("d-none");
         fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-units/${uniID}`,
             {
@@ -185,19 +185,17 @@ export const EditReversal = () => {
                 response.json()
             )
             .then((data) => {
-                console.log('user', data?.data)
+              
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setUnitid(data?.data);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+            
             })
     }
 
 
-
-    console.log("unitid", unitid)
 
 
 
@@ -213,7 +211,7 @@ export const EditReversal = () => {
 
 
     const fetchData = async () => {
-        console.log("viewleads", viewleads)
+       
         try {
             const response = await fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/view-leads/${viewleads}`, {
                 method: 'GET',
@@ -225,21 +223,19 @@ export const EditReversal = () => {
             });
 
             const data = await response.json();
-            console.log("data.leads.unit_id", data)
+          
 
-            console.log("data.leads.unit_id", data?.leads)
+           
             userData(data?.leads.unit_id);
-            // Process the data as needed
-            console.log(data);
+     
         } catch (error) {
-            console.error('Error fetching data:', error);
+       return error
         }
     };
 
     const handleChange = (event) => {
         const { name, value } = event.target;
 
-        console.log("name", name, value)
         if (name === 'lead_code') {
             setViewleads(value);
         }
@@ -248,7 +244,7 @@ export const EditReversal = () => {
             ...prevData,
             [name]: value,
         }));
-        console.log(formData);
+   
     };
 
 

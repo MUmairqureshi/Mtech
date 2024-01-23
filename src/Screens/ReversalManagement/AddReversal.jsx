@@ -52,12 +52,12 @@ export const AddReversal = () => {
             )
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(data)
+         
                 setMerchant(data?.data);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+      
             })
     }
 
@@ -76,7 +76,7 @@ export const AddReversal = () => {
             formDataMethod.append(key, formData[key]);
         }
 
-        console.log(formData)
+       
         document.querySelector('.loaderBox').classList.remove("d-none");
         // Make the fetch request
         fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/reversal-add-edit`, {
@@ -88,22 +88,21 @@ export const AddReversal = () => {
             body: formDataMethod // Use the FormData object as the request body
         })
             .then((response) => {
-                console.log("reversal_type_response", response)
+            
                 return response.json();
             })
             .then((data) => {
-                console.log("data", data);
-                document.querySelector('.loaderBox').classList.add("d-none");
+              document.querySelector('.loaderBox').classList.add("d-none");
                 data?.status ? setSuccessStatus(data?.msg) : setSuccessStatus(data?.msg)
 
                 setShowModal(true)
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+           
             })
     };
-    console.log("reversal_type_formDataMethod", formData)
+ 
 
     useEffect(() => {
         fetchMerchantData()
@@ -140,7 +139,7 @@ export const AddReversal = () => {
 
 
     const fetchData = async () => {
-        console.log("viewleads", viewleads)
+       
         try {
             const response = await fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/view-leads/${viewleads}`, {
                 method: 'GET',
@@ -152,7 +151,7 @@ export const AddReversal = () => {
             });
 
             const data = await response.json();
-            console.log("data.leads.unit_id", data)
+        
             if (data?.status) {
                 setMessageShow('Lead Verified')
                 setLeadStatus(true)
@@ -162,26 +161,27 @@ export const AddReversal = () => {
                 setLeadStatus(false);
             }
 
-            console.log("data.leads.unit_id", data?.leads)
+          
+            
             userData(data?.leads.unit_id);
             // Process the data as needed
-            console.log(data);
+      
         } catch (error) {
-            console.error('Error fetching data:', error);
+         
         }
     };
     
     const handleChange = (event) => {
         const { name, value } = event.target;
 
-        console.log("name", name, value)
+    
 
 
         setFormData((prevData) => ({
             ...prevData,
             [name]: value,
         }));
-        console.log(formData);
+  
     };
 
     const handleFetch = (event) => {
@@ -204,7 +204,7 @@ export const AddReversal = () => {
 
 
     const userData = (uniID) => {
-        console.log("unitid", uniID)
+      
         document.querySelector('.loaderBox').classList.remove("d-none");
         fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-units/${uniID}`,
             {
@@ -221,19 +221,19 @@ export const AddReversal = () => {
                 response.json()
             )
             .then((data) => {
-                console.log('user', data?.data)
+    
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setUnitid(data?.data)
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+      
             })
     }
 
 
 
-    console.log("unitid", unitid)
+
 
 
 

@@ -149,11 +149,11 @@ const refund = () =>{
       .then((data) => {
         refund()
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(data)  
+       
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error)
+   
       })
   }
 

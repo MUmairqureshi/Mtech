@@ -50,7 +50,7 @@ export const UserTarget = () => {
 
   const handleEditTarget = (event) => {
     event.preventDefault();
-    console.log(editFormData)
+ 
 
     TargetEditData(idUser);
     targetUpdateData(editFormData);
@@ -157,7 +157,7 @@ export const UserTarget = () => {
   const filterUserdata = userdata.filter(item =>
     item?.unit_detail?.name?.toLowerCase().includes(userinputValue.toLowerCase())
   );
-  console.log("filterUserdata", filterUserdata)
+ 
 
   const userindexOfLastItem = currentPage * itemsPerPage;
   const userindexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -185,12 +185,12 @@ export const UserTarget = () => {
         document.querySelector('.loaderBox').classList.add("d-none");
 
 
-        console.log(data?.data)
+    
         setData(data?.data);
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error)
+       
       })
   }
 
@@ -217,12 +217,12 @@ export const UserTarget = () => {
         document.querySelector('.loaderBox').classList.add("d-none");
 
 
-        console.log(data?.data)
+     
         setUserdata(data?.data);
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error)
+    
       })
   }
 
@@ -310,7 +310,7 @@ export const UserTarget = () => {
     setInputValue(event.target.value);
     setuserInputValue(event.target.value)
     const { name, value } = event.target;
-    console.log('name' , name)
+ 
     if (name === 'unit_id') {
       setViewleads(value);
     } 
@@ -320,13 +320,13 @@ export const UserTarget = () => {
       [name]: value,
     }));
   };
-  console.log("handleChange", handleChange)
+   
 
 
   const LogoutData = localStorage.getItem('login');
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(formData)
+   
 
 
     fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/usertarget-add-edit`,
@@ -344,7 +344,7 @@ export const UserTarget = () => {
         return response.json()
       })
       .then((data) => {
-        console.log(data)
+     
         fetchData()
         setUser(false)
 
@@ -353,7 +353,7 @@ export const UserTarget = () => {
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error);
+      
       })
   }
 
@@ -370,14 +370,14 @@ export const UserTarget = () => {
       });
 
       const data = await response.json();
-      console.log(data);
+    
 
       await fetchData();
 
       setUser(false);
     } catch (error) {
       document.querySelector('.loaderBox').classList.add("d-none");
-      console.error(error);
+   
     }
   };
 
@@ -398,7 +398,7 @@ export const UserTarget = () => {
 
 
   const fetchUserData = () => {
-    console.log("unitid", viewleads)
+    
     document.querySelector('.loaderBox').classList.remove("d-none");
     fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-units/${viewleads}`,
       {
@@ -415,20 +415,18 @@ export const UserTarget = () => {
         response.json()
       )
       .then((data) => {
-        console.log('user', data?.data)
+       
         document.querySelector('.loaderBox').classList.add("d-none");
         setUserData(data?.data)
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error)
+        
       })
   }
-  console.log("usedataunitname", userdata)
 
 
-
-  console.log("useresdata", useresdata)
+ 
   useEffect(() => {
     fetchUserData();
   }, [viewleads]);
@@ -627,7 +625,7 @@ export const UserTarget = () => {
             value={formData.target}
             onChange={(event) => {
               setFormData({ ...formData, target: event.target.value });
-              console.log(formData);
+           
             }}
 
 

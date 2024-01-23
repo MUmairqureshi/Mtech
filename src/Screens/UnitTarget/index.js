@@ -400,8 +400,7 @@ export const UnitTarget = () => {
       setUser(false);
     } catch (error) {
       document.querySelector('.loaderBox').classList.add("d-none");
-      console.error(error);
-      // Handle the error appropriately (e.g., display an error message to the user)
+       // Handle the error appropriately (e.g., display an error message to the user)
     }
   };
 

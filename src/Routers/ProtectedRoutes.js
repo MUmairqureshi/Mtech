@@ -21,7 +21,6 @@ export const ProtectedRoutes = (props) => {
                 return response.json();
             })
             .then((data) => {
-                console.log(data)
                 if(data?.status === false) {
                     localStorage.removeItem('login');
                     navigate('/')

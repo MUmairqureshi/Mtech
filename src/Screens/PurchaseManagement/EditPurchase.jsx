@@ -237,7 +237,7 @@ export const EditPurchase = () => {
             // Process the data as needed
              ;
         } catch (error) {
-            console.error('Error fetching data:', error);
+            
         }
     };
 

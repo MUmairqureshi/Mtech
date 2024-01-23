@@ -51,7 +51,6 @@ export const LeadListing = () => {
   const handleChange = (e) => {
     setInputValue(e.target.value);
   }
-
   const filterData = data.filter(item =>
     item.name.toLowerCase().includes(inputValue.toLowerCase())
   );
@@ -196,14 +195,13 @@ export const LeadListing = () => {
       )
       .then((data) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(data)
+ 
         leadData()
  
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error)
-      })
+       })
   }
 
 

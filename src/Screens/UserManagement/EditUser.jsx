@@ -33,7 +33,7 @@ export const EditUser = () => {
         if (initialunit.hasOwnProperty(key)) {
             const item = initialunit[key];
 
-            console.log(item.id)
+          
 
             // Create an object for each option with 'value' and 'label' properties
             const option = {
@@ -46,7 +46,6 @@ export const EditUser = () => {
         }
     }
 
-    console.log(SelectOptions)
 
     const handleChangeSelect = (selected) => {
         setFormData({
@@ -74,12 +73,12 @@ export const EditUser = () => {
                 response.json()
             )
             .then((data) => {
-                console.log("users", data)
+              
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setFormData(data.users);
                 data.users?.permission != null ? setPermission(true) : setPermission(false)
                 const abac = SelectOptions.filter(dataItem => data?.users?.unit_id?.includes(dataItem.id))
-                console.log('dsa', formData?.unit_id)
+              
 
                 // data?.users?.unit_id.map((item) => {
                 //     const editData = {
@@ -95,11 +94,11 @@ export const EditUser = () => {
                 
                 //   })
 
-                console.log('update', formData)
+              
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+          
             })
     }
 
@@ -122,13 +121,13 @@ export const EditUser = () => {
                 response.json()
             )
             .then((data) => {
-                console.log(data)
+            
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setrole(data.roles);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+            
             })
     }
 
@@ -151,14 +150,14 @@ export const EditUser = () => {
                 response.json()
             )
             .then((data) => {
-                console.log(data)
+          
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setUnit(data.units);
 
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+           
             })
     }
 
@@ -180,7 +179,8 @@ export const EditUser = () => {
             }
         }
 
-        console.log(formData)
+      
+        
         document.querySelector('.loaderBox').classList.remove("d-none");
         // Make the fetch request
         fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-add-edit/${id}`, {
@@ -197,11 +197,12 @@ export const EditUser = () => {
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setShowModal(true)
-                console.log(data);
+        
+                
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+        
             })
     };
 
@@ -240,7 +241,7 @@ export const EditUser = () => {
             ...prevData,
             [name]: value,
         }));
-        console.log(formData)
+        
     };
 
 

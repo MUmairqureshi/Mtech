@@ -225,7 +225,6 @@ export const AddChargeBack = () => {
 
     const [unitid, setUnitid] = useState();
 
-console.log("uunitidn" ,unitid )
 
     const userData = (uniID) => {
          
@@ -269,7 +268,6 @@ console.log("uunitidn" ,unitid )
     const [viewl, setView] = useState('');
     const [viewleads, setViewleads] = useState('');
 
-console.log("viewl" , viewl?.leads)
     const fetchData = async () => {
         try {
             const response = await fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/view-leads/${viewleads}`, {

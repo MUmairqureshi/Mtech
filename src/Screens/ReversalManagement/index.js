@@ -77,13 +77,13 @@ const reversal = () =>{
       response.json()
     )
     .then((data) => {
-      console.log(data)
+    
       document.querySelector('.loaderBox').classList.add("d-none");
       setData(data?.data);
     })
     .catch((error) => {
       document.querySelector('.loaderBox').classList.add("d-none");
-      console.log(error)
+   
     })
 
 }  
@@ -118,11 +118,11 @@ const reversal = () =>{
       .then((data) => {
         reversal()
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(data)
+      
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error)
+     
       })
   }
   

@@ -79,13 +79,14 @@ export const UserManagement = () => {
         response.json()
       )
       .then((data) => {
-        console.log(data)
+     
         document.querySelector('.loaderBox').classList.add("d-none");
         setData(data.users);
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error)
+      
+        
       })
 
   }
@@ -96,7 +97,7 @@ export const UserManagement = () => {
 
 
   }, []);
-  console.log("datasusers", data)
+
 
   const maleHeaders = [
     {
@@ -151,15 +152,15 @@ export const UserManagement = () => {
       .then((data) => {
         usermanagement()
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log("user-delete", data)
+      
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error)
+
       })
   }
 
-  console.log("currentItems", currentItems)
+
   return (
     <>
       <DashboardLayout>

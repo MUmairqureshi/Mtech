@@ -80,7 +80,6 @@ export const Roles = () => {
 
   useEffect(() => {
     setData(rolesListing?.roles);
-    // console.log(data)
   }, [rolesListing])
 
 
@@ -89,7 +88,6 @@ export const Roles = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    console.log(formData)
     rolesLitingResponse(formData);
     roleData ? setShowModal(true) || setUser(false) : setShowModal(false)
   }
@@ -103,7 +101,6 @@ export const Roles = () => {
 
   useEffect(() => {
     if (dataEdited) {
-      console.log(roleEditData);
       setIdUser(roleEditData?.roles.id)
       setEditUser(true)
       setFormData({
@@ -120,7 +117,7 @@ export const Roles = () => {
 
   const handleEditSubmit = (event) => {
     event.preventDefault();
-    console.log(formData)
+   
 
     updateDataParam(idUser);
     rolesUpdateResponse(formData);
@@ -131,7 +128,6 @@ export const Roles = () => {
     if (dataSubmitted) {
       setEditUser(false)
       setData(rolesListing?.roles)
-      console.log(data)
     }
   }, [roleUpdateData, dataSubmitted, rolesListing])
 
@@ -238,7 +234,7 @@ export const Roles = () => {
               value={formData.name}
               onChange={(event) => {
                 setFormData({ ...formData, name: event.target.value });
-                console.log(formData);
+         
               }}
 
             />
@@ -258,7 +254,7 @@ export const Roles = () => {
               value={formData.name}
               onChange={(event) => {
                 setFormData({ ...formData, name: event.target.value });
-                console.log(formData);
+          
               }}
 
             />
@@ -272,7 +268,7 @@ export const Roles = () => {
               option={optionData}
               onChange={(event) => {
                 setFormData({ ...formData, status: event.target.value });
-                console.log(formData);
+            
               }}
             />
             <CustomButton variant='primaryButton' text='Add' type='button' onClick={handleEditSubmit} />

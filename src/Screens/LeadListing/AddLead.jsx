@@ -92,7 +92,6 @@ export const AddLead = () => {
                 response.json()
             )
             .then((data) => {
-                console.log(data)
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setBrands(data?.data);
             })
@@ -229,7 +228,7 @@ export const AddLead = () => {
 
 
     const [remainingNumber, setRemainingNumber] = useState(12);
- 
+
 
 
     const LogoutData = localStorage.getItem('login');
@@ -308,7 +307,7 @@ export const AddLead = () => {
     const goBack = () => {
         navigate(-1)
     };
-    console.log("formData", formData)
+  
     return (
         <>
             <DashboardLayout>
@@ -386,11 +385,6 @@ export const AddLead = () => {
                                                     onChange={handleChange}
                                                 />
                                             </div>
-
-
-
-
-
                                             <div className="col-md-4 mb-4">
                                                 <CustomInput
                                                     label="Phone"
@@ -420,7 +414,7 @@ export const AddLead = () => {
                                                     onChange={handleChange}
                                                 />
                                             </div>
-                                    
+
                                             <div className="col-md-4 mb-4">
                                                 <CustomInput
                                                     label="Amount Received"
@@ -434,7 +428,7 @@ export const AddLead = () => {
                                                     value={formData.received}
                                                     onChange={handleChange}
                                                     disabled={!isRecoveryEmpty}
-                                                    
+
                                                 />
                                             </div>
 
@@ -443,7 +437,7 @@ export const AddLead = () => {
                                                     required
                                                     label="Amount Recovery"
                                                     id="recovery"
-                                                     
+
                                                     type="number"
                                                     placeholder="Enter Recovery Amount"
                                                     labelClass="mainLabel"
@@ -455,8 +449,6 @@ export const AddLead = () => {
                                                 />
 
                                             </div>
-
-
                                             <div className="col-md-4 mb-4">
                                                 <SelectBox
                                                     selectClass="mainInput"
@@ -467,7 +459,6 @@ export const AddLead = () => {
                                                     option={unit}
                                                     onChange={handleChange}
                                                 />
-
                                             </div>
                                             <div className="col-md-4 mb-4">
                                                 <SelectBox

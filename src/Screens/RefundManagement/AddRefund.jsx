@@ -185,8 +185,8 @@ export const AddRefund = () => {
             setViewleads(value);
         }
     };
-    console.log("viewleads", viewleads)
-    // console.log("handleFetch" , handleFetch)
+   
+     
     const fetchData = async () => {
         try {
             const response = await fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/view-leads/${viewleads}`, {
@@ -213,7 +213,7 @@ export const AddRefund = () => {
             // userData(data?.leads.unit_id);
             ;
         } catch (error) {
-            console.error('Error fetching data:', error);
+         
             // userData(0);
         }
     };
@@ -223,7 +223,7 @@ export const AddRefund = () => {
     }, [viewleads]);
 
 
-    console.log("messgaeShow", messgaeShow)
+
     return (
         <>
             <DashboardLayout>
@@ -315,7 +315,7 @@ export const AddRefund = () => {
                                             <div className="col-md-4 mb-4">
                                                 <CustomInput
                                                     label='Refund Amount'
- 
+
                                                     required
                                                     id='amount'
                                                     type='number'

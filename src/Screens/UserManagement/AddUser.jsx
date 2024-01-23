@@ -58,12 +58,11 @@ export const AddUser = () => {
             )
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(data)
-                setrole(data.roles);
+                                setrole(data.roles);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+                
             })
     }
 
@@ -86,13 +85,13 @@ export const AddUser = () => {
                 response.json()
             )
             .then((data) => {
-                console.log(data)
+                 
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setUnit(data.units);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+          
             })
     }
 
@@ -123,7 +122,7 @@ export const AddUser = () => {
         }
     }
 
-    console.log("GHGHGH" ,SelectOptions)
+  
 
 
     const handleSubmit = (event) => {
@@ -138,8 +137,8 @@ export const AddUser = () => {
                 formDataMethod.append(key, formData[key]);
             }
         }
-        console.log("formDataMethod", formDataMethod)
-        console.log(formData)
+      
+     
         document.querySelector('.loaderBox').classList.remove("d-none");
         // Make the fetch request
         fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-add-edit`, {
@@ -154,13 +153,12 @@ export const AddUser = () => {
                 return response.json();
             })
             .then((data) => {
-                console.log(data);
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setShowModal(true)
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+         
             })
     };
 
@@ -184,7 +182,8 @@ export const AddUser = () => {
             ...prevData,
             [name]: value,
         }));
-        console.log(formData)
+    
+        
     };
 
 

@@ -24,7 +24,7 @@ export const EditLead = () => {
     const [brands, setBrands] = useState({});
     const [unit, setUnit] = useState({});
 
-    console.log("brands", brands)
+   
 
     const fectchBrandData = (brandID) => {
         const LogoutData = localStorage.getItem('login');
@@ -116,7 +116,7 @@ export const EditLead = () => {
 
             })
     }
-    console.log("brands")
+ 
 
     const LogoutData = localStorage.getItem('login');
 
@@ -139,7 +139,7 @@ export const EditLead = () => {
                 'Accept': 'application/json',
                 'Authorization': `Bearer ${LogoutData}`
             },
-            body: formDataMethod // Use the FormData object as the request body
+            body: formDataMethod  
         })
             .then((response) => {
                 return response.json();
