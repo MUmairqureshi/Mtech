@@ -8,6 +8,7 @@ import CustomInput from '../../Components/CustomInput';
 import { SelectBox } from "../../Components/CustomSelect";
 import CustomButton from "../../Components/CustomButton";
 export const AddLead = () => {
+    const [status , setStatus] = useState()
     const [brands, setBrands] = useState({});
     const [unit, setUnit] = useState({});
     const [showModal, setShowModal] = useState(false);
@@ -285,7 +286,7 @@ export const AddLead = () => {
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
                 data?.status ? setSuccessStatus(data?.msg) : setSuccessStatus(data?.msg)
-
+                setStatus(data?.status)
                 setShowModal(true)
             })
             .catch((error) => {
@@ -307,7 +308,7 @@ export const AddLead = () => {
     const goBack = () => {
         navigate(-1)
     };
-  
+
     return (
         <>
             <DashboardLayout>
@@ -437,7 +438,7 @@ export const AddLead = () => {
                                                     required
                                                     label="Amount Recovery"
                                                     id="recovery"
-
+                                                     
                                                     type="number"
                                                     placeholder="Enter Recovery Amount"
                                                     labelClass="mainLabel"
@@ -486,6 +487,7 @@ export const AddLead = () => {
                                             </div>
                                             <div className="col-md-4 mb-4">
                                                 <SelectBox
+                                                    required
                                                     selectClass="mainInput"
                                                     name="account_rep"
                                                     label="Account Rep"
@@ -543,6 +545,7 @@ export const AddLead = () => {
                         goBack();
                     }}
                     success
+                    status={status}
                     heading={successStatus}
                 />
             </DashboardLayout>

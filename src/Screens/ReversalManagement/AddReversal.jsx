@@ -14,6 +14,7 @@ export const AddReversal = () => {
     const [merchant, setMerchant] = useState()
     const [showModal, setShowModal] = useState(false)
     const [formData, setFormData] = useState({});
+const [status , setStatus]  = useState()
     const [messgaeShow, setMessageShow] = useState();
     const [leadStatus, setLeadStatus] = useState(false);
 
@@ -94,7 +95,7 @@ export const AddReversal = () => {
             .then((data) => {
               document.querySelector('.loaderBox').classList.add("d-none");
                 data?.status ? setSuccessStatus(data?.msg) : setSuccessStatus(data?.msg)
-
+                setStatus(data?.status)
                 setShowModal(true)
             })
             .catch((error) => {
@@ -286,20 +287,7 @@ console.log("viewl" , viewl)
                                                     )
                                                 }
                                             </div>
-                                            <div className="col-md-4 mb-4">
-                                                <CustomInput
-                                                    label='Reversal Amount'
-                                                    required
-                                                    id='amount'
-                                                    type='number'
-                                                    placeholder='Enter Reversal Amount'
-                                                    labelClass='mainLabel'
-                                                    inputClass='mainInput'
-                                                    name="reversal_amount"
-                                                    value={formData.reversal_amount}
-                                                    onChange={handleChange}
-                                                />
-                                            </div>
+                                           
 
 
 
@@ -343,6 +331,20 @@ console.log("viewl" , viewl)
                                                     inputClass='mainInput'
                                                     name="net_amount"
                                                     value={viewl?.leads?.gross}
+                                                    onChange={handleChange}
+                                                />
+                                            </div>
+                                            <div className="col-md-4 mb-4">
+                                                <CustomInput
+                                                    label='Reversal Amount'
+                                                    required
+                                                    id='amount'
+                                                    type='number'
+                                                    placeholder='Enter Reversal Amount'
+                                                    labelClass='mainLabel'
+                                                    inputClass='mainInput'
+                                                    name="reversal_amount"
+                                                    value={formData.reversal_amount}
                                                     onChange={handleChange}
                                                 />
                                             </div>
@@ -428,7 +430,7 @@ console.log("viewl" , viewl)
                         </div>
                     </div>
                 </div>
-                <CustomModal show={showModal} close={() => { setShowModal(false) ; goBack() }} success  heading={successStatus} />
+                <CustomModal status={status} show={showModal} close={() => { setShowModal(false) ; goBack() }} success  heading={successStatus} />
 
 
             </DashboardLayout>

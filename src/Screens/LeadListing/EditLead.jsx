@@ -12,6 +12,7 @@ export const EditLead = () => {
     const [remainingWords, setRemainingWords] = useState(100);
 
     const [remainingNumber, setRemainingNumber] = useState(12);
+    const [status , setStatus] = useState()
 
     const [successStatus, setSuccessStatus] = useState('Server Error!');
     const { id } = useParams();
@@ -148,6 +149,7 @@ export const EditLead = () => {
                 document.querySelector('.loaderBox').classList.add("d-none");
                 data?.status ? setSuccessStatus(data?.msg) : setSuccessStatus(data?.msg)
                 setShowModal(true)
+                setStatus(data?.status)
  
             })
             .catch((error) => {
@@ -541,9 +543,10 @@ export const EditLead = () => {
                         </div>
                     </div>
                 </div>
-                <CustomModal show={showModal} close={() => {
+                <CustomModal   status={status} show={showModal} close={() => {
                     setShowModal(false);
                     goBack();
+                    
                 }} success     heading={successStatus} />
 
             </DashboardLayout>

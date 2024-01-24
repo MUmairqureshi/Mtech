@@ -11,6 +11,7 @@ export const AddChargeBack = () => {
     const [initalRole, setrole] = useState({});
     const [initialunit, setUnit] = useState({});
     const [merchant, setMerchant] = useState()
+    const [status , setStatus] = useState()
     const [showModal, setShowModal] = useState(false)
     const [formData, setFormData] = useState({});
     const [successStatus, setSuccessStatus] = useState('Server Error!');
@@ -168,6 +169,7 @@ export const AddChargeBack = () => {
                 document.querySelector('.loaderBox').classList.add("d-none");
                 data?.status ? setSuccessStatus(data?.msg) : setSuccessStatus(data?.msg)
                 setShowModal(true)
+                setStatus(data?.status)
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
@@ -362,20 +364,7 @@ export const AddChargeBack = () => {
                                                     )
                                                 }
                                             </div>
-                                            <div className="col-md-4 mb-4">
-                                                <CustomInput
-                                                    label='Charge Back Amount'
-                                                    required
-                                                    id='amount'
-                                                    type='number'
-                                                    placeholder='Enter Charge Back Amount'
-                                                    labelClass='mainLabel'
-                                                    inputClass='mainInput'
-                                                    name="chargeback_amount"
-                                                    value={formData.chargeback_amount}
-                                                    onChange={handleChange}
-                                                />
-                                            </div>
+                                           
                                             <div className="col-md-4 mb-4">
                                                 <CustomInput
                                                     label='Name'
@@ -419,7 +408,20 @@ export const AddChargeBack = () => {
                                                     onChange={handleChange}
                                                 />
                                             </div>
-
+                                            <div className="col-md-4 mb-4">
+                                                <CustomInput
+                                                    label='Charge Back Amount'
+                                                    required
+                                                    id='amount'
+                                                    type='number'
+                                                    placeholder='Enter Charge Back Amount'
+                                                    labelClass='mainLabel'
+                                                    inputClass='mainInput'
+                                                    name="chargeback_amount"
+                                                    value={formData.chargeback_amount}
+                                                    onChange={handleChange}
+                                                />
+                                            </div>
                                             <div className="col-md-4 mb-4">
                                                 <CustomInput
                                                     label='Charge Back Date'
@@ -515,7 +517,7 @@ export const AddChargeBack = () => {
                         </div>
                     </div>
                 </div>
-                <CustomModal show={showModal}  close={() => {
+                <CustomModal status={status} show={showModal}  close={() => {
           setShowModal(false);
           goBack();  
         }} success heading={successStatus} />

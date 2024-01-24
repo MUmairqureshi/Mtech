@@ -40,13 +40,13 @@ export const ReportManagement = () => {
     if (initialunit.hasOwnProperty(key)) {
       const item = initialunit[key];
 
-      // Create an object for each option with 'value' and 'label' properties
+
       const option = {
-        value: item.id, // Assuming 'item.name' represents the option's value
-        label: item.name, // Assuming 'item.name' also represents the option's label
+        value: item.id,
+        label: item.name,
       };
 
-      // Push the option object into the SelectOptions array
+
       SelectOptions.push(option);
     }
   }
@@ -177,7 +177,7 @@ export const ReportManagement = () => {
 
     const formDataMethod = new FormData();
     for (const key in formData) {
-      if(key == 'month') {
+      if (key == 'month') {
         formDataMethod.append(key, formData[key]);
       }
     }
@@ -289,7 +289,7 @@ export const ReportManagement = () => {
                   </div>
                   <div className="col-md-8 mb-2">
                     <div className="addUser align-items-center">
-                      
+
                       <div class="inputWrapper">
                         <label class="mainLabel">Add Units<span>*</span></label>
 
@@ -351,28 +351,9 @@ export const ReportManagement = () => {
                         ))}
                       </tbody>
 
-                      {/* <tbody>
-                        <tr>
-                          <td className="text-capitalize">
-                            {data.unit_name}
-                          </td>
-
-                          <td>{data?.user_name}</td>
-                          <td>{data?.gross_sum}</td>
-                          <td>{data?.target}</td>
-                          <td>{data?.refunds}</td>
-                          <td>{data?.chargeback}</td>
-                          <td>{data?.purchase}</td>
-                          <td>{data?.net}</td>
-                        </tr>
-                      </tbody> */}
+ 
                     </CustomTable>
-                    {/* <CustomPagination
-                      itemsPerPage={itemsPerPage}
-                      totalItems={data.length}
-                      currentPage={currentPage}
-                      onPageChange={handlePageChange}
-                    /> */}
+                  
                   </div>
                 </div>
               </div>

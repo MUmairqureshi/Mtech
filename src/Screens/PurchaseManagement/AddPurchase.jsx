@@ -12,6 +12,7 @@ export const AddPurchase = () => {
     const [successStatus, setSuccessStatus] = useState('Server Error!');
     const [initalRole, setrole] = useState({});
     const [initialunit, setUnit] = useState({});
+    const [status , setStatus] = useState()
     const [merchant, setMerchant] = useState()
     const [showModal, setShowModal] = useState(false)
     const [formData, setFormData] = useState({});
@@ -92,6 +93,7 @@ export const AddPurchase = () => {
                  
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setShowModal(true)
+                setStatus(data?.status)
                 data?.status ? setSuccessStatus(data?.msg) : setSuccessStatus(data?.msg)
             })
             .catch((error) => {
@@ -120,7 +122,7 @@ export const AddPurchase = () => {
 
 
 
-
+ 
 
 
     const [viewl, setView] = useState('');
@@ -296,20 +298,7 @@ export const AddPurchase = () => {
                                                     )
                                                 }
                                             </div>
-                                            <div className="col-md-4 mb-4">
-                                                <CustomInput
-                                                    label='Purchase Amount'
-                                                    required
-                                                    id='amount'
-                                                    type='number'
-                                                    placeholder='Enter Purchase Amount'
-                                                    labelClass='mainLabel'
-                                                    inputClass='mainInput'
-                                                    name="purchase_amount"
-                                                    value={formData.purchase_amount}
-                                                    onChange={handleChange}
-                                                />
-                                            </div>
+                                           
                                             <div className="col-md-4 mb-4">
                                                 <CustomInput
                                                     label='Name'
@@ -350,6 +339,20 @@ export const AddPurchase = () => {
                                                     inputClass='mainInput'
                                                     name="net_amount"
                                                     value={viewl?.leads?.gross}
+                                                    onChange={handleChange}
+                                                />
+                                            </div>
+                                            <div className="col-md-4 mb-4">
+                                                <CustomInput
+                                                    label='Purchase Amount'
+                                                    required
+                                                    id='amount'
+                                                    type='number'
+                                                    placeholder='Enter Purchase Amount'
+                                                    labelClass='mainLabel'
+                                                    inputClass='mainInput'
+                                                    name="purchase_amount"
+                                                    value={formData.purchase_amount}
                                                     onChange={handleChange}
                                                 />
                                             </div>
@@ -435,7 +438,7 @@ export const AddPurchase = () => {
                         </div>
                     </div>
                 </div>
-                <CustomModal show={showModal} close={() => {
+                <CustomModal  status={status} show={showModal} close={() => {
                     setShowModal(false);
                     goBack();
                 }} success heading={successStatus}  />

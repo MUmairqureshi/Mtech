@@ -13,6 +13,8 @@ export const EditReversal = () => {
     const [initalRole, setrole] = useState({});
     const [initialunit, setUnit] = useState({});
     const [merchant, setMerchant] = useState()
+    const [status , setStatus]  = useState()
+
     const [showModal, setShowModal] = useState(false);
     const [formData, setFormData] = useState({});
     const [successStatus, setSuccessStatus] = useState('Server Error!');
@@ -120,7 +122,8 @@ export const EditReversal = () => {
             })
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                setShowModal(true)
+                setShowModal(true) 
+                setStatus(data?.status)
                 data?.status ? setSuccessStatus(data?.msg) : setSuccessStatus(data?.msg)
 
             })
@@ -429,7 +432,7 @@ export const EditReversal = () => {
                         </div>
                     </div>
                 </div>
-                <CustomModal show={showModal} close={() => { setShowModal(false); goBack() }} success heading={successStatus} />
+                <CustomModal show={showModal}  status={status} close={() => { setShowModal(false); goBack() }} success heading={successStatus} />
 
             </DashboardLayout>
         </>

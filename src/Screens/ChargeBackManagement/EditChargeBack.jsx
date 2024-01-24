@@ -11,11 +11,12 @@ import CustomButton from "../../Components/CustomButton";
 export const EditChargeBack = () => {
     const { id } = useParams();
     const [initalRole, setrole] = useState({});
+    const [status , setStatus] = useState()
     const [initialunit, setUnit] = useState({});
     const [merchant, setMerchant] = useState()
     const [showModal, setShowModal] = useState(false);
     const [formData, setFormData] = useState({});
-
+    const [successStatus, setSuccessStatus] = useState('Server Error!');
     const refundType = [
         {
             id: 'Partial',
@@ -127,7 +128,10 @@ console.log("formDatq   a" , formData)
             })
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
+                data?.status ? setSuccessStatus(data?.msg) : setSuccessStatus(data?.msg)
+                setStatus(data?.status)
                 setShowModal(true)
+              
                  ;
             })
             .catch((error) => {
@@ -420,10 +424,10 @@ console.log("setFormDataqqqqz   " , formData)
                         </div>
                     </div>
                 </div>
-                <CustomModal show={showModal} close={() => {
+                <CustomModal status={status} show={showModal} close={() => {
                     setShowModal(false);
                     goBack();
-                }} success heading='ChargeBack Edit Successfully.' />
+                }} success heading={successStatus}  />
 
             </DashboardLayout>
         </>
