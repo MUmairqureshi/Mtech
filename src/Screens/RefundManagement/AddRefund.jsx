@@ -12,6 +12,7 @@ export const AddRefund = () => {
     const [initalRole, setrole] = useState({});
     const [initialunit, setUnit] = useState({});
     const [merchant, setMerchant] = useState()
+    const [status , setStatus] = useState()
     const [showModal, setShowModal] = useState(false)
     const [formData, setFormData] = useState({});
     const [successStatus, setSuccessStatus] = useState('Server Error!');
@@ -150,6 +151,7 @@ export const AddRefund = () => {
                 document.querySelector('.loaderBox').classList.add("d-none");
                 data?.status ? setSuccessStatus(data?.msg) : setSuccessStatus(data?.msg)
                 setShowModal(true)
+                setStatus(data?.status)
 
             })
             .catch((error) => {
@@ -398,7 +400,7 @@ export const AddRefund = () => {
                         </div>
                     </div>
                 </div>
-                <CustomModal show={showModal} close={() => { setShowModal(false); goBack() }} success heading={successStatus} />
+                <CustomModal show={showModal}  status={status} close={() => { setShowModal(false); goBack() }} success heading={successStatus} />
 
 
             </DashboardLayout>

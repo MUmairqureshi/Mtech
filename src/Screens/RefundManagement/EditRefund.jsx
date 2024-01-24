@@ -9,6 +9,7 @@ import { useNavigate } from "react-router";
 
 import CustomButton from "../../Components/CustomButton";
 export const EditRefund = () => {
+    const [status , setStatus] = useState()
     const { id } = useParams();
     const [initalRole, setrole] = useState({});
     const [initialunit, setUnit] = useState({});
@@ -127,6 +128,7 @@ export const EditRefund = () => {
                 
                 data?.status ? setSuccessStatus(data?.msg) : setSuccessStatus(data?.msg)
                 setShowModal(true)
+                setStatus(data?.status)
                  
             })
             .catch((error) => {
@@ -424,7 +426,7 @@ export const EditRefund = () => {
                         </div>
                     </div>
                 </div>
-                <CustomModal show={showModal} close={() => { setShowModal(false) ; goBack() }} success heading={successStatus}  />
+                <CustomModal show={showModal} status={status} close={() => { setShowModal(false) ; goBack() }} success heading={successStatus}  />
 
             </DashboardLayout>
         </>

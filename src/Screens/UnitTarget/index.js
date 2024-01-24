@@ -51,7 +51,7 @@ export const UnitTarget = () => {
   const handleEditTarget = (event) => {
     event.preventDefault();
 
-    
+
     TargetEditData(idUser);
     targetUpdateData(editFormData);
   }
@@ -161,7 +161,7 @@ export const UnitTarget = () => {
     item?.unit_detail?.name?.toLowerCase().includes(inputValue.toLowerCase())
   );
 
-  
+
   const userindexOfLastItem = currentPage * itemsPerPage;
   const userindexOfFirstItem = indexOfLastItem - itemsPerPage;
   const usercurrentItems = filterUserdata.slice(userindexOfFirstItem, userindexOfLastItem);
@@ -169,7 +169,7 @@ export const UnitTarget = () => {
 
 
 
-  
+
   const fetchData = () => {
     const LogoutData = localStorage.getItem('login');
     document.querySelector('.loaderBox').classList.remove("d-none");
@@ -197,7 +197,7 @@ export const UnitTarget = () => {
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
 
-        
+
       })
   }
 
@@ -261,7 +261,7 @@ export const UnitTarget = () => {
     //   key: "status",
     //   title: "Status",
     // },
-   
+
     {
       key: "action",
       title: "Action",
@@ -295,7 +295,7 @@ export const UnitTarget = () => {
     //   key: "targetscore",
     //   title: "Target Score",
     // },
-    
+
     // {
     //   key: "status",
     //   title: "Status",
@@ -309,16 +309,16 @@ export const UnitTarget = () => {
       title: "Action",
     },
 
-  ]; 
+  ];
 
   const handleChange = (event) => {
     setInputValue(event.target.value);
     setuserInputValue(event.target.value)
     const { name, value } = event.target;
-     if (name === 'unit_id') {
+    if (name === 'unit_id') {
       setViewleads(value);
-    } 
-    
+    }
+
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
@@ -333,7 +333,7 @@ export const UnitTarget = () => {
   //     ...prevData,
   //     [name]: value,
   //   }));
-    
+
   // };
 
   // const handleSubmit = (event) => {
@@ -347,7 +347,7 @@ export const UnitTarget = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    
+
 
     const LogoutData = localStorage.getItem('login');
     fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/set-unit-target`,
@@ -392,7 +392,7 @@ export const UnitTarget = () => {
 
       const data = await response.json();
 
-      
+
       // Assuming fetchData is an asynchronous function
       await fetchData();
 
@@ -400,7 +400,7 @@ export const UnitTarget = () => {
       setUser(false);
     } catch (error) {
       document.querySelector('.loaderBox').classList.add("d-none");
-       // Handle the error appropriately (e.g., display an error message to the user)
+      // Handle the error appropriately (e.g., display an error message to the user)
     }
   };
 
@@ -441,7 +441,7 @@ export const UnitTarget = () => {
       })
   }
 
-  
+
 
 
 
@@ -533,6 +533,72 @@ export const UnitTarget = () => {
                           currentPage={currentPage}
                           onPageChange={handlePageChange}
                         />
+
+
+
+                        <CustomModal show={addUser} close={() => { setUser(false) }} heading="Set Target" >
+
+                          <SelectBox
+                            selectClass="mainInput"
+                            name="unit_id"
+                            label="Select Unit"
+                            labelClass='mainLabel'
+                            required
+                            value={formData.unit_id}
+                            option={unitValue}
+                            onChange={handleChange}
+
+                          />
+                          <CustomInput
+                            label="Set Target"
+                            type="number"
+                            placeholder="Set Target"
+                            required
+                            name="target"
+                            labelClass='mainLabel'
+                            inputClass='mainInput'
+                            value={formData.target}
+                            onChange={(event) => {
+                              setFormData({ ...formData, target: event.target.value });
+
+                            }}
+
+
+                          />
+                          <SelectBox
+                            selectClass="mainInput"
+                            name="month"
+                            labelClass='mainLabel'
+                            label="Select Month"
+                            required
+                            value={formData.month}
+                            option={monthList}
+                            onChange={handleChange}
+
+                          />
+                          {/* <SelectBox
+                            selectClass="mainInput"
+                            name="user_id"
+                            labelClass='mainLabel'
+                            label="Select User"
+                            required
+                            value={formData.user_id}
+                            option={useresdata}
+                            onChange={handleChange}
+                          /> */}
+                          {/* <div class="inputWrapper">
+    <label class="mainLabel">Add brands<span>*</span></label>
+    <Select
+      value={formData.brands}
+      isMulti
+      required
+      options={SelectOptions}
+      onChange={handleChangeSelect}
+    />
+  </div> */}
+
+                          <CustomButton variant='primaryButton' text='Add' type='button' onClick={handleSubmit} />
+                        </CustomModal>
                       </Tab>
 
 
@@ -595,6 +661,69 @@ export const UnitTarget = () => {
                           onPageChange={handlePageChange}
                         />
 
+                        <CustomModal show={addUser} close={() => { setUser(false) }} heading="Set Target" >
+
+                          <SelectBox
+                            selectClass="mainInput"
+                            name="unit_id"
+                            label="Select Unit"
+                            labelClass='mainLabel'
+                            required
+                            value={formData.unit_id}
+                            option={unitValue}
+                            onChange={handleChange}
+
+                          />
+                          <CustomInput
+                            label="Set Target"
+                            type="number"
+                            placeholder="Set Target"
+                            required
+                            name="target"
+                            labelClass='mainLabel'
+                            inputClass='mainInput'
+                            value={formData.target}
+                            onChange={(event) => {
+                              setFormData({ ...formData, target: event.target.value });
+
+                            }}
+
+
+                          />
+                          <SelectBox
+                            selectClass="mainInput"
+                            name="month"
+                            labelClass='mainLabel'
+                            label="Select Month"
+                            required
+                            value={formData.month}
+                            option={monthList}
+                            onChange={handleChange}
+
+                          />
+                          <SelectBox
+                            selectClass="mainInput"
+                            name="user_id"
+                            labelClass='mainLabel'
+                            label="Select User"
+                            required
+                            value={formData.user_id}
+                            option={useresdata}
+                            onChange={handleChange}
+                          />
+                          {/* <div class="inputWrapper">
+    <label class="mainLabel">Add brands<span>*</span></label>
+    <Select
+      value={formData.brands}
+      isMulti
+      required
+      options={SelectOptions}
+      onChange={handleChangeSelect}
+    />
+  </div> */}
+
+                          <CustomButton variant='primaryButton' text='Add' type='button' onClick={handleSubmit} />
+                        </CustomModal>
                       </Tab>
 
                     </Tabs>
@@ -613,69 +742,6 @@ export const UnitTarget = () => {
 
         </div>
 
-        <CustomModal show={addUser} close={() => { setUser(false) }} heading="Set Target" >
-
-          <SelectBox
-            selectClass="mainInput"
-            name="unit_id"
-            label="Select Unit"
-            labelClass='mainLabel'
-            required
-            value={formData.unit_id}
-            option={unitValue}
-            onChange={handleChange}
-
-          />
-          <CustomInput
-            label="Set Target"
-            type="number"
-            placeholder="Set Target"
-            required
-            name="target"
-            labelClass='mainLabel'
-            inputClass='mainInput'
-            value={formData.target}
-            onChange={(event) => {
-              setFormData({ ...formData, target: event.target.value });
-
-            }}
-
-
-          />
-          <SelectBox
-            selectClass="mainInput"
-            name="month"
-            labelClass='mainLabel'
-            label="Select Month"
-            required
-            value={formData.month}
-            option={monthList}
-            onChange={handleChange}
-
-          />
-          <SelectBox
-            selectClass="mainInput"
-            name="user_id"
-            labelClass='mainLabel'
-            label="Select User"
-            required
-            value={formData.user_id}
-            option={useresdata}
-            onChange={handleChange}
-          />
-          {/* <div class="inputWrapper">
-              <label class="mainLabel">Add brands<span>*</span></label>
-              <Select
-                value={formData.brands}
-                isMulti
-                required
-                options={SelectOptions}
-                onChange={handleChangeSelect}
-              />
-            </div> */}
-
-          <CustomButton variant='primaryButton' text='Add' type='button' onClick={handleSubmit} />
-        </CustomModal>
 
         {/* Edit Target  */}
 
