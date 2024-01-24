@@ -33,6 +33,7 @@ export const UnitTarget = () => {
   const [showModal, setShowModal] = useState(false);
   const [units, setUnits] = useState({});
   const [addUser, setUser] = useState(false);
+  const [addUsers, setUsers] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [idUser, setIdUser] = useState();
   const { apiData: unitListing, loading: unitLoading } = useApi('admin/unit-listing');
@@ -377,6 +378,64 @@ export const UnitTarget = () => {
 
       })
   }
+
+
+
+
+
+
+
+
+
+
+
+
+
+  const handleuserSubmit = (event) => {
+    event.preventDefault();
+
+
+
+    const LogoutData = localStorage.getItem('login');
+    fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/usertarget-add-edit`,
+      {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${LogoutData}`
+        },
+        body: JSON.stringify(formData)
+      },
+    )
+      .then((response) => {
+        return response.json()
+      })
+      .then((data) => {
+
+        fetchData()
+        fetchuserData()
+        setUsers(false)
+
+
+
+      })
+      .catch((error) => {
+        document.querySelector('.loaderBox').classList.add("d-none");
+
+      })
+  }
+
+
+
+
+
+
+
+
+
+
+
   const LogoutData = localStorage.getItem('login');
   const deleteTarget = async (id) => {
     try {
@@ -610,7 +669,7 @@ export const UnitTarget = () => {
                           <div className="col-md-6 mb-2">
                             <div className="addUser">
                               <CustomButton text="Add User Target" variant='primaryButton' onClick={() => {
-                                setUser(true)
+                                setUsers(true)
                               }} />
                               <CustomInput type="text" placeholder="Search Here..." value={inputValue} inputClass="mainInput" onChange={handleChange} />
                             </div>
@@ -661,7 +720,7 @@ export const UnitTarget = () => {
                           onPageChange={handlePageChange}
                         />
 
-                        <CustomModal show={addUser} close={() => { setUser(false) }} heading="Set Target" >
+                        <CustomModal show={addUsers} close={() => { setUsers(false) }} heading="Set Target" >
 
                           <SelectBox
                             selectClass="mainInput"
@@ -722,7 +781,7 @@ export const UnitTarget = () => {
     />
   </div> */}
 
-                          <CustomButton variant='primaryButton' text='Add' type='button' onClick={handleSubmit} />
+                          <CustomButton variant='primaryButton' text='Add' type='button' onClick={handleuserSubmit} />
                         </CustomModal>
                       </Tab>
 
