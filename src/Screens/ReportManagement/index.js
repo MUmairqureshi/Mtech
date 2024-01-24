@@ -16,6 +16,7 @@ import { SelectBox } from "../../Components/CustomSelect";
 
 
 import "./style.css";
+import Select from 'react-select'
 
 export const ReportManagement = () => {
 
@@ -30,18 +31,25 @@ export const ReportManagement = () => {
   const [idUser, setIdUser] = useState(0);
   const [formData, setFormData] = useState({});
   const [brands, setBrands] = useState({});
-  const [unit, setUnit] = useState({});
+  // const [unit, setUnit] = useState({});
+  const [initialunit, setUnit] = useState({});
 
-  // const optionData = [
-  //   {
-  //     name: "Active",
-  //     code: "1"
-  //   },
-  //   {
-  //     name: "Inactive",
-  //     code: "0"
-  //   },
-  // ]
+
+  const SelectOptions = []
+  for (const key in initialunit) {
+    if (initialunit.hasOwnProperty(key)) {
+      const item = initialunit[key];
+
+      // Create an object for each option with 'value' and 'label' properties
+      const option = {
+        value: item.id, // Assuming 'item.name' represents the option's value
+        label: item.name, // Assuming 'item.name' also represents the option's label
+      };
+
+      // Push the option object into the SelectOptions array
+      SelectOptions.push(option);
+    }
+  }
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -121,13 +129,13 @@ export const ReportManagement = () => {
         response.json()
       )
       .then((data) => {
-         
+
         document.querySelector('.loaderBox').classList.add("d-none");
         setBrands(data.brands);
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        
+
       })
   }
 
@@ -150,13 +158,13 @@ export const ReportManagement = () => {
         response.json()
       )
       .then((data) => {
-         
+
         document.querySelector('.loaderBox').classList.add("d-none");
         setUnit(data.units);
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        
+
       })
   }
 
@@ -169,8 +177,12 @@ export const ReportManagement = () => {
 
     const formDataMethod = new FormData();
     for (const key in formData) {
-      formDataMethod.append(key, formData[key]);
+      if(key == 'month') {
+        formDataMethod.append(key, formData[key]);
+      }
     }
+
+    formDataMethod.append('unit_id', JSON.stringify(formData?.unit_id));
 
     fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/unit-sheets-generate`,
       {
@@ -189,12 +201,12 @@ export const ReportManagement = () => {
       )
       .then((data) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-         
+
         setData(data?.data);
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        
+
       })
   }
 
@@ -254,6 +266,12 @@ export const ReportManagement = () => {
 
 
 
+  const handleChangeSelect = (selected) => {
+    setFormData({
+      ...formData, unit_id: selected
+    })
+    console.log(formData)
+  };
 
 
 
@@ -271,18 +289,18 @@ export const ReportManagement = () => {
                   </div>
                   <div className="col-md-8 mb-2">
                     <div className="addUser align-items-center">
-                      <SelectBox
-                        selectClass="mainInput"
-                        name="unit_id"
-                        label="Select Unit"
-                        value={formData.unit_id}
-                        required
-                        option={unit}
-                        onChange={(event) => {
-                          setFormData({ ...formData, unit_id: event.target.value });
-                           
-                        }}
-                      />
+                      
+                      <div class="inputWrapper">
+                        <label class="mainLabel">Add Units<span>*</span></label>
+
+                        <Select
+                          value={formData.unit_id}
+                          isMulti
+                          required
+                          options={SelectOptions}
+                          onChange={handleChangeSelect}
+                        />
+                      </div>
 
                       <SelectBox
                         selectClass="mainInput"
@@ -293,7 +311,7 @@ export const ReportManagement = () => {
                         option={monthList}
                         onChange={(event) => {
                           setFormData({ ...formData, month: event.target.value });
-                           
+
                         }}
                       />
 
