@@ -29,6 +29,8 @@ export const UnitTarget = () => {
   const [userinputValue, setuserInputValue] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(8);
+   
+  const [userValue, setuserValue] = useState('');
   const [inputValue, setInputValue] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [units, setUnits] = useState({});
@@ -151,7 +153,7 @@ export const UnitTarget = () => {
   // }
 
   const filterData = data.filter(item =>
-    item?.name.toLowerCase().includes(inputValue.toLowerCase())
+    item?.name.toLowerCase().includes(userValue.toLowerCase())
   );
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -159,7 +161,7 @@ export const UnitTarget = () => {
   const currentItems = filterData.slice(indexOfFirstItem, indexOfLastItem);
 
   const filterUserdata = userdata.filter(item =>
-    item?.unit_detail?.name?.toLowerCase().includes(inputValue.toLowerCase())
+    item?.unit_detail?.name?.toLowerCase().includes(userValue.toLowerCase())
   );
 
 
@@ -314,6 +316,22 @@ export const UnitTarget = () => {
 
   const handleChange = (event) => {
     setInputValue(event.target.value);
+    setuserInputValue(event.target.value)
+    const { name, value } = event.target;
+    if (name === 'unit_id') {
+      setViewleads(value);
+    }
+
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+
+
+  const handleuserChange = (event) => {
+    setuserValue(event.target.value);
     setuserInputValue(event.target.value)
     const { name, value } = event.target;
     if (name === 'unit_id') {
@@ -546,7 +564,7 @@ export const UnitTarget = () => {
                               <CustomButton text="Add Unit Target" variant='primaryButton' onClick={() => {
                                 setUser(true)
                               }} />
-                              <CustomInput type="text" placeholder="Search Here..." value={inputValue} inputClass="mainInput" onChange={handleChange} />
+                              <CustomInput type="text" placeholder="Search Here..." value={userValue} inputClass="mainInput" onChange={handleuserChange} />
                             </div>
                           </div>
                         </div>
@@ -671,7 +689,7 @@ export const UnitTarget = () => {
                               <CustomButton text="Add User Target" variant='primaryButton' onClick={() => {
                                 setUsers(true)
                               }} />
-                              <CustomInput type="text" placeholder="Search Here..." value={inputValue} inputClass="mainInput" onChange={handleChange} />
+                              <CustomInput type="text" placeholder="Search Here..." value={userValue} inputClass="mainInput" onChange={handleuserChange} />
                             </div>
                           </div>
                         </div>
