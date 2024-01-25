@@ -8,7 +8,7 @@ import CustomInput from '../../Components/CustomInput';
 import { SelectBox } from "../../Components/CustomSelect";
 import CustomButton from "../../Components/CustomButton";
 export const AddLead = () => {
-    const [status , setStatus] = useState()
+    const [status, setStatus] = useState()
     const [brands, setBrands] = useState({});
     const [unit, setUnit] = useState({});
     const [showModal, setShowModal] = useState(false);
@@ -148,6 +148,7 @@ export const AddLead = () => {
     const [remainingWords, setRemainingWords] = useState(100);
 
 
+    const [showRequiredMessage, setShowRequiredMessage] = useState(false);
 
 
     const handleChange = (event) => {
@@ -210,8 +211,7 @@ export const AddLead = () => {
                     setRemainingNumber(0);
                 }
             } else {
-                // Handle other input fields here
-                // You may want to set a default character limit for other fields
+
                 const defaultCharacterLimit = 20;
 
                 if (value.length <= defaultCharacterLimit) {
@@ -219,7 +219,6 @@ export const AddLead = () => {
                         ...prevData,
                         [name]: value,
                     }));
-                    // Set remaining for other fields if needed
                 }
             }
         }
@@ -262,27 +261,85 @@ export const AddLead = () => {
             })
     }
 
+    //     const handleSubmit = (event) => {
+    //         event.preventDefault();
+    // // 
+    //         // Create a new FormData object
+    //         const formDataMethod = new FormData();
+    //         for (const key in formData) {
+    //             formDataMethod.append(key, formData[key]);
+    //         }
+    //         document.querySelector('.loaderBox').classList.remove("d-none");
+    //         // Make the fetch request
+    //         fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/leads-add-edit`, {
+    //             method: 'POST',
+    //             headers: {
+    //                 'Accept': 'application/json',
+    //                 'Authorization': `Bearer ${LogoutData}`
+    //             },
+    //             body: formDataMethod // Use the FormData object as the request body
+    //         })
+    //             .then((response) => {
+    //                 return response.json();
+    //             })
+    //             .then((data) => {
+    //                 document.querySelector('.loaderBox').classList.add("d-none");
+    //                 data?.status ? setSuccessStatus(data?.msg) : setSuccessStatus(data?.msg)
+    //                 setStatus(data?.status)
+    //                 setShowModal(true)
+    //             })
+    //             .catch((error) => {
+    //                 document.querySelector('.loaderBox').classList.add("d-none");
+
+    //             })
+    //     };
+
+
+
+ 
+
+  
+
     const handleSubmit = (event) => {
         event.preventDefault();
+ 
+        for (const key in formData) {
+            if (
+                //    formData[key] == formData.source =='' ||
+            // formData.amount == '' ||
+                formData.brand === '' ||
+                formData.product === '' ||
+                formData.email === '' ||
+                formData.name === '' ||
+                formData.phone === '' ||
+                formData.description === '' 
+   
+            ) {
+              
+ 
+                return;
+            }
+        }
 
-        // Create a new FormData object
+
+        // setShowRequiredMessage(false);
+
         const formDataMethod = new FormData();
         for (const key in formData) {
             formDataMethod.append(key, formData[key]);
         }
+
         document.querySelector('.loaderBox').classList.remove("d-none");
-        // Make the fetch request
+
         fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/leads-add-edit`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Authorization': `Bearer ${LogoutData}`
             },
-            body: formDataMethod // Use the FormData object as the request body
+            body: formDataMethod
         })
-            .then((response) => {
-                return response.json();
-            })
+            .then((response) => response.json())
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
                 data?.status ? setSuccessStatus(data?.msg) : setSuccessStatus(data?.msg)
@@ -291,8 +348,7 @@ export const AddLead = () => {
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-
-            })
+            });
     };
 
 
@@ -342,6 +398,7 @@ export const AddLead = () => {
 
                                             </div>
 
+                                            {/* {showRequiredMessage && <p style={{ color: 'red' }}>{showRequiredMessage}</p>} */}
 
 
                                             <div className="col-md-4 mb-4">
@@ -357,7 +414,9 @@ export const AddLead = () => {
                                                     value={formData.product}
                                                     onChange={handleChange}
                                                 />
+ 
                                             </div>
+
                                             <div className="col-md-4 mb-4">
                                                 <CustomInput
                                                     label='Email'
@@ -438,7 +497,7 @@ export const AddLead = () => {
                                                     required
                                                     label="Amount Recovery"
                                                     id="recovery"
-                                                     
+
                                                     type="number"
                                                     placeholder="Enter Recovery Amount"
                                                     labelClass="mainLabel"

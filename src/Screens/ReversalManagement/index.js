@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisV, faEye, faCheck, faTimes, faFilter, faPencil  ,faTrash} from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisV, faEye, faCheck, faTimes, faFilter, faPencil  ,faTrash , faCopy} from "@fortawesome/free-solid-svg-icons";
 
 import { DashboardLayout } from "../../Components/Layout/DashboardLayout";
 import CustomTable from "../../Components/CustomTable";
@@ -17,7 +17,8 @@ import CustomButton from "../../Components/CustomButton";
 import "./style.css";
 
 export const ReversalManagement = () => {
-
+  const [copied, setCopied] = useState(false)
+  const [copiedId, setCopiedId] = useState(null);
   const [data, setData] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
@@ -28,7 +29,18 @@ export const ReversalManagement = () => {
   const [inputValue, setInputValue] = useState('');
 
   const navigate = useNavigate();
-
+  const coppied = (id, lead_code) => {
+    navigator.clipboard.writeText(`${lead_code}`);
+    setCopied(true);
+    setCopiedId(id);  
+    setTimeout(() => {
+      setCopied(false);
+      setCopiedId(null);  
+    }, 1000);
+  };
+   
+  console.log("coppied" , coppied)
+ 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
   };
@@ -194,6 +206,17 @@ const reversal = () =>{
                             <td>{index + 1}</td>
                             <td className="text-capitalize">
                               {item?.lead_code}
+                              <button
+                                onClick={() => coppied(item.id, item.lead_code)}
+                                className="bg-transparent border-0 text-secondary"
+                              >
+                                <FontAwesomeIcon icon={faCopy}></FontAwesomeIcon>
+                              </button>
+
+                              {copied && copiedId === item.id && (
+                                <span className="text-success px-3 py-1 rounded-pill">Copied</span>
+                              )}
+
                             </td>
                             {/* <td>{item?.username}</td> */}
                             <td>{`$ ${item?.reversal_amount}`}</td>

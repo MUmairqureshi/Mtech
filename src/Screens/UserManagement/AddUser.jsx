@@ -14,6 +14,8 @@ export const AddUser = () => {
     const [initialunit, setUnit] = useState({});
     const [showModal, setShowModal] = useState(false)
     const [permission, setPermission] = useState(false)
+    const [status, setStatus] = useState()
+    const [successStatus, setSuccessStatus] = useState('Server Error!');
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -58,11 +60,11 @@ export const AddUser = () => {
             )
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                                setrole(data.roles);
+                setrole(data.roles);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                
+
             })
     }
 
@@ -85,13 +87,13 @@ export const AddUser = () => {
                 response.json()
             )
             .then((data) => {
-                 
+
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setUnit(data.units);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-          
+
             })
     }
 
@@ -122,23 +124,37 @@ export const AddUser = () => {
         }
     }
 
-  
+
 
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        // Create a new FormData object
+        for (const key in formData) {
+            if (
+
+                formData.name === '' ||
+                formData.product === '' ||
+                formData.email === '' ||
+                formData.user_role === ''
+
+
+            ) {
+
+
+                return;
+            }
+        }
         const formDataMethod = new FormData();
         for (const key in formData) {
-            if(key == 'unit_id') {
+            if (key == 'unit_id') {
                 formDataMethod.append(key, JSON.stringify(formData[key]))
             } else {
                 formDataMethod.append(key, formData[key]);
             }
         }
-      
-     
+
+
         document.querySelector('.loaderBox').classList.remove("d-none");
         // Make the fetch request
         fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-add-edit`, {
@@ -155,10 +171,12 @@ export const AddUser = () => {
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setShowModal(true)
+                data?.status ? setSuccessStatus(data?.msg) : setSuccessStatus(data?.msg)
+                setStatus(data?.status)
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-         
+
             })
     };
 
@@ -182,8 +200,8 @@ export const AddUser = () => {
             ...prevData,
             [name]: value,
         }));
-    
-        
+
+
     };
 
 
@@ -276,11 +294,11 @@ export const AddUser = () => {
                                                     </div>
                                                 )
                                             }
- 
+
                                             <div className="col-md-4 mb-4">
                                                 <div class="inputWrapper">
                                                     <label class="mainLabel">Add Units<span>*</span></label>
-                                           
+
                                                     <Select
                                                         value={formData.unit_id}
                                                         isMulti
@@ -300,7 +318,7 @@ export const AddUser = () => {
                         </div>
                     </div>
                 </div>
-                <CustomModal show={showModal} close={() => { setShowModal(false) ; goBack() }} success heading='User has been Successfully Added.' />
+                <CustomModal status={status} show={showModal} close={() => { setShowModal(false); goBack() }} success heading={successStatus} />
 
 
             </DashboardLayout>

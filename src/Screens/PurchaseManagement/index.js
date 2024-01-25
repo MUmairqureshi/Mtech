@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisV, faEye, faCheck, faTimes, faFilter, faPencil, faChainSlash, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisV, faEye, faCheck, faTimes, faFilter, faPencil, faChainSlash, faTrash , faCopy } from "@fortawesome/free-solid-svg-icons";
 
 import { DashboardLayout } from "../../Components/Layout/DashboardLayout";
 import CustomTable from "../../Components/CustomTable";
@@ -57,7 +57,8 @@ export const PurchaseManagement = () => {
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filterData.slice(indexOfFirstItem, indexOfLastItem);
-
+  const [copied, setCopied] = useState(false)
+  const [copiedId, setCopiedId] = useState(null);
   const purchase = () => {
 
 
@@ -146,11 +147,11 @@ export const PurchaseManagement = () => {
       .then((data) => {
         purchase()
         document.querySelector('.loaderBox').classList.add("d-none");
-       
+
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-     
+
       })
   }
 
@@ -190,6 +191,15 @@ export const PurchaseManagement = () => {
     },
   ];
 
+  const coppied = (id, lead_code) => {
+    navigator.clipboard.writeText(`${lead_code}`);
+    setCopied(true);
+    setCopiedId(id);
+    setTimeout(() => {
+      setCopied(false);
+      setCopiedId(null);
+    }, 1000);
+  };
 
   return (
     <>
@@ -221,6 +231,17 @@ export const PurchaseManagement = () => {
                             <td>{index + 1}</td>
                             <td className="text-capitalize">
                               {item?.lead_code}
+                              <button
+                                onClick={() => coppied(item.id, item.lead_code)}
+                                className="bg-transparent border-0 text-secondary"
+                              >
+                                <FontAwesomeIcon icon={faCopy}></FontAwesomeIcon>
+                              </button>
+
+                              {copied && copiedId === item.id && (
+                                <span className="text-success px-3 py-1 rounded-pill">Copied</span>
+                              )}
+
                             </td>
                             {/* <td>{item?.username}</td> */}
                             <td>{`$ ${item?.purchase_amount}`}</td>

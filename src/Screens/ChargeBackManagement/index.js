@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisV, faEye, faCheck, faTimes, faFilter, faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisV, faEye, faCheck, faTimes, faFilter, faPencil, faTrash  , faCopy} from "@fortawesome/free-solid-svg-icons";
 
 import { DashboardLayout } from "../../Components/Layout/DashboardLayout";
 import CustomTable from "../../Components/CustomTable";
@@ -24,6 +24,8 @@ export const ChargeBackManagement = () => {
   const [showModal3, setShowModal3] = useState(false);
   const [showModal4, setShowModal4] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [copied, setCopied] = useState(false)
+  const [copiedId, setCopiedId] = useState(null);
   const [itemsPerPage, setItemsPerPage] = useState(8);
   const [inputValue, setInputValue] = useState('');
 
@@ -38,6 +40,15 @@ export const ChargeBackManagement = () => {
   }
 
 
+  const coppied = (id, lead_code) => {
+    navigator.clipboard.writeText(`${lead_code}`);
+    setCopied(true);
+    setCopiedId(id);
+    setTimeout(() => {
+      setCopied(false);
+      setCopiedId(null);
+    }, 1000);
+  };
   const inActive = () => {
     setShowModal(false)
     setShowModal2(true)
@@ -181,16 +192,24 @@ const chargeback = () => {
                 <div className="row mb-3">
                   <div className="col-12">
                     <CustomTable
-                      headers={maleHeaders}
-
-                    >
+                      headers={maleHeaders} >
                       <tbody>
                         {currentItems.map((item, index) => (
                           <tr key={index}>
                             <td>{index + 1}</td>
                             <td className="text-capitalize">
                               {item?.lead_code}
-                            </td>
+                              <button
+                                onClick={() => coppied(item.id, item?.lead_code)}
+                                className="bg-transparent border-0 text-secondary"
+                              >
+                                <FontAwesomeIcon icon={faCopy}></FontAwesomeIcon>
+                              </button>
+
+                              {copied && copiedId === item.id && (
+                                <span className="text-success px-3 py-1 rounded-pill">Copied</span>
+                              )}
+                                </td>
                             {/* <td>{item?.username}</td> */}
                             <td>{`$ ${item?.chargeback_amount}`}</td>
                             <td>{item?.chargeback_date}</td>
@@ -232,8 +251,6 @@ const chargeback = () => {
 
           <CustomModal show={showModal3} close={() => { setShowModal3(false) }} action={ActiveMale} heading='Are you sure you want to mark this user as Active?' />
           <CustomModal show={showModal4} close={() => { setShowModal4(false) }} success heading='Marked as Active' />
-
-
 
         </div>
       </DashboardLayout>

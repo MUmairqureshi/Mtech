@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisV, faEye, faCheck, faTimes, faFilter, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisV, faEye, faCheck, faTimes, faFilter, faEdit, faTrash , faCopy } from "@fortawesome/free-solid-svg-icons";
 
 
 import { DashboardLayout } from "../../Components/Layout/DashboardLayout";
@@ -27,7 +27,8 @@ export const LeadListing = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(8);
   const [inputValue, setInputValue] = useState('');
-
+  const [copied, setCopied] = useState(false)
+  const [copiedId, setCopiedId] = useState(null);
   const navigate = useNavigate();
 
   const handlePageChange = (pageNumber) => {
@@ -37,6 +38,15 @@ export const LeadListing = () => {
   const hanldeRoute = () => {
     navigate('/add-lead')
   }
+  const coppied = (id, lead_code) => {
+    navigator.clipboard.writeText(`${lead_code}`);
+    setCopied(true);
+    setCopiedId(id);
+    setTimeout(() => {
+      setCopied(false);
+      setCopiedId(null);
+    }, 1000);
+  };
 
 
   const inActive = () => {
@@ -236,6 +246,17 @@ export const LeadListing = () => {
                             <td>{index + 1}</td>
                             <td className="text-capitalize">
                               {item?.code}
+                              <button
+                                onClick={() => coppied(item.id, item?.code)}
+                                className="bg-transparent border-0 text-secondary"
+                              >
+                                <FontAwesomeIcon icon={faCopy}></FontAwesomeIcon>
+                              </button>
+
+                              {copied && copiedId === item.id && (
+                                <span className="text-success px-3 py-1 rounded-pill">Copied</span>
+                              )}
+
                             </td>
                             <td className="text-capitalize">
                               {item?.date}

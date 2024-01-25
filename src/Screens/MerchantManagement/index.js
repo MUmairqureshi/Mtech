@@ -26,6 +26,7 @@ export const MerchantManagement = () => {
   const [addUser, setUser] = useState(false);
   const [editUser, setEditUser] = useState(false);
   const [showModal, setShowModal] = useState(false);
+  const [status , setStatus] = useState()
   const [userForm, setUserFrom] = useState(false);
   const [idUser, setIdUser] = useState(0);
   const [formData, setFormData] = useState({
@@ -144,6 +145,7 @@ export const MerchantManagement = () => {
          
         document.querySelector('.loaderBox').classList.add("d-none");
         setShowModal(true)
+        setStatus(data.status)
         setUser(false)
         setFormData({
           name: ''
@@ -348,7 +350,7 @@ export const MerchantManagement = () => {
             <CustomButton variant='primaryButton' text='Add' type='button' onClick={handleEditSubmit} />
           </CustomModal>
 
-          <CustomModal show={showModal} close={() => { setShowModal(false) }} success heading='Merchant added Successfully.' />
+          <CustomModal status={status}  show={showModal} close={() => { setShowModal(false) }} success heading='Merchant added Successfully.' />
 
 
         </div>

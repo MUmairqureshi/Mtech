@@ -68,7 +68,23 @@ export const AddPurchase = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        // Create a new FormData object
+        for (const key in formData) {
+            if (
+           
+                formData.brand === '' ||
+                formData.product === '' ||
+                formData.email === '' ||
+                formData.name === '' ||
+                formData.phone === '' ||
+                formData.description === '' 
+   
+            ) {
+              
+ 
+                return;
+            }
+        }
+
         const formDataMethod = new FormData();
         for (const key in formData) {
             formDataMethod.append(key, formData[key]);

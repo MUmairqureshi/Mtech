@@ -11,8 +11,10 @@ import CustomButton from "../../Components/CustomButton";
 import Select from 'react-select'
 export const EditUser = () => {
     const { id } = useParams();
+    const [successStatus, setSuccessStatus] = useState('Server Error!');
     const [initalRole, setrole] = useState({});
     const [initialunit, setUnit] = useState({});
+    const [status , setStatus] = useState() 
     const [showModal, setShowModal] = useState(false);
     const [permission, setPermission] = useState(false)
     const [formData, setFormData] = useState({
@@ -169,6 +171,22 @@ export const EditUser = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
 
+        for (const key in formData) {
+            if (
+              
+                formData.name === '' ||
+                formData.product === '' ||
+                formData.email === '' ||
+                formData.user_role === '' 
+ 
+   
+            ) {
+              
+ 
+                return;
+            }
+        }
+
         // Create a new FormData object
         const formDataMethod = new FormData();
         for (const key in formData) {
@@ -197,8 +215,8 @@ export const EditUser = () => {
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setShowModal(true)
-        
-                
+                data?.status ? setSuccessStatus(data?.msg) : setSuccessStatus(data?.msg)
+                setStatus(data?.status)
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
@@ -355,7 +373,7 @@ export const EditUser = () => {
                         </div>
                     </div>
                 </div>
-                <CustomModal show={showModal} close={() => { setShowModal(false) ; goBack() }} success heading='User Edit Successfully.' />
+                <CustomModal status={status}  show={showModal} close={() => { setShowModal(false) ; goBack() }} success heading={successStatus} />
 
             </DashboardLayout>
         </>
