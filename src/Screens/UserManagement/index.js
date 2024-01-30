@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisV, faEye, faCheck, faTimes, faFilter, faPencil, faTrash   } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisV, faEye, faCheck, faTimes, faFilter, faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 import { DashboardLayout } from "../../Components/Layout/DashboardLayout";
 import CustomTable from "../../Components/CustomTable";
@@ -79,14 +79,14 @@ export const UserManagement = () => {
         response.json()
       )
       .then((data) => {
-     
+
         document.querySelector('.loaderBox').classList.add("d-none");
         setData(data.users);
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-      
-        
+
+
       })
 
   }
@@ -152,7 +152,7 @@ export const UserManagement = () => {
       .then((data) => {
         usermanagement()
         document.querySelector('.loaderBox').classList.add("d-none");
-      
+
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
@@ -192,8 +192,7 @@ export const UserManagement = () => {
                             <td className="text-capitalize">
                               {item?.name}
                             </td>
-                            {/* <td>{item?.username}</td> */}
-                            <td>{item?.email}</td>
+                              <td>{item?.email}</td>
                             <td>{
                               item?.unit_id && item?.unit_id.map((item) => (
                                 <span className="ps-1">{item?.name}</span>
@@ -201,8 +200,7 @@ export const UserManagement = () => {
                             }</td>
                             <td>{item?.role?.name}</td>
                             <td className={item?.status == 1 ? 'greenColor' : 'redColor'}>{item?.status == 1 ? 'Active' : 'Inactive'}</td>
-                            {/* <td className={item?.status == 1 ? 'greenColor' : "redColor"}>{item?.status == 1 ? 'Active' : "Inactive"}</td> */}
-                            <td>
+                              <td>
                               <Dropdown className="tableDropdown">
                                 <Dropdown.Toggle variant="transparent" className="notButton classicToggle">
                                   <FontAwesomeIcon icon={faEllipsisV} />
@@ -210,16 +208,9 @@ export const UserManagement = () => {
                                 <Dropdown.Menu align="end" className="tableDropdownMenu">
                                   <Link to={`/user-detail/${item?.id}`} className="tableAction"><FontAwesomeIcon icon={faEye} className="tableActionIcon" />View</Link>
                                   <Link to={`/edit-user/${item?.id}`} className="tableAction"><FontAwesomeIcon icon={faPencil} className="tableActionIcon" />Edit</Link>
-                                  {/* <button type="button" className="bg-transparent border-0 ps-lg-3 pt-1" onClick={() => { removeItem(item?.id) }}>  Active </button>
-                                  <button type="button" className="bg-transparent border-0 ps-lg-3 pt-1" onClick={() => { removeItem(item?.id) }}>  Inactive </button> */}
-
-
-
-
-
                                   {item?.status == 0 ? <button type="button" className="bg-transparent border-0 ps-lg-3 pt-1" onClick={() => { removeItem(item?.id) }}>  <FontAwesomeIcon icon={faCompass} />  Active </button>
 
-                                    : <button type="button" className="bg-transparent border-0 ps-lg-3 pt-1" onClick={() => { removeItem(item?.id) }}>  <FontAwesomeIcon icon={faCompass} style={{decoration:'line-through'}} /> Inactive </button>
+                                    : <button type="button" className="bg-transparent border-0 ps-lg-3 pt-1" onClick={() => { removeItem(item?.id) }}>  <FontAwesomeIcon icon={faCompass} style={{ decoration: 'line-through' }} /> Inactive </button>
                                   }
                                 </Dropdown.Menu>
 

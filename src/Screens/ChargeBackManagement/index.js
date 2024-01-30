@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
 import { Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisV, faEye, faCheck, faTimes, faFilter, faPencil, faTrash  , faCopy} from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisV, faEye, faCheck, faTimes, faFilter, faPencil, faTrash, faCopy } from "@fortawesome/free-solid-svg-icons";
 
 import { DashboardLayout } from "../../Components/Layout/DashboardLayout";
 import CustomTable from "../../Components/CustomTable";
@@ -49,6 +48,10 @@ export const ChargeBackManagement = () => {
       setCopiedId(null);
     }, 1000);
   };
+
+
+
+  
   const inActive = () => {
     setShowModal(false)
     setShowModal2(true)
@@ -61,7 +64,6 @@ export const ChargeBackManagement = () => {
   const handleChange = (e) => {
     setInputValue(e.target.value);
   }
-
   const filterData = data.filter(item =>
     item?.leaddetail?.name.toLowerCase().includes(inputValue.toLowerCase())
   );
@@ -71,34 +73,34 @@ export const ChargeBackManagement = () => {
   const currentItems = filterData.slice(indexOfFirstItem, indexOfLastItem);
 
 
-const chargeback = () => {
-  const LogoutData = localStorage.getItem('login');
-  document.querySelector('.loaderBox').classList.remove("d-none");
-  fetch('https://custom3.mystagingserver.site/mtrecords/public/api/admin/chargeback-listing',
-    {
-      method: 'GET',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${LogoutData}`
-      },
-    }
-  )
-
-    .then(response =>
-      response.json()
+  const chargeback = () => {
+    const LogoutData = localStorage.getItem('login');
+    document.querySelector('.loaderBox').classList.remove("d-none");
+    fetch('https://custom3.mystagingserver.site/mtrecords/public/api/admin/chargeback-listing',
+      {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${LogoutData}`
+        },
+      }
     )
-    .then((data) => {
-      console.log(data)
-      document.querySelector('.loaderBox').classList.add("d-none");
-      setData(data?.data);
-    })
-    .catch((error) => {
-      document.querySelector('.loaderBox').classList.add("d-none");
-      console.log(error)
-    })
 
-}
+      .then(response =>
+        response.json()
+      )
+      .then((data) => {
+        console.log(data)
+        document.querySelector('.loaderBox').classList.add("d-none");
+        setData(data?.data);
+      })
+      .catch((error) => {
+        document.querySelector('.loaderBox').classList.add("d-none");
+        console.log(error)
+      })
+
+  }
   useEffect(() => {
     document.title = 'Mt Records | Charge Back Management';
     chargeback()
@@ -130,7 +132,7 @@ const chargeback = () => {
       key: "Charge BackType",
       title: "Charge Back Type",
     },
-
+        
     {
       key: "merchant",
       title: "Merchant",
@@ -171,9 +173,29 @@ const chargeback = () => {
         console.log(error)
       })
   }
+
+
+
+  const [isCopied, setIsCopied] = useState(false);
+  
+ 
+
+
+  const copyToClipboard = async () => {
+
+    try {
+      await navigator.clipboard.writeText(currentItems);
+      setIsCopied(true);
+    } catch (err) {
+      console.error('Unable to copy to clipboard.', err);
+    }
+  };
   return (
     <>
       <DashboardLayout>
+      {/* <button onClick={copyToClipboard}>Copy to Clipboard</button> */}
+
+ 
         <div className="container-fluid">
           <div className="row mb-3">
             <div className="col-12">
@@ -189,6 +211,7 @@ const chargeback = () => {
                     </div>
                   </div>
                 </div>
+
                 <div className="row mb-3">
                   <div className="col-12">
                     <CustomTable
@@ -201,22 +224,20 @@ const chargeback = () => {
                               {item?.lead_code}
                               <button
                                 onClick={() => coppied(item.id, item?.lead_code)}
-                                className="bg-transparent border-0 text-secondary"
-                              >
+                                className="bg-transparent border-0 text-secondary"   >
                                 <FontAwesomeIcon icon={faCopy}></FontAwesomeIcon>
                               </button>
-
                               {copied && copiedId === item.id && (
                                 <span className="text-success px-3 py-1 rounded-pill">Copied</span>
                               )}
-                                </td>
+                            </td>
                             {/* <td>{item?.username}</td> */}
                             <td>{`$ ${item?.chargeback_amount}`}</td>
                             <td>{item?.chargeback_date}</td>
                             <td>{item?.leaddetail?.email}</td>
                             <td>{item?.chargeback_type}</td>
                             <td>{item?.merchantdetail?.name}</td>
-                            {/* <td className={item?.status == 1 ? 'greenColor' : "redColor"}>{item?.status == 1 ? 'Active' : "Inactive"}</td> */}
+ 
                             <td>
                               <Dropdown className="tableDropdown">
                                 <Dropdown.Toggle variant="transparent" className="notButton classicToggle">
@@ -227,8 +248,7 @@ const chargeback = () => {
                                   <Link to={`/edit-chargeback/${item?.id}`} className="tableAction"><FontAwesomeIcon icon={faPencil} className="tableActionIcon" />Edit</Link>
                                   <button type="button" className="bg-transparent border-0 ps-lg-3 pt-1" onClick={() => { removeItem(item?.id) }}><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon> Delete</button>
                                 </Dropdown.Menu>
-
-                              </Dropdown>
+                                  </Dropdown>
                             </td>
                           </tr>
                         ))}
@@ -245,14 +265,12 @@ const chargeback = () => {
               </div>
             </div>
           </div>
-
           <CustomModal show={showModal} close={() => { setShowModal(false) }} action={inActive} heading='Are you sure you want to mark this user as inactive?' />
           <CustomModal show={showModal2} close={() => { setShowModal2(false) }} success heading='Marked as Inactive' />
-
           <CustomModal show={showModal3} close={() => { setShowModal3(false) }} action={ActiveMale} heading='Are you sure you want to mark this user as Active?' />
           <CustomModal show={showModal4} close={() => { setShowModal4(false) }} success heading='Marked as Active' />
-
         </div>
+ 
       </DashboardLayout>
     </>
   );

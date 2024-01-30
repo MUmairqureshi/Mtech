@@ -59,6 +59,13 @@ export const EditPurchase = () => {
             })
     }
 
+    const handleFetch = (event) => {
+        const { name, value } = event.target;
+        if (name === 'lead_code') {
+            setViewleads(value);
+        }
+    };
+
     //   https://custom3.mystagingserver.site/mtrecords/public/api/admin/purchase-add-edit/1
     const getUserData = () => {
         const LogoutData = localStorage.getItem('login');
@@ -80,7 +87,8 @@ export const EditPurchase = () => {
             .then((data) => {
                  
                 document.querySelector('.loaderBox').classList.add("d-none");
-                setViewleads(data?.data?.lead_id);
+                setViewleads(data?.data?.lead_code);
+                console.log("data?.data?.lead_id" , data?.data?.lead_id)
                 setFormData(data?.data);
 
             })
@@ -151,16 +159,6 @@ export const EditPurchase = () => {
     }, [])
 
 
-    // const handleChange = (event) => {
-    //     const { name, value } = event.target;
-    //     setFormData((prevData) => ({
-    //         ...prevData,
-    //         [name]: value,
-    //     }));
-    //      
-    // };
-
-
 
 
 
@@ -190,7 +188,7 @@ export const EditPurchase = () => {
 
 
     const userData = (uniID) => {
-         
+         console.log("userData" , uniID)
         document.querySelector('.loaderBox').classList.remove("d-none");
         fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-units/${uniID}`,
             {
@@ -217,7 +215,7 @@ export const EditPurchase = () => {
             })
     }
 
-
+ console.log("unitid" , unitid)
 
    
 
@@ -233,7 +231,7 @@ export const EditPurchase = () => {
 
     const [viewleads, setViewleads] = useState('');
 
-
+console.log("viewleads" , viewleads)
     const fetchData = async () => {
         
         try {
@@ -249,7 +247,7 @@ export const EditPurchase = () => {
             const data = await response.json();
 
             userData(data?.leads.unit_id);
-            // Process the data as needed
+            
              ;
         } catch (error) {
             
@@ -261,6 +259,7 @@ export const EditPurchase = () => {
 
         
         if (name === 'lead_id') {
+            console.log("view-leads" , name)
             setViewleads(value);
         }
 
@@ -272,13 +271,16 @@ export const EditPurchase = () => {
     };
 
 
+  
+
+
+
     useEffect(() => {
         fetchData();
     }, [viewleads]);
 
-
-
-
+ 
+ console.log("formData" ,formData )
 
     return (
         <>
@@ -299,19 +301,7 @@ export const EditPurchase = () => {
                                     <div className="col-lg-12">
                                         <div className="row">
                                             <div className="col-md-4 mb-4">
-                                                {/* <CustomInput
-                                                    label='Lead ID'
-                                                    required
-                                                    id='name'
-                                                    type='number'
-                                                    placeholder='Enter Lead ID'
-                                                    labelClass='mainLabel'
-                                                    inputClass='mainInput'
-                                                    name="lead_id"
-                                                    value={formData.lead_id}
-                                                    onChange={handleChange}
-                                                /> */}
-
+                                            
 
                                                 <CustomInput
                                                     label='Lead ID'
@@ -324,7 +314,7 @@ export const EditPurchase = () => {
                                                     inputClass='mainInput'
                                                     name="lead_code"
                                                     value={formData.lead_code}
-                                                // onChange={handleChange}
+                                                onChange={handleChange}
                                                 />
                                             </div>
                                             <div className="col-md-4 mb-4">
@@ -337,7 +327,6 @@ export const EditPurchase = () => {
                                                     name="name"
                                                     disabled
                                                     value={formData.leaddetail?.name}
-                                                // onChange={handleChange}
                                                 />
                                             </div>
                                             <div className="col-md-4 mb-4">
@@ -350,7 +339,6 @@ export const EditPurchase = () => {
                                                     name="email"
                                                     disabled
                                                     value={formData.leaddetail?.email}
-                                                // onChange={handleChange}
                                                 />
                                             </div>
                                             <div className="col-md-4 mb-4">
@@ -362,8 +350,7 @@ export const EditPurchase = () => {
                                                     inputClass='mainInput'
                                                     name="received"
                                                     disabled
-                                                    value={formData.leaddetail?.received}
-                                                // onChange={handleChange}
+                                                    value={formData.leaddetail?.gross}
                                                 />
                                             </div>
                                             <div className="col-md-4 mb-4">
@@ -394,18 +381,7 @@ export const EditPurchase = () => {
                                                     onChange={handleChange}
                                                 />
                                             </div>
-                                            {/* <div className="col-md-4 mb-4">
-                                                <SelectBox
-                                                    selectClass="mainInput"
-                                                    name="user_id"
-                                                    label="User ID"
-                                                    required
-                                                    value={formData.user_id}
-                                                    option={initalRole}
-                                                    onChange={handleChange}
-                                                />
-
-                                            </div> */}
+                                        
 
                                             <div className="col-md-4 mb-4">
                                                 <SelectBox
@@ -434,18 +410,7 @@ export const EditPurchase = () => {
 
                                             </div>
 
-                                            {/* <div className="col-md-4 mb-4">
-                                                <SelectBox
-                                                    selectClass="mainInput"
-                                                    name="merchant_id"
-                                                    label="Merchant"
-                                                    required
-                                                    value={formData.merchant_id}
-                                                    option={merchant}
-                                                    onChange={handleChange}
-                                                />
-
-                                            </div> */}
+                                       
                                             <div className="col-md-12 mb-4">
                                                 <div className="inputWrapper">
                                                     <label>Reason*</label>

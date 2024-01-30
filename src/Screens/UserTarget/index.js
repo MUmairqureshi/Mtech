@@ -50,7 +50,7 @@ export const UserTarget = () => {
 
   const handleEditTarget = (event) => {
     event.preventDefault();
- 
+
 
     TargetEditData(idUser);
     targetUpdateData(editFormData);
@@ -157,7 +157,7 @@ export const UserTarget = () => {
   const filterUserdata = userdata.filter(item =>
     item?.unit_detail?.name?.toLowerCase().includes(userinputValue.toLowerCase())
   );
- 
+
 
   const userindexOfLastItem = currentPage * itemsPerPage;
   const userindexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -185,12 +185,12 @@ export const UserTarget = () => {
         document.querySelector('.loaderBox').classList.add("d-none");
 
 
-    
+
         setData(data?.data);
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-       
+
       })
   }
 
@@ -217,12 +217,12 @@ export const UserTarget = () => {
         document.querySelector('.loaderBox').classList.add("d-none");
 
 
-     
+
         setUserdata(data?.data);
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-    
+
       })
   }
 
@@ -249,10 +249,6 @@ export const UserTarget = () => {
       key: "target",
       title: "Target",
     },
-    // {
-    //   key: "targetscore",
-    //   title: "Target Score",
-    // },
     {
       key: "status",
       title: "Status",
@@ -286,10 +282,7 @@ export const UserTarget = () => {
       key: "target",
       title: "Target",
     },
-    // {
-    //   key: "targetscore",
-    //   title: "Target Score",
-    // },
+
     {
       key: "status",
       title: "Status",
@@ -310,23 +303,23 @@ export const UserTarget = () => {
     setInputValue(event.target.value);
     setuserInputValue(event.target.value)
     const { name, value } = event.target;
- 
+
     if (name === 'unit_id') {
       setViewleads(value);
-    } 
-    
+    }
+
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
   };
-   
+
 
 
   const LogoutData = localStorage.getItem('login');
   const handleSubmit = (event) => {
     event.preventDefault();
-   
+
 
 
     fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/usertarget-add-edit`,
@@ -344,7 +337,7 @@ export const UserTarget = () => {
         return response.json()
       })
       .then((data) => {
-     
+
         fetchData()
         setUser(false)
 
@@ -353,7 +346,7 @@ export const UserTarget = () => {
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-      
+
       })
   }
 
@@ -370,23 +363,17 @@ export const UserTarget = () => {
       });
 
       const data = await response.json();
-    
+
 
       await fetchData();
 
       setUser(false);
     } catch (error) {
       document.querySelector('.loaderBox').classList.add("d-none");
-   
+
     }
   };
 
-
-  // const filterData = data && (
-  //   data.filter(item =>
-  //     item.name.toLowerCase().includes(inputValue.toLowerCase())
-  //   )
-  // )
 
 
 
@@ -398,7 +385,7 @@ export const UserTarget = () => {
 
 
   const fetchUserData = () => {
-    
+
     document.querySelector('.loaderBox').classList.remove("d-none");
     fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-units/${viewleads}`,
       {
@@ -415,25 +402,25 @@ export const UserTarget = () => {
         response.json()
       )
       .then((data) => {
-       
+
         document.querySelector('.loaderBox').classList.add("d-none");
         setUserData(data?.data)
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        
+
       })
   }
 
 
- 
+
   useEffect(() => {
     fetchUserData();
   }, [viewleads]);
 
 
 
- 
+
   return (
     <>
       <DashboardLayout>
@@ -489,10 +476,9 @@ export const UserTarget = () => {
                                 <td className="text-uppercase">
                                   {item?.name}
                                 </td>
-                                {/* <td>{item?.current_month_target?.target ? `$ ${item?.current_month_target?.target}` : '$0'}</td> */}
+
                                 <td>{item?.target_amount ? `$ ${item?.target_amount}` : '$0'}</td>
-                                {/* <td>{`$ ${item?.target_score}`}</td> */}
-                                {/* <td>{item?.current_month_target?.month}</td> */}
+
                                 <td className={item?.isAschived == 1 ? 'greenColor' : 'redColor'}>{item?.isAschived == 1 ? 'Acheived' : 'Not Acheived'}</td>
 
 
@@ -504,9 +490,7 @@ export const UserTarget = () => {
                                       <FontAwesomeIcon icon={faEllipsisV} />
                                     </Dropdown.Toggle>
                                     <Dropdown.Menu align="end" className="tableDropdownMenu">
-                                      {/* <button onClick={() => {
-                                    editTarget(item?.id)
-                                  }} className="tableAction"><FontAwesomeIcon icon={faPencil} className="tableActionIcon" />Edit</button> */}
+
 
                                       <Link className="tableAction" to={`target-detail/${item?.id}`}><FontAwesomeIcon icon={faEye} className="tableActionIcon" />View Details</Link>
                                     </Dropdown.Menu>
@@ -554,10 +538,8 @@ export const UserTarget = () => {
                                 <td className="text-uppercase">
                                   {item?.unit_detail?.name}
                                 </td>
-                                {/* <td>{item?.current_month_target?.target ? `$ ${item?.current_month_target?.target}` : '$0'}</td> */}
+
                                 <td>{item?.target ? `$ ${item?.target}` : '$0'}</td>
-                                {/* <td>{`$ ${item?.target_score}`}</td> */}
-                                {/* <td>{item?.current_month_target?.month}</td> */}
                                 <td className={item?.isAschived == 1 ? 'greenColor' : 'redColor'}>{item?.isAschived == 1 ? 'Acheived' : 'Not Acheived'}</td>
 
                                 <td>$ {item?.score_target}</td>
@@ -567,10 +549,7 @@ export const UserTarget = () => {
                                       <FontAwesomeIcon icon={faEllipsisV} />
                                     </Dropdown.Toggle>
                                     <Dropdown.Menu align="end" className="tableDropdownMenu">
-                                      {/* <button onClick={() => {
-                                    editTarget(item?.id)
-                                  }} className="tableAction"><FontAwesomeIcon icon={faPencil} className="tableActionIcon" />Edit</button> */}
-
+ 
                                       <Link className="tableAction" to={`target-detail/${item?.id}`}><FontAwesomeIcon icon={faEye} className="tableActionIcon" />View Details</Link>
                                     </Dropdown.Menu>
                                   </Dropdown>
@@ -625,7 +604,7 @@ export const UserTarget = () => {
             value={formData.target}
             onChange={(event) => {
               setFormData({ ...formData, target: event.target.value });
-           
+
             }}
 
 
@@ -651,21 +630,11 @@ export const UserTarget = () => {
             onChange={handleChange}
           />
 
-          {/* <div class="inputWrapper">
-              <label class="mainLabel">Add brands<span>*</span></label>
-              <Select
-                value={formData.brands}
-                isMulti
-                required
-                options={SelectOptions}
-                onChange={handleChangeSelect}
-              />
-            </div> */}
+ 
 
           <CustomButton variant='primaryButton' text='Add' type='button' onClick={handleSubmit} />
         </CustomModal>
-
-        {/* Edit Target  */}
+ 
 
       </DashboardLayout>
     </>

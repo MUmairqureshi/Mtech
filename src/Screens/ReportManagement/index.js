@@ -1,17 +1,11 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-
-import { Dropdown } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisV, faPencil, faCheck, faTimes, faFilter } from "@fortawesome/free-solid-svg-icons";
-
+ 
+   
 import { DashboardLayout } from "../../Components/Layout/DashboardLayout";
 import CustomTable from "../../Components/CustomTable";
 import CustomModal from "../../Components/CustomModal";
 
-import CustomPagination from "../../Components/CustomPagination"
-import CustomInput from "../../Components/CustomInput";
-import CustomButton from "../../Components/CustomButton";
+ import CustomButton from "../../Components/CustomButton";
 import { SelectBox } from "../../Components/CustomSelect";
 
 
@@ -31,8 +25,7 @@ export const ReportManagement = () => {
   const [idUser, setIdUser] = useState(0);
   const [formData, setFormData] = useState({});
   const [brands, setBrands] = useState({});
-  // const [unit, setUnit] = useState({});
-  const [initialunit, setUnit] = useState({});
+   const [initialunit, setUnit] = useState({});
 
 
   const SelectOptions = []
@@ -315,12 +308,7 @@ export const ReportManagement = () => {
                         }}
                       />
 
-                      {/* <CustomInput type="text" placeholder="Enter Year" name="year" value={formData.year}
-                        label="Year"
-                        inputClass="mainInput" onChange={(event) => {
-                          setFormData({ ...formData, year: event.target.value });
-                           
-                        }} /> */}
+                     
                       <CustomButton variant='primaryButton' text='Search' type='button' onClick={fetchData} />
                     </div>
                   </div>

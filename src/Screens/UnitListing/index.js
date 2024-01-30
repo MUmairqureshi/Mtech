@@ -15,9 +15,6 @@ import CustomButton from "../../Components/CustomButton";
 import { SelectBox } from "../../Components/CustomSelect";
 import Select from 'react-select'
 
-
-
-
 import "./style.css";
 
 export const UnitListing = () => {
@@ -170,14 +167,13 @@ export const UnitListing = () => {
     if (brands.hasOwnProperty(key)) {
       const item = brands[key];
 
-      // Create an object for each option with 'value' and 'label' properties
+   
       const option = {
-        value: item.id, // Assuming 'item.name' represents the option's value
-        label: item.name, // Assuming 'item.name' also represents the option's label
+        value: item.id, 
+        label: item.name, 
       };
 
-      // Push the option object into the SelectOptions array
-      SelectOptions.push(option);
+    SelectOptions.push(option);
     }
   }
 

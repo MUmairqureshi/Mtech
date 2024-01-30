@@ -123,16 +123,6 @@ export const AddPurchase = () => {
     }, [])
 
 
-    // const handleChange = (event) => {
-    //     const { name, value } = event.target;
-    //     setFormData((prevData) => ({
-    //         ...prevData,
-    //         [name]: value,
-    //     }));
-    //      
-    // };
-
-
 
 
 
@@ -167,7 +157,7 @@ export const AddPurchase = () => {
 
 
     const userData = (uniID) => {
-   
+   console.log("viewleads" , uniID)
         document.querySelector('.loaderBox').classList.remove("d-none");
         fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-units/${uniID}`,
             {
@@ -209,7 +199,7 @@ export const AddPurchase = () => {
 
 
     const [viewleads, setViewleads] = useState('');
-
+ console.log("view-leads" , viewleads)
 
     const fetchData = async () => {
          
@@ -386,18 +376,7 @@ export const AddPurchase = () => {
                                                     onChange={handleChange}
                                                 />
                                             </div>
-                                            {/* <div className="col-md-4 mb-4">
-                                                <SelectBox
-                                                    selectClass="mainInput"
-                                                    name="user_id"
-                                                    label="User ID"
-                                                    required
-                                                    value={formData.user_id}
-                                                    option={initalRole}
-                                                    onChange={handleChange}
-                                                />
-
-                                            </div> */}
+                                         
 
                                             <div className="col-md-4 mb-4">
                                                 <SelectBox
@@ -412,19 +391,7 @@ export const AddPurchase = () => {
 
                                             </div>
 
-                                            {/* <div className="col-md-4 mb-4">
-                                                <SelectBox
-                                                    selectClass="mainInput"
-                                                    name="merchant_id"
-                                                    label="Merchant"
-                                                    required
-                                                    value={formData.merchant_id}
-                                                    option={merchant}
-                                                    onChange={handleChange}
-                                                />
-
-                                            </div> */}
-
+                                      
 
                                             <div className="col-md-4 mb-4">
                                                 <SelectBox

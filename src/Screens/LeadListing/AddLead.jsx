@@ -261,53 +261,14 @@ export const AddLead = () => {
             })
     }
 
-    //     const handleSubmit = (event) => {
-    //         event.preventDefault();
-    // // 
-    //         // Create a new FormData object
-    //         const formDataMethod = new FormData();
-    //         for (const key in formData) {
-    //             formDataMethod.append(key, formData[key]);
-    //         }
-    //         document.querySelector('.loaderBox').classList.remove("d-none");
-    //         // Make the fetch request
-    //         fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/leads-add-edit`, {
-    //             method: 'POST',
-    //             headers: {
-    //                 'Accept': 'application/json',
-    //                 'Authorization': `Bearer ${LogoutData}`
-    //             },
-    //             body: formDataMethod // Use the FormData object as the request body
-    //         })
-    //             .then((response) => {
-    //                 return response.json();
-    //             })
-    //             .then((data) => {
-    //                 document.querySelector('.loaderBox').classList.add("d-none");
-    //                 data?.status ? setSuccessStatus(data?.msg) : setSuccessStatus(data?.msg)
-    //                 setStatus(data?.status)
-    //                 setShowModal(true)
-    //             })
-    //             .catch((error) => {
-    //                 document.querySelector('.loaderBox').classList.add("d-none");
-
-    //             })
-    //     };
-
-
-
- 
-
-  
+    
 
     const handleSubmit = (event) => {
         event.preventDefault();
  
         for (const key in formData) {
             if (
-                //    formData[key] == formData.source =='' ||
-            // formData.amount == '' ||
-                formData.brand === '' ||
+                 formData.brand === '' ||
                 formData.product === '' ||
                 formData.email === '' ||
                 formData.name === '' ||
@@ -322,8 +283,7 @@ export const AddLead = () => {
         }
 
 
-        // setShowRequiredMessage(false);
-
+    
         const formDataMethod = new FormData();
         for (const key in formData) {
             formDataMethod.append(key, formData[key]);
@@ -353,10 +313,8 @@ export const AddLead = () => {
 
 
     useEffect(() => {
-        // fectchBrandData()
-        fetchUnitData()
-        // userData()
-    }, [])
+         fetchUnitData()
+     }, [])
 
 
     const navigate = useNavigate();

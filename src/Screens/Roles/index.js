@@ -84,7 +84,6 @@ export const Roles = () => {
 
 
 
-  //  Add roles 
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -92,7 +91,6 @@ export const Roles = () => {
     roleData ? setShowModal(true) || setUser(false) : setShowModal(false)
   }
 
-  //  Edit Roles 
 
   const editUnit = (unitID) => {
     editDataParam(unitID);
@@ -112,8 +110,6 @@ export const Roles = () => {
 
   }, [roleEditData, dataEdited])
 
-
-  // Update roles 
 
   const handleEditSubmit = (event) => {
     event.preventDefault();
@@ -164,9 +160,7 @@ export const Roles = () => {
                   </div>
                   <div className="col-md-6 mb-2">
                     <div className="addUser">
-                      {/* <CustomButton text="Add Role" variant='primaryButton' onClick={() => {
-                        setUser(true)
-                      }} /> */}
+                    
                       <CustomInput type="text" placeholder="Search Here..." value={inputValue} inputClass="mainInput" onChange={handleChange} />
                       
                     </div>
@@ -220,7 +214,6 @@ export const Roles = () => {
               </div>
             </div>
           </div>
-          {/* add roles  */}
 
           <CustomModal show={addUser} close={() => { setUser(false) }} >
             <CustomInput

@@ -15,7 +15,7 @@ export const ProtectedRoutes = (props) => {
             headers: {
                 'Accept': 'application/json',
             },
-            body: formDataMethod // Use the FormData object as the request body
+            body: formDataMethod  
         })
             .then((response) => {
                 return response.json();

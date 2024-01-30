@@ -343,25 +343,7 @@ export const UnitTarget = () => {
       [name]: value,
     }));
   };
-  // const handleChange = (event) => {
-  //   const { name, value } = event.target;
-  //   if (name === 'unit_id') {
-  //     setViewleads(value);
-  //   }
-  //   setFormData((prevData) => ({
-  //     ...prevData,
-  //     [name]: value,
-  //   }));
-
-  // };
-
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
-
-  //   console.log(formData)
-  //   rolesLitingResponse(formData);
-  // }
-
+  
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -397,19 +379,7 @@ export const UnitTarget = () => {
       })
   }
 
-
-
-
-
-
-
-
-
-
-
-
-
-  const handleuserSubmit = (event) => {
+ const handleuserSubmit = (event) => {
     event.preventDefault();
 
 
@@ -470,21 +440,15 @@ export const UnitTarget = () => {
       const data = await response.json();
 
 
-      // Assuming fetchData is an asynchronous function
       await fetchData();
 
-      // Assuming setUser is a function to update user state
       setUser(false);
     } catch (error) {
       document.querySelector('.loaderBox').classList.add("d-none");
-      // Handle the error appropriately (e.g., display an error message to the user)
     }
   };
 
-
-
-
-  const [viewleads, setViewleads] = useState('');
+ const [viewleads, setViewleads] = useState('');
   const [useresdata, setUserData] = useState();
 
 
@@ -518,11 +482,7 @@ export const UnitTarget = () => {
       })
   }
 
-
-
-
-
-  useEffect(() => {
+ useEffect(() => {
     fetchUserData();
   }, [viewleads]);
 
@@ -532,11 +492,7 @@ export const UnitTarget = () => {
     <>
       <DashboardLayout>
 
-
-
-
-
-        <div className="container-fluid">
+    <div className="container-fluid">
           <div className="row mb-3">
             <div className="col-12">
               <div className="dashCard">
@@ -580,21 +536,14 @@ export const UnitTarget = () => {
                                 <td className="text-uppercase">
                                   {item?.name}
                                 </td>
-                                {/* <td>{item?.current_month_target?.target ? `$ ${item?.current_month_target?.target}` : '$0'}</td> */}
                                 <td>{item?.target_amount ? `$ ${item?.target_amount}` : '$0'}</td>
-                                {/* <td>{`$ ${item?.target_score}`}</td> */}
-                                {/* <td>{item?.current_month_target?.month}</td> */}
-                                {/* <td className={item?.isAschived == 1 ? 'greenColor' : 'redColor'}>{item?.isAschived == 1 ? 'Acheived' : 'Not Acheived'}</td> */}
                                 <td>
                                   <Dropdown className="tableDropdown">
                                     <Dropdown.Toggle variant="transparent" className="notButton classicToggle">
                                       <FontAwesomeIcon icon={faEllipsisV} />
                                     </Dropdown.Toggle>
                                     <Dropdown.Menu align="end" className="tableDropdownMenu">
-                                      {/* <button onClick={() => {
-                                    editTarget(item?.id)
-                                  }} className="tableAction"><FontAwesomeIcon icon={faPencil} className="tableActionIcon" />Edit</button> */}
-
+                                  
                                       <Link className="tableAction" to={`target-detail/${item?.id}`}><FontAwesomeIcon icon={faEye} className="tableActionIcon" />View Details</Link>
                                     </Dropdown.Menu>
                                   </Dropdown>
@@ -653,26 +602,7 @@ export const UnitTarget = () => {
                             onChange={handleChange}
 
                           />
-                          {/* <SelectBox
-                            selectClass="mainInput"
-                            name="user_id"
-                            labelClass='mainLabel'
-                            label="Select User"
-                            required
-                            value={formData.user_id}
-                            option={useresdata}
-                            onChange={handleChange}
-                          /> */}
-                          {/* <div class="inputWrapper">
-    <label class="mainLabel">Add brands<span>*</span></label>
-    <Select
-      value={formData.brands}
-      isMulti
-      required
-      options={SelectOptions}
-      onChange={handleChangeSelect}
-    />
-  </div> */}
+                      
 
                           <CustomButton variant='primaryButton' text='Add' type='button' onClick={handleSubmit} />
                         </CustomModal>
@@ -707,21 +637,15 @@ export const UnitTarget = () => {
                                 <td className="text-uppercase">
                                   {item?.unit_detail?.name}
                                 </td>
-                                {/* <td>{item?.current_month_target?.target ? `$ ${item?.current_month_target?.target}` : '$0'}</td> */}
+ 
                                 <td>{item?.target ? `$ ${item?.target}` : '$0'}</td>
-                                {/* <td>{`$ ${item?.target_score}`}</td> */}
-                                {/* <td>{item?.current_month_target?.month}</td> */}
-                                {/* <td className={item?.isAschived == 1 ? 'greenColor' : 'redColor'}>{item?.isAschived == 1 ? 'Acheived' : 'Not Acheived'}</td> */}
-                                {/* <td>{`$ ${item?.score_target}`}</td> */}
-                                <td>
+                                  <td>
                                   <Dropdown className="tableDropdown">
                                     <Dropdown.Toggle variant="transparent" className="notButton classicToggle">
                                       <FontAwesomeIcon icon={faEllipsisV} />
                                     </Dropdown.Toggle>
                                     <Dropdown.Menu align="end" className="tableDropdownMenu">
-                                      {/* <button onClick={() => {
-                                    editTarget(item?.id)
-                                  }} className="tableAction"><FontAwesomeIcon icon={faPencil} className="tableActionIcon" />Edit</button> */}
+   
 
                                       <Link className="tableAction" to={`usertarget-detail/${item?.id}`}><FontAwesomeIcon icon={faEye} className="tableActionIcon" />View Details</Link>
                                     </Dropdown.Menu>
@@ -788,16 +712,7 @@ export const UnitTarget = () => {
                             option={useresdata}
                             onChange={handleChange}
                           />
-                          {/* <div class="inputWrapper">
-    <label class="mainLabel">Add brands<span>*</span></label>
-    <Select
-      value={formData.brands}
-      isMulti
-      required
-      options={SelectOptions}
-      onChange={handleChangeSelect}
-    />
-  </div> */}
+                 
 
                           <CustomButton variant='primaryButton' text='Add' type='button' onClick={handleuserSubmit} />
                         </CustomModal>
@@ -818,9 +733,7 @@ export const UnitTarget = () => {
 
 
         </div>
-
-
-        {/* Edit Target  */}
+ 
 
       </DashboardLayout>
     </>

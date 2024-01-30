@@ -61,24 +61,22 @@ import Error from "../Screens/Error";
 
 
 export default function AdminRouter() {
-  //  const [ islogin , setIslogin]
+ 
 
 
 
   const token = localStorage.getItem('login');
-  // const isTokenAvailable = !!token;
-  // console.log("token", token)
+ 
 
   return (
     <BrowserRouter basename="/customProject">
       <Routes>
-        {/* <Route path="/" element={<AdminLogin />} /> */}
-        {/* <Route path="/" element={<ProtectedRoutes Components={AdminLogin} />} /> */}
+ 
 
         <Route path="/login" element={<AdminLogin />} />
         <Route path="/" element={<AdminLogin />} />
 
-        {/* <Route path="/" element={<ProtectedRoutes Components={AdminLogin} />} /> */}
+ 
         <Route path="/forget-password" element={<ForgetPassword />} />
         <Route path="/forget-password2" element={<ForgetPassword2 />} />
         <Route path="/forget-password3" element={<ForgetPassword3 />} />
@@ -100,7 +98,7 @@ export default function AdminRouter() {
 
         <Route path="/unit-listing" element={<ProtectedRoutes Components={UnitListing} />} />
         <Route path="/brand-listing" element={<ProtectedRoutes Components={BrandListing} />} />
-        {/* <Route path="/department-management/depart-details/:id" element={<ProtectedRoutes Components={DepartDetails} />} /> */}
+ 
 
         <Route path="/target-listing" element={<ProtectedRoutes Components={UnitTarget} />} />
         <Route path="/target-listing/target-detail/:id" element={<ProtectedRoutes Components={TargetDetails} />} />
@@ -116,11 +114,7 @@ export default function AdminRouter() {
 
 
 
-
-
-        {/* user-listing */}
-
-
+ 
 
         <Route path="/merchant-management" element={<ProtectedRoutes Components={MerchantManagement} />} />
 

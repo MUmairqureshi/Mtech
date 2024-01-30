@@ -165,10 +165,7 @@ const reversal = () =>{
       title: "reversal Type",
     },
 
-    // {
-    //   key: "merchant",
-    //   title: "Merchant",
-    // },
+   
     {
       key: "action",
       title: "Action",

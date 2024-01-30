@@ -3,8 +3,7 @@ import { useParams } from "react-router-dom";
 import { DashboardLayout } from "../../Components/Layout/DashboardLayout";
 import BackButton from "../../Components/BackButton";
 import CustomModal from "../../Components/CustomModal";
-import CustomButton from "../../Components/CustomButton";
-
+ 
 export const UserDetail = () => {
 
     const { id } = useParams();

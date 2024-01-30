@@ -18,7 +18,7 @@ import CustomButton from "../../Components/CustomButton";
 import "./style.css";
 
 export const LeadListing = () => {
-
+  window.close();
   const [data, setData] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
@@ -275,7 +275,7 @@ export const LeadListing = () => {
 
                             <td>{item?.received === null ? '$ 0' : `$ ${item?.received}`}</td>
                             <td>{item?.recovery}</td>
-                            <td>{item?.received + item?.recovery}</td>
+                            <td>{item?.gross}</td>
                             <td>{item?.salesrep?.name}</td>
 
                             <td>{item?.accountrepdetail?.name}</td>

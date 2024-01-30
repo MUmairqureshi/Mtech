@@ -181,10 +181,7 @@ export const PurchaseManagement = () => {
       title: "Purchase Type",
     },
 
-    // {
-    //   key: "merchant",
-    //   title: "Merchant",
-    // },
+  
     {
       key: "action",
       title: "Action",

@@ -37,13 +37,11 @@ export const EditUser = () => {
 
           
 
-            // Create an object for each option with 'value' and 'label' properties
-            const option = {
+             const option = {
                 label: item.name,
                 value: item.id,
             };
-            // ...option
-
+ 
             SelectOptions.push(option);
         }
     }
@@ -81,21 +79,7 @@ export const EditUser = () => {
                 data.users?.permission != null ? setPermission(true) : setPermission(false)
                 const abac = SelectOptions.filter(dataItem => data?.users?.unit_id?.includes(dataItem.id))
               
-
-                // data?.users?.unit_id.map((item) => {
-                //     const editData = {
-                //         value: item.id,
-                //         label: item.name,
-                //     };
-                //     editBrandList.push(editData)
-                // })
-
-                //   setFormData({
-                //     ...formData, 
-                //     unit_id: editBrandList,
-                
-                //   })
-
+ 
               
             })
             .catch((error) => {
@@ -187,8 +171,7 @@ export const EditUser = () => {
             }
         }
 
-        // Create a new FormData object
-        const formDataMethod = new FormData();
+         const formDataMethod = new FormData();
         for (const key in formData) {
             if (key == 'unit_id') {
                 formDataMethod.append(key, JSON.stringify(formData[key]))
@@ -200,8 +183,7 @@ export const EditUser = () => {
       
         
         document.querySelector('.loaderBox').classList.remove("d-none");
-        // Make the fetch request
-        fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-add-edit/${id}`, {
+         fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-add-edit/${id}`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',

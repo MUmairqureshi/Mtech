@@ -33,16 +33,6 @@ export const UnitReportManagement = () => {
   const [unit, setUnit] = useState({});
   const [total, setTotal] = useState();
 
-  // const optionData = [
-  //   {
-  //     name: "Active",
-  //     code: "1"
-  //   },
-  //   {
-  //     name: "Inactive",
-  //     code: "0"
-  //   },
-  // ]
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -210,21 +200,9 @@ export const UnitReportManagement = () => {
       key: "net",
       title: "Net",
     },
-  
-
-
-
-
   ];
 
-
-
-
-
-
-
-
-  return (
+ return (
     <>
       <DashboardLayout>
         <div className="container-fluid">
@@ -278,28 +256,8 @@ export const UnitReportManagement = () => {
                         </tr>
                       </tbody>
 
-                      {/* <tbody>
-                        <tr>
-                          <td className="text-capitalize">
-                            {data.unit_name}
-                          </td>
-
-                          <td>{data?.user_name}</td>
-                          <td>{data?.gross_sum}</td>
-                          <td>{data?.target}</td>
-                          <td>{data?.refunds}</td>
-                          <td>{data?.chargeback}</td>
-                          <td>{data?.purchase}</td>
-                          <td>{data?.net}</td>
-                        </tr>
-                      </tbody> */}
                     </CustomTable>
-                    {/* <CustomPagination
-                      itemsPerPage={itemsPerPage}
-                      totalItems={data.length}
-                      currentPage={currentPage}
-                      onPageChange={handlePageChange}
-                    /> */}
+                 
                   </div>
                 </div>
               </div>

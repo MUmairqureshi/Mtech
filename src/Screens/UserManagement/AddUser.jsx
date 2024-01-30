@@ -113,14 +113,12 @@ export const AddUser = () => {
         if (initialunit.hasOwnProperty(key)) {
             const item = initialunit[key];
 
-            // Create an object for each option with 'value' and 'label' properties
-            const option = {
-                value: item.id, // Assuming 'item.name' represents the option's value
-                label: item.name, // Assuming 'item.name' also represents the option's label
+             const option = {
+                value: item.id, 
+                label: item.name,  
             };
 
-            // Push the option object into the SelectOptions array
-            SelectOptions.push(option);
+             SelectOptions.push(option);
         }
     }
 
@@ -156,14 +154,13 @@ export const AddUser = () => {
 
 
         document.querySelector('.loaderBox').classList.remove("d-none");
-        // Make the fetch request
-        fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-add-edit`, {
+         fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-add-edit`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Authorization': `Bearer ${LogoutData}`
             },
-            body: formDataMethod // Use the FormData object as the request body
+            body: formDataMethod  
         })
             .then((response) => {
                 return response.json();

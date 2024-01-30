@@ -13,7 +13,7 @@ export const EditReversal = () => {
     const [initalRole, setrole] = useState({});
     const [initialunit, setUnit] = useState({});
     const [merchant, setMerchant] = useState()
-    const [status , setStatus]  = useState()
+    const [status, setStatus] = useState()
 
     const [showModal, setShowModal] = useState(false);
     const [formData, setFormData] = useState({});
@@ -54,12 +54,12 @@ export const EditReversal = () => {
             )
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-       
+
                 setMerchant(data?.data);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-           
+
             })
     }
 
@@ -82,14 +82,14 @@ export const EditReversal = () => {
                 response.json()
             )
             .then((data) => {
-           
+
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setFormData(data?.data);
                 setViewleads(data?.data?.lead_code);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-            
+
             })
     }
 
@@ -103,17 +103,17 @@ export const EditReversal = () => {
 
         for (const key in formData) {
             if (
-           
+
                 formData.brand === '' ||
                 formData.product === '' ||
                 formData.email === '' ||
                 formData.name === '' ||
                 formData.phone === '' ||
-                formData.description === '' 
-   
+                formData.description === ''
+
             ) {
-              
- 
+
+
                 return;
             }
         }
@@ -122,7 +122,7 @@ export const EditReversal = () => {
             formDataMethod.append(key, formData[key]);
         }
 
-  
+
         document.querySelector('.loaderBox').classList.remove("d-none");
         // Make the fetch request
         fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/reversal-add-edit/${id}`, {
@@ -138,14 +138,14 @@ export const EditReversal = () => {
             })
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                setShowModal(true) 
+                setShowModal(true)
                 setStatus(data?.status)
                 data?.status ? setSuccessStatus(data?.msg) : setSuccessStatus(data?.msg)
 
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-             
+
             })
     };
 
@@ -155,39 +155,12 @@ export const EditReversal = () => {
         fetchMerchantData()
     }, [])
 
-
-    // const handleChange = (event) => {
-    //     const { name, value } = event.target;
-    //     setFormData((prevData) => ({
-    //         ...prevData,
-    //         [name]: value,
-    //     }));
-    //     console.log(formData)
-    // };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     const [unitid, setUnitid] = useState();
 
 
 
     const userData = (uniID) => {
-    
+
         document.querySelector('.loaderBox').classList.remove("d-none");
         fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-units/${uniID}`,
             {
@@ -204,33 +177,21 @@ export const EditReversal = () => {
                 response.json()
             )
             .then((data) => {
-              
+
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setUnitid(data?.data);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-            
+
             })
     }
-
-
-
-
-
-
-
-
-
-
-
-
 
     const [viewleads, setViewleads] = useState('');
 
 
     const fetchData = async () => {
-       
+
         try {
             const response = await fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/view-leads/${viewleads}`, {
                 method: 'GET',
@@ -242,13 +203,13 @@ export const EditReversal = () => {
             });
 
             const data = await response.json();
-          
 
-           
+
+
             userData(data?.leads.unit_id);
-     
+
         } catch (error) {
-       return error
+            return error
         }
     };
 
@@ -263,7 +224,7 @@ export const EditReversal = () => {
             ...prevData,
             [name]: value,
         }));
-   
+
     };
 
 
@@ -294,10 +255,6 @@ export const EditReversal = () => {
                                     <div className="col-lg-12">
                                         <div className="row">
                                             <div className="col-md-4 mb-4">
-
-
-
-
                                                 <CustomInput
                                                     label='Lead ID'
                                                     required
@@ -309,7 +266,6 @@ export const EditReversal = () => {
                                                     inputClass='mainInput'
                                                     name="lead_code"
                                                     value={formData.lead_code}
-                                                // onChange={handleChange}
                                                 />
                                             </div>
                                             <div className="col-md-4 mb-4">
@@ -322,7 +278,6 @@ export const EditReversal = () => {
                                                     name="name"
                                                     disabled
                                                     value={formData.leaddetail?.name}
-                                                // onChange={handleChange}
                                                 />
                                             </div>
                                             <div className="col-md-4 mb-4">
@@ -335,7 +290,6 @@ export const EditReversal = () => {
                                                     name="email"
                                                     disabled
                                                     value={formData.leaddetail?.email}
-                                                // onChange={handleChange}
                                                 />
                                             </div>
                                             <div className="col-md-4 mb-4">
@@ -347,7 +301,7 @@ export const EditReversal = () => {
                                                     inputClass='mainInput'
                                                     name="received"
                                                     disabled
-                                                    value={formData.leaddetail?.received}
+                                                    value={formData.leaddetail?.gross}
                                                 // onChange={handleChange}
                                                 />
                                             </div>
@@ -379,18 +333,7 @@ export const EditReversal = () => {
                                                     onChange={handleChange}
                                                 />
                                             </div>
-                                            {/* <div className="col-md-4 mb-4">
-                                                <SelectBox
-                                                    selectClass="mainInput"
-                                                    name="user_id"
-                                                    label="User ID"
-                                                    required
-                                                    value={formData.user_id}
-                                                    option={initalRole}
-                                                    onChange={handleChange}
-                                                />
-
-                                            </div> */}
+                                       
 
                                             <div className="col-md-4 mb-4">
                                                 <SelectBox
@@ -432,12 +375,7 @@ export const EditReversal = () => {
                                                 />
 
                                             </div>
-                                            {/* <div className="col-md-12 mb-4">
-                                                <div className="inputWrapper">
-                                                    <label>Reason*</label>
-                                                    <textarea value={formData?.reason} name="reason" className="mainInput" onChange={handleChange}></textarea>
-                                                </div>
-                                            </div> */}
+                                     
                                             <div className="col-md-12">
                                                 <CustomButton variant='primaryButton' text='Submit' type='submit' />
                                             </div>
@@ -448,7 +386,7 @@ export const EditReversal = () => {
                         </div>
                     </div>
                 </div>
-                <CustomModal show={showModal}  status={status} close={() => { setShowModal(false); goBack() }} success heading={successStatus} />
+                <CustomModal show={showModal} status={status} close={() => { setShowModal(false); goBack() }} success heading={successStatus} />
 
             </DashboardLayout>
         </>

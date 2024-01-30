@@ -214,13 +214,11 @@ export const RefundManagement = () => {
                               )}
 
                             </td>
-                            {/* <td>{item?.username}</td> */}
                             < td > {`$ ${item?.refund_amount}`}</td>
                             <td>{item?.refund_date}</td>
                             <td>{item?.leaddetail?.email}</td>
                             <td>{item?.refund_type}</td>
                             <td>{item?.merchantdetail?.name}</td>
-                            {/* <td className={item?.status == 1 ? 'greenColor' : "redColor"}>{item?.status == 1 ? 'Active' : "Inactive"}</td> */}
                             <td>
                               <Dropdown className="tableDropdown">
                                 <Dropdown.Toggle variant="transparent" className="notButton classicToggle">

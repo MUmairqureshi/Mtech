@@ -102,7 +102,7 @@ const [status , setStatus]  = useState()
                 'Accept': 'application/json',
                 'Authorization': `Bearer ${LogoutData}`
             },
-            body: formDataMethod // Use the FormData object as the request body
+            body: formDataMethod 
         })
             .then((response) => {
             
@@ -124,32 +124,6 @@ const [status , setStatus]  = useState()
     useEffect(() => {
         fetchMerchantData()
     }, [])
-
-
-    // const handleChange = (event) => {
-    //     const { name, value } = event.target;
-    //     setFormData((prevData) => ({
-    //         ...prevData,
-    //         [name]: value,
-    //     }));
-    //     console.log(formData)
-    // };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     const [viewleads, setViewleads] = useState('');
@@ -181,7 +155,6 @@ const [status , setStatus]  = useState()
           
             
             userData(data?.leads.unit_id);
-            // Process the data as needed
       
         } catch (error) {
          
@@ -247,21 +220,8 @@ const [status , setStatus]  = useState()
       
             })
     }
+  const [viewl, setView] = useState('');
 
-
-
-
-
-
-
-
-
-
-
-    const [viewl, setView] = useState('');
-
-
-console.log("viewl" , viewl)
 
 
 
@@ -378,18 +338,7 @@ console.log("viewl" , viewl)
                                                     onChange={handleChange}
                                                 />
                                             </div>
-                                            {/* <div className="col-md-4 mb-4">
-                                                <SelectBox
-                                                    selectClass="mainInput"
-                                                    name="user_id"
-                                                    label="User ID"
-                                                    required
-                                                    value={formData.user_id}
-                                                    option={initalRole}
-                                                    onChange={handleChange}
-                                                />
-
-                                            </div> */}
+                                         
 
                                             <div className="col-md-4 mb-4">
                                                 <SelectBox
@@ -430,12 +379,7 @@ console.log("viewl" , viewl)
                                                 />
 
                                             </div>
-                                            {/* <div className="col-md-12 mb-4">
-                                                <div className="inputWrapper">
-                                                <label>Reason*</label>
-                                                <textarea value={formData?.reason} name="reason" className="mainInput" onChange={handleChange}></textarea>
-                                                </div>
-                                            </div> */}
+                                       
                                             <div className="col-md-12">
                                                 <CustomButton variant='primaryButton' text='Submit' type='submit' />
                                             </div>

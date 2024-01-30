@@ -228,11 +228,9 @@ export const AddRefund = () => {
             }
 
 
-            // userData(data?.leads.unit_id);
             ;
         } catch (error) {
          
-            // userData(0);
         }
     };
 
@@ -362,18 +360,7 @@ export const AddRefund = () => {
                                                     onChange={handleChange}
                                                 />
                                             </div>
-                                            {/* <div className="col-md-4 mb-4">
-                                                <SelectBox
-                                                    selectClass="mainInput"
-                                                    name="user_id"
-                                                    label="User ID"
-                                                    required
-                                                    value={formData.user_id}
-                                                    option={initalRole}
-                                                    onChange={handleChange}
-                                                />
-
-                                            </div> */}
+                                         
 
                                             <div className="col-md-4 mb-4">
                                                 <SelectBox

@@ -150,8 +150,7 @@ export const EditLead = () => {
 
 
         document.querySelector('.loaderBox').classList.remove("d-none");
-        // Make the fetch request
-        fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/leads-add-edit/${id}`, {
+         fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/leads-add-edit/${id}`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -182,19 +181,7 @@ export const EditLead = () => {
         fetchUnitData()
 
     }, [])
-
-
-    // const handleChange = (event) => {
-    //     const { name, value } = event.target;
-    //     if (name === 'unit_id') {
-    //         userData(value)
-    //     }
-    //     setFormData((prevData) => ({
-    //         ...prevData,
-    //         [name]: value,
-    //     }));
-
-    // };
+ 
 
 
     const userData = (uniID) => {
@@ -333,16 +320,14 @@ export const EditLead = () => {
                     setRemainingNumber(0);
                 }
             } else {
-                // Handle other input fields here
-                // You may want to set a default character limit for other fields
-                const defaultCharacterLimit = 20;
+                 const defaultCharacterLimit = 20;
 
                 if (value.length <= defaultCharacterLimit) {
                     setFormData((prevData) => ({
                         ...prevData,
                         [name]: value,
                     }));
-                    // Set remaining for other fields if needed
+                  
                 }
             }
         }

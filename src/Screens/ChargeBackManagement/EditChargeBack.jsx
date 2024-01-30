@@ -147,15 +147,7 @@ console.log("formDatq   a" , formData)
     }, [])
 
 
-    // const handleChange = (event) => {
-    //     const { name, value } = event.target;
-    //     setFormData((prevData) => ({
-    //         ...prevData,
-    //         [name]: value,
-    //     }));
-    //     console.log(formData)
-    // };
-
+ 
 
 
 
@@ -286,8 +278,7 @@ console.log("setFormDataqqqqz   " , formData)
                                                     inputClass='mainInput'
                                                     name="lead_code"
                                                     value={formData.lead_code}
-                                                // onChange={handleChange}
-                                                />
+                                                 />
                                             </div>
                                             <div className="col-md-4 mb-4">
                                                 <CustomInput
@@ -324,7 +315,7 @@ console.log("setFormDataqqqqz   " , formData)
                                                     inputClass='mainInput'
                                                     name="received"
                                                     disabled
-                                                    value={formData.leaddetail?.received}
+                                                    value={formData.leaddetail?.gross}
                                                 // onChange={handleChange}
                                                 />
                                             </div>
@@ -356,19 +347,7 @@ console.log("setFormDataqqqqz   " , formData)
                                                     onChange={handleChange}
                                                 />
                                             </div>
-                                            {/* <div className="col-md-4 mb-4">
-                                                <SelectBox
-                                                    selectClass="mainInput"
-                                                    name="user_id"
-                                                    label="User ID"
-                                                    required
-                                                    value={formData.user_id}
-                                                    option={initalRole}
-                                                    onChange={handleChange}
-                                                />
-
-                                            </div> */}
-
+                                          
                                             <div className="col-md-4 mb-4">
                                                 <SelectBox
                                                     selectClass="mainInput"

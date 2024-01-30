@@ -232,8 +232,7 @@ export const EditRefund = () => {
             const data = await response.json();
          
             userData(data?.leads.unit_id);  
-            // Process the data as needed
-            //  
+            
         } catch (error) {
         }
     };
@@ -273,8 +272,7 @@ export const EditRefund = () => {
 
 
 
-
-
+console.log("formData" , formData?.leaddetail)
 
     return (
         <>
@@ -306,7 +304,6 @@ export const EditRefund = () => {
                                                     inputClass='mainInput'
                                                     name="lead_code"
                                                     value={formData.lead_code}
-                                                    // onChange={handleChange}
                                                 />
                                             </div>
                                             <div className="col-md-4 mb-4">
@@ -319,7 +316,6 @@ export const EditRefund = () => {
                                                     name="name"
                                                     disabled
                                                     value={formData.leaddetail?.name}
-                                                    // onChange={handleChange}
                                                 />
                                             </div>
                                             <div className="col-md-4 mb-4">
@@ -332,7 +328,6 @@ export const EditRefund = () => {
                                                     name="email"
                                                     disabled
                                                     value={formData.leaddetail?.email}
-                                                    // onChange={handleChange}
                                                 />
                                             </div>
                                             <div className="col-md-4 mb-4">
@@ -344,8 +339,7 @@ export const EditRefund = () => {
                                                     inputClass='mainInput'
                                                     name="received"
                                                     disabled
-                                                    value={formData.leaddetail?.received}
-                                                    // onChange={handleChange}
+                                                    value={formData.leaddetail?.gross}
                                                 />
                                             </div>
                                             <div className="col-md-4 mb-4">
@@ -376,19 +370,7 @@ export const EditRefund = () => {
                                                     onChange={handleChange}
                                                 />
                                             </div>
-                                            {/* <div className="col-md-4 mb-4">
-                                                <SelectBox
-                                                    selectClass="mainInput"
-                                                    name="user_id"
-                                                    label="User ID"
-                                                    required
-                                                    value={formData.user_id}
-                                                    option={initalRole}
-                                                    onChange={handleChange}
-                                                />
-
-                                            </div> */}
-
+                                         
                                             <div className="col-md-4 mb-4">
                                                 <SelectBox
                                                     selectClass="mainInput"

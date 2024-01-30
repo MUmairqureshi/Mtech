@@ -31,19 +31,9 @@ export const MerchantManagement = () => {
   const [idUser, setIdUser] = useState(0);
   const [formData, setFormData] = useState({
     name: '',
-    // status: '1'
-  });
+   });
 
-  // const optionData = [
-  //   {
-  //     name: "Active",
-  //     code: "1"
-  //   },
-  //   {
-  //     name: "Inactive",
-  //     code: "0"
-  //   },
-  // ]
+  
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -335,18 +325,7 @@ export const MerchantManagement = () => {
 
             />
 
-            {/* <SelectBox
-              selectClass="mainInput"
-              name="Status"
-              label="Status"
-              value={formData.status}
-              required
-              option={optionData}
-              onChange={(event) => {
-                setFormData({ ...formData, status: event.target.value });
-                 ;
-              }}
-            /> */}
+          
             <CustomButton variant='primaryButton' text='Add' type='button' onClick={handleEditSubmit} />
           </CustomModal>
 
