@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisV, faEye, faCheck, faTimes, faFilter, faPencil } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisV, faEye, faCheck, faTimes, faFilter, faPencil, faTrash } from "@fortawesome/free-solid-svg-icons";
 
 import { DashboardLayout } from "../../Components/Layout/DashboardLayout";
 import CustomTable from "../../Components/CustomTable";
@@ -15,6 +15,8 @@ import CustomButton from "../../Components/CustomButton";
 
 
 import "./style.css";
+import { faCompass } from "@fortawesome/free-solid-svg-icons";
+import { text } from "@fortawesome/fontawesome-svg-core";
 
 export const UserManagement = () => {
 
@@ -59,10 +61,7 @@ export const UserManagement = () => {
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
   const currentItems = filterData.slice(indexOfFirstItem, indexOfLastItem);
 
-
-
-  useEffect(() => {
-    document.title = 'Mt Records | User Management';
+  const usermanagement = () => {
     const LogoutData = localStorage.getItem('login');
     document.querySelector('.loaderBox').classList.remove("d-none");
     fetch('https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-listing',
@@ -80,18 +79,25 @@ export const UserManagement = () => {
         response.json()
       )
       .then((data) => {
-        console.log(data)
+
         document.querySelector('.loaderBox').classList.add("d-none");
         setData(data.users);
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error)
+
+
       })
+
+  }
+
+  useEffect(() => {
+    usermanagement()
+    document.title = 'Mt Records | User Management';
 
 
   }, []);
-  console.log("datasusers" ,data)
+
 
   const maleHeaders = [
     {
@@ -118,12 +124,41 @@ export const UserManagement = () => {
       key: "status",
       title: "Status",
     },
-  
+
     {
       key: "action",
       title: "Action",
     },
   ];
+
+
+  const removeItem = (catId) => {
+    const LogoutData = localStorage.getItem('login');
+    document.querySelector('.loaderBox').classList.remove("d-none");
+    fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-delete/${catId}`,
+      {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${LogoutData}`
+        },
+      }
+    )
+
+      .then(response =>
+        response.json()
+      )
+      .then((data) => {
+        usermanagement()
+        document.querySelector('.loaderBox').classList.add("d-none");
+
+      })
+      .catch((error) => {
+        document.querySelector('.loaderBox').classList.add("d-none");
+
+      })
+  }
 
 
   return (
@@ -139,7 +174,7 @@ export const UserManagement = () => {
                   </div>
                   <div className="col-md-6 mb-2">
                     <div className="addUser">
-                      <CustomButton text="Add User" variant='primaryButton' onClick={hanldeRoute}/>
+                      <CustomButton text="Add User" variant='primaryButton' onClick={hanldeRoute} />
                       <CustomInput type="text" placeholder="Search Here..." value={inputValue} inputClass="mainInput" onChange={handleChange} />
                     </div>
                   </div>
@@ -157,17 +192,15 @@ export const UserManagement = () => {
                             <td className="text-capitalize">
                               {item?.name}
                             </td>
-                            {/* <td>{item?.username}</td> */}
-                            <td>{item?.email}</td>
+                              <td>{item?.email}</td>
                             <td>{
-                              item?.unit_id && item?.unit_id.map((item)=> (
+                              item?.unit_id && item?.unit_id.map((item) => (
                                 <span className="ps-1">{item?.name}</span>
-                              )) 
+                              ))
                             }</td>
                             <td>{item?.role?.name}</td>
                             <td className={item?.status == 1 ? 'greenColor' : 'redColor'}>{item?.status == 1 ? 'Active' : 'Inactive'}</td>
-                            {/* <td className={item?.status == 1 ? 'greenColor' : "redColor"}>{item?.status == 1 ? 'Active' : "Inactive"}</td> */}
-                            <td>
+                              <td>
                               <Dropdown className="tableDropdown">
                                 <Dropdown.Toggle variant="transparent" className="notButton classicToggle">
                                   <FontAwesomeIcon icon={faEllipsisV} />
@@ -175,6 +208,10 @@ export const UserManagement = () => {
                                 <Dropdown.Menu align="end" className="tableDropdownMenu">
                                   <Link to={`/user-detail/${item?.id}`} className="tableAction"><FontAwesomeIcon icon={faEye} className="tableActionIcon" />View</Link>
                                   <Link to={`/edit-user/${item?.id}`} className="tableAction"><FontAwesomeIcon icon={faPencil} className="tableActionIcon" />Edit</Link>
+                                  {item?.status == 0 ? <button type="button" className="bg-transparent border-0 ps-lg-3 pt-1" onClick={() => { removeItem(item?.id) }}>  <FontAwesomeIcon icon={faCompass} />  Active </button>
+
+                                    : <button type="button" className="bg-transparent border-0 ps-lg-3 pt-1" onClick={() => { removeItem(item?.id) }}>  <FontAwesomeIcon icon={faCompass} style={{ decoration: 'line-through' }} /> Inactive </button>
+                                  }
                                 </Dropdown.Menu>
 
                               </Dropdown>

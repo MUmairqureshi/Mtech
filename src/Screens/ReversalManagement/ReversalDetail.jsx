@@ -17,7 +17,6 @@ export const ReversalDetail = () => {
     const [showModal2, setShowModal2] = useState(false);
     const [showModal3, setShowModal3] = useState(false);
     const [showModal4, setShowModal4] = useState(false);
-    const [message, setMessage] = useState(false)
 
 
     const inActive = () => {
@@ -28,7 +27,7 @@ export const ReversalDetail = () => {
         setShowModal3(false)
         setShowModal4(true)
     }
- 
+
     useEffect(() => {
         const LogoutData = localStorage.getItem('login');
         document.title = 'Mt Records | Reversal Detail';
@@ -47,14 +46,14 @@ export const ReversalDetail = () => {
                 return response.json()
             })
             .then((data) => {
-                console.log(data)
+
                 document.querySelector('.loaderBox').classList.add("d-none");
                 SetUser(data.data)
 
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error);
+
             })
     }, [id]);
 
@@ -73,11 +72,6 @@ export const ReversalDetail = () => {
                     </div>
                     <div className="row mb-3">
                         <div className="col-12">
-                            {/* <div className="row mb-3 justify-content-end">
-                                <div className="col-lg-4 text-end order-1 order-lg-2 mb-3">
-                                <span className={`statusBadge ${user?.status == 1 ? 'statusBadgeActive' : 'statusBadgeInactive'}`}>{user?.status == 1 ? 'Active' : 'Inactive'}</span>
-                                </div>
-                            </div> */}
 
 
                             <div className="row">
@@ -108,13 +102,6 @@ export const ReversalDetail = () => {
                                     <p className="secondaryText">Merchant</p>
                                     <p>{user?.merchantdetail?.name}</p>
                                 </div>
-
-                                {/* <div className="col-md-12 mb-4">
-                                    <p className="secondaryText">Reason</p>
-                                    <p>{user?.reason}</p>
-                                </div> */}
-                               
-                               
                             </div>
                         </div>
                     </div>

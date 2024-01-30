@@ -77,7 +77,7 @@ export const TargetDetails = () => {
 
     const editDetailData = () => {
         const LogoutData = localStorage.getItem('login');
-        document.title = 'Mt Records | Lead Management Detail';
+        document.title = 'Tim Admin | Chapter  Detail';
         document.querySelector('.loaderBox').classList.remove("d-none");
         fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/get-unit-targets_details/${id}`,
             {
@@ -94,7 +94,7 @@ export const TargetDetails = () => {
             })
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(data)
+             
 
                 setLeadData(data?.data)
                 setFormData(data?.data?.current_month_target)
@@ -102,7 +102,7 @@ export const TargetDetails = () => {
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error);
+            
             })
     }
 
@@ -111,7 +111,7 @@ export const TargetDetails = () => {
     }, []);
 
 
-    console.log("formData ", formData)
+   
 
     const monthList = [
         {
@@ -176,10 +176,10 @@ export const TargetDetails = () => {
             key: "target",
             title: "Target",
         },
-        {
-            key: "targetscore",
-            title: "Target Score",
-        },
+        // {
+        //     key: "targetscore",
+        //     title: "Target Score",
+        // },
         {
             key: "month",
             title: "Month"
@@ -188,10 +188,10 @@ export const TargetDetails = () => {
             key: "year",
             title: "Year"
         },
-        {
-            key: "status",
-            title: "Status",
-        },
+        // {
+        //     key: "status",
+        //     title: "Status",
+        // },
         // {
         //     key: "action",
         //     title: "Action",
@@ -219,18 +219,16 @@ export const TargetDetails = () => {
                 return response.json()
             })
             .then((data) => {
-                console.log(data)
+          
                 editDetailData()
                 setEditModal(false)
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error);
+        
             })
     }
 
-
-    console.log("leadData", leadData)
 
 
     return (
@@ -279,10 +277,10 @@ export const TargetDetails = () => {
                                     <p className="secondaryText">Current Month Target</p>
                                     <p>{leadData?.current_month_target?.target}</p>
                                 </div>
-                                <div className="col-md-4 mb-4">
+                                {/* <div className="col-md-4 mb-4">
                                     <p className="secondaryText">Score Target</p>
                                     <p>{`$ ${leadData?.total_sales}`}</p>
-                                </div>
+                                </div> */}
                                 {/* <div className="col-md-4 mb-4">
                                     <p className="secondaryText">Score Target</p>
                                     <p>${`$ ${leadData?.score_target}`}</p>

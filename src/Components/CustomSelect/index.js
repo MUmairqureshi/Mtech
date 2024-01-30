@@ -15,11 +15,11 @@ export const SelectBox = (props) => {
             </div>
             {props?.label && <label htmlFor={props?.id} className={props?.labelClass}>{props?.label}{props?.required ? '*' : ''}</label>}
             <div className="fieldData">
-                <select className={props?.selectClass} name={props?.name} onChange={props.onChange} value={props.value} disabled={props.disabled}>
+                <select className={props?.selectClass} name={props?.name} onChange={props.onChange} value={props.value} required={props?.required} disabled={props.disabled}>
                     <option value="Null">{`Select ${props?.name}`}</option>
                     {Array.isArray(props.option) && props.option.map(item => (
                        
-                        <option value={!item.code ? item.id : item.code} >{item.name}</option>
+                        <option value={!item.code ? item.id : item.code } >{item.name}</option>
                     ))
                     }
                 </select>   

@@ -5,12 +5,17 @@ import BackButton from "../../Components/BackButton";
 import CustomModal from "../../Components/CustomModal";
 import CustomInput from '../../Components/CustomInput';
 import { SelectBox } from "../../Components/CustomSelect";
+import { useNavigate } from "react-router";
+
 import CustomButton from "../../Components/CustomButton";
 export const EditRefund = () => {
+    const [status , setStatus] = useState()
     const { id } = useParams();
     const [initalRole, setrole] = useState({});
     const [initialunit, setUnit] = useState({});
     const [merchant, setMerchant] = useState()
+    const [successStatus, setSuccessStatus] = useState('Server Error!');
+
     const [showModal, setShowModal] = useState(false);
     const [formData, setFormData] = useState({});
 
@@ -25,7 +30,10 @@ export const EditRefund = () => {
         }
     ]
 
-
+    const navigate = useNavigate();
+    const goBack = () => {
+        navigate(-1)
+      };
     const fetchMerchantData = () => {
         const LogoutData = localStorage.getItem('login');
         document.querySelector('.loaderBox').classList.remove("d-none");
@@ -46,12 +54,12 @@ export const EditRefund = () => {
             )
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(data)
+               
                 setMerchant(data?.data);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+                 
             })
     }
 
@@ -77,14 +85,13 @@ export const EditRefund = () => {
                 response.json()
             )
             .then((data) => {
-                console.log('re', data)
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setFormData(data?.data);
                 setViewleads(data?.data?.lead_code);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+                
             })
     }
 
@@ -96,13 +103,29 @@ export const EditRefund = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        // Create a new FormData object
+ 
+        for (const key in formData) {
+            if (
+           
+                formData.brand === '' ||
+                formData.product === '' ||
+                formData.email === '' ||
+                formData.name === '' ||
+                formData.phone === '' ||
+                formData.description === '' 
+   
+            ) {
+              
+ 
+                return;
+            }
+        }
         const formDataMethod = new FormData();
         for (const key in formData) {
             formDataMethod.append(key, formData[key]);
         }
 
-        console.log(formData)
+         
         document.querySelector('.loaderBox').classList.remove("d-none");
         // Make the fetch request
         fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/refund-add-edit/${id}`, {
@@ -118,12 +141,15 @@ export const EditRefund = () => {
             })
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
+                
+                data?.status ? setSuccessStatus(data?.msg) : setSuccessStatus(data?.msg)
                 setShowModal(true)
-                console.log(data);
+                setStatus(data?.status)
+                 
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+                 
             })
     };
 
@@ -140,7 +166,7 @@ export const EditRefund = () => {
 
 
     const userData = (uniID) => {
-        console.log("unitid", uniID)
+         
         document.querySelector('.loaderBox').classList.remove("d-none");
         fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-units/${uniID}`,
             {
@@ -157,13 +183,13 @@ export const EditRefund = () => {
                 response.json()
             )
             .then((data) => {
-                console.log('user', data?.data)
+                 
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setUnitid(data?.data)
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+                 
             })
     }
 
@@ -192,7 +218,7 @@ export const EditRefund = () => {
    
 
     const fetchData = async () => {
-        console.log("viewleads" ,viewleads)
+        
         try {
             const response = await fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/view-leads/${viewleads}`, {
                 method: 'GET',
@@ -204,21 +230,17 @@ export const EditRefund = () => {
             });
 
             const data = await response.json();
-        //  console.log("data.leads.unit_id" , data)
          
-        //  console.log("data.leads.unit_id" , data?.leads)
             userData(data?.leads.unit_id);  
-            // Process the data as needed
-            // console.log(data);
+            
         } catch (error) {
-            console.error('Error fetching data:', error);
         }
     };
 
     const handleChange = (event) => {
         const { name, value } = event.target;
 
-        // console.log("name", name, value)
+
         if (name === 'lead_code') {
             setViewleads(value);
         }
@@ -227,7 +249,7 @@ export const EditRefund = () => {
             ...prevData,
             [name]: value,
         }));
-        // console.log(formData);
+        //  ;
     };
 
  
@@ -250,8 +272,7 @@ export const EditRefund = () => {
 
 
 
-
-
+console.log("formData" , formData?.leaddetail)
 
     return (
         <>
@@ -283,7 +304,6 @@ export const EditRefund = () => {
                                                     inputClass='mainInput'
                                                     name="lead_code"
                                                     value={formData.lead_code}
-                                                    // onChange={handleChange}
                                                 />
                                             </div>
                                             <div className="col-md-4 mb-4">
@@ -296,7 +316,6 @@ export const EditRefund = () => {
                                                     name="name"
                                                     disabled
                                                     value={formData.leaddetail?.name}
-                                                    // onChange={handleChange}
                                                 />
                                             </div>
                                             <div className="col-md-4 mb-4">
@@ -309,7 +328,6 @@ export const EditRefund = () => {
                                                     name="email"
                                                     disabled
                                                     value={formData.leaddetail?.email}
-                                                    // onChange={handleChange}
                                                 />
                                             </div>
                                             <div className="col-md-4 mb-4">
@@ -321,8 +339,7 @@ export const EditRefund = () => {
                                                     inputClass='mainInput'
                                                     name="received"
                                                     disabled
-                                                    value={formData.leaddetail?.received}
-                                                    // onChange={handleChange}
+                                                    value={formData.leaddetail?.gross}
                                                 />
                                             </div>
                                             <div className="col-md-4 mb-4">
@@ -353,19 +370,7 @@ export const EditRefund = () => {
                                                     onChange={handleChange}
                                                 />
                                             </div>
-                                            {/* <div className="col-md-4 mb-4">
-                                                <SelectBox
-                                                    selectClass="mainInput"
-                                                    name="user_id"
-                                                    label="User ID"
-                                                    required
-                                                    value={formData.user_id}
-                                                    option={initalRole}
-                                                    onChange={handleChange}
-                                                />
-
-                                            </div> */}
-
+                                         
                                             <div className="col-md-4 mb-4">
                                                 <SelectBox
                                                     selectClass="mainInput"
@@ -419,23 +424,9 @@ export const EditRefund = () => {
                         </div>
                     </div>
                 </div>
-                <CustomModal show={showModal} close={() => { setShowModal(false) }} success heading='Refund Edit Successfully.' />
+                <CustomModal show={showModal} status={status} close={() => { setShowModal(false) ; goBack() }} success heading={successStatus}  />
 
             </DashboardLayout>
         </>
     );
 };
-
-
-
-// https://custom3.mystagingserver.site/mtrecords/public/api/admin/get-user/3
-
-
-// https://custom3.mystagingserver.site/mtrecords/public/api/admin/refund-add-edit/1
-//
-
-
-// https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-units/1
-
-
-// https://custom3.mystagingserver.site/mtrecords/public/api/admin/view-leads/8

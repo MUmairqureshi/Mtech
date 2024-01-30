@@ -1,39 +1,52 @@
-import React, { useEffect } from 'react';
-import { useNavigate, useLocation } from 'react-router';
-
+import React, { useEffect } from 'react'
+import { useNavigate } from 'react-router'
 export const ProtectedRoutes = (props) => {
-    const { Components } = props; // Changed from "Components" to "Component" for consistency
+    const { Components } = props;
     const navigate = useNavigate();
-    const location = useLocation()
-    console.log('params', location.pathname);
-    let login = localStorage.getItem('login');
-    // useEffect(() => {
-    //     let login = localStorage.getItem('login');
-    //     if (!login) {
-    //         navigate('/login');
-           
-    //     }
-     
-        
 
-    //     // Cleanup function to avoid memory leaks
-    //     return () => {
-    //         // Cleanup code if needed
-    //     };
-    // }, []); // Added an empty dependency array
+    const loginToken = localStorage.getItem('login');
 
+    const apiStatus = () => {
+        const formDataMethod =  new FormData();
+        formDataMethod.append('token', loginToken);
+        document.querySelector('.loaderBox').classList.remove("d-none");
+        fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/auth/check-token`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+            },
+            body: formDataMethod  
+        })
+            .then((response) => {
+                return response.json();
+            })
+            .then((data) => {
+                if(data?.status === false) {
+                    localStorage.removeItem('login');
+                    navigate('/')
+                }
+                document.querySelector('.loaderBox').classList.add("d-none");
+            })
+            .catch((error) => {
+                document.querySelector('.loaderBox').classList.add("d-none");
 
+            })
+    }
 
     useEffect(() => {
+        let login = localStorage.getItem('login');
         if (!login) {
-            navigate('/login');
-        }else if(login && location.pathname === '/') {
-            navigate('/dashboard');
-          }
-    }, [navigate,login , location.pathname]);
+            navigate('/');
+           
+        }
+
+        apiStatus()
+
+       
+    })
     return (
         <>
             <Components />
         </>
-    );
-};
+    )
+}

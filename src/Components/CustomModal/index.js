@@ -17,11 +17,11 @@ const CustomModal = (props) => {
                     {props?.children ? (
                         ''
                     ) : (
-                        // You can add alternative content here, like an image or text
-                        props?.success ? (
+ 
+                        props?.status === true ? (
                             <FontAwesomeIcon icon={faCheckCircle} className='checkMark' />
                         ) : (
-                            <FontAwesomeIcon icon={faQuestionCircle} className='questionMark' />
+                            <FontAwesomeIcon icon={faTimes} className='corsserror' />
                         )
                     )}
 

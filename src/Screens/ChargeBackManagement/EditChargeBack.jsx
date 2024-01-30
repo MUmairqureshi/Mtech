@@ -5,15 +5,18 @@ import BackButton from "../../Components/BackButton";
 import CustomModal from "../../Components/CustomModal";
 import CustomInput from '../../Components/CustomInput';
 import { SelectBox } from "../../Components/CustomSelect";
+import { useNavigate } from "react-router";
+
 import CustomButton from "../../Components/CustomButton";
 export const EditChargeBack = () => {
     const { id } = useParams();
     const [initalRole, setrole] = useState({});
+    const [status , setStatus] = useState()
     const [initialunit, setUnit] = useState({});
     const [merchant, setMerchant] = useState()
     const [showModal, setShowModal] = useState(false);
     const [formData, setFormData] = useState({});
-
+    const [successStatus, setSuccessStatus] = useState('Server Error!');
     const refundType = [
         {
             id: 'Partial',
@@ -24,6 +27,18 @@ export const EditChargeBack = () => {
             name: 'Full'
         }
     ]
+
+
+
+
+    const navigate = useNavigate();
+
+    const goBack = () => {
+        navigate(-1)
+    };
+
+
+console.log("formDatq   a" , formData)
 
 
     const fetchMerchantData = () => {
@@ -46,12 +61,12 @@ export const EditChargeBack = () => {
             )
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(data)
+                 
                 setMerchant(data?.data);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+                 
             })
     }
 
@@ -73,14 +88,14 @@ export const EditChargeBack = () => {
                 response.json()
             )
             .then((data) => {
-                console.log(data)
+                 
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setFormData(data?.data);
                 setViewleads(data?.data?.lead_code);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+                 
             })
     }
 
@@ -113,12 +128,15 @@ export const EditChargeBack = () => {
             })
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
+                data?.status ? setSuccessStatus(data?.msg) : setSuccessStatus(data?.msg)
+                setStatus(data?.status)
                 setShowModal(true)
-                console.log(data);
+              
+                 ;
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+                 
             })
     };
 
@@ -129,15 +147,7 @@ export const EditChargeBack = () => {
     }, [])
 
 
-    // const handleChange = (event) => {
-    //     const { name, value } = event.target;
-    //     setFormData((prevData) => ({
-    //         ...prevData,
-    //         [name]: value,
-    //     }));
-    //     console.log(formData)
-    // };
-
+ 
 
 
 
@@ -149,7 +159,7 @@ export const EditChargeBack = () => {
 
 
     const userData = (uniID) => {
-        console.log("unitid", uniID)
+         
         document.querySelector('.loaderBox').classList.remove("d-none");
         fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-units/${uniID}`,
             {
@@ -166,25 +176,23 @@ export const EditChargeBack = () => {
                 response.json()
             )
             .then((data) => {
-                console.log('user', data?.data)
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setUnitid(data?.data)
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+                 
             })
     }
 
 
 
-    console.log("unitid", unitid)
 
 
 
 
 
-
+console.log("setFormDataqqqqz   " , formData)
 
 
 
@@ -211,7 +219,7 @@ export const EditChargeBack = () => {
             console.log("data.leads.unit_id", data?.leads)
             userData(data?.leads.unit_id);
             // Process the data as needed
-            console.log(data);
+             ;
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -220,7 +228,7 @@ export const EditChargeBack = () => {
     const handleChange = (event) => {
         const { name, value } = event.target;
 
-        console.log("name", name, value)
+         
         if (name === 'lead_code') {
             setViewleads(value);
         }
@@ -229,7 +237,7 @@ export const EditChargeBack = () => {
             ...prevData,
             [name]: value,
         }));
-        console.log(formData);
+         
     };
 
 
@@ -256,7 +264,7 @@ export const EditChargeBack = () => {
                                     <div className="col-lg-12">
                                         <div className="row">
                                             <div className="col-md-4 mb-4">
-                                            
+
 
 
                                                 <CustomInput
@@ -270,8 +278,7 @@ export const EditChargeBack = () => {
                                                     inputClass='mainInput'
                                                     name="lead_code"
                                                     value={formData.lead_code}
-                                                // onChange={handleChange}
-                                                />
+                                                 />
                                             </div>
                                             <div className="col-md-4 mb-4">
                                                 <CustomInput
@@ -308,7 +315,7 @@ export const EditChargeBack = () => {
                                                     inputClass='mainInput'
                                                     name="received"
                                                     disabled
-                                                    value={formData.leaddetail?.received}
+                                                    value={formData.leaddetail?.gross}
                                                 // onChange={handleChange}
                                                 />
                                             </div>
@@ -340,19 +347,7 @@ export const EditChargeBack = () => {
                                                     onChange={handleChange}
                                                 />
                                             </div>
-                                            {/* <div className="col-md-4 mb-4">
-                                                <SelectBox
-                                                    selectClass="mainInput"
-                                                    name="user_id"
-                                                    label="User ID"
-                                                    required
-                                                    value={formData.user_id}
-                                                    option={initalRole}
-                                                    onChange={handleChange}
-                                                />
-
-                                            </div> */}
-
+                                          
                                             <div className="col-md-4 mb-4">
                                                 <SelectBox
                                                     selectClass="mainInput"
@@ -408,7 +403,10 @@ export const EditChargeBack = () => {
                         </div>
                     </div>
                 </div>
-                <CustomModal show={showModal} close={() => { setShowModal(false) }} success heading='ChargeBack Edit Successfully.' />
+                <CustomModal status={status} show={showModal} close={() => {
+                    setShowModal(false);
+                    goBack();
+                }} success heading={successStatus}  />
 
             </DashboardLayout>
         </>

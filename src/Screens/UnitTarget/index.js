@@ -29,10 +29,13 @@ export const UnitTarget = () => {
   const [userinputValue, setuserInputValue] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(8);
+   
+  const [userValue, setuserValue] = useState('');
   const [inputValue, setInputValue] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [units, setUnits] = useState({});
   const [addUser, setUser] = useState(false);
+  const [addUsers, setUsers] = useState(false);
   const [editModal, setEditModal] = useState(false);
   const [idUser, setIdUser] = useState();
   const { apiData: unitListing, loading: unitLoading } = useApi('admin/unit-listing');
@@ -50,7 +53,7 @@ export const UnitTarget = () => {
 
   const handleEditTarget = (event) => {
     event.preventDefault();
-    console.log(editFormData)
+
 
     TargetEditData(idUser);
     targetUpdateData(editFormData);
@@ -150,7 +153,7 @@ export const UnitTarget = () => {
   // }
 
   const filterData = data.filter(item =>
-    item?.name.toLowerCase().includes(inputValue.toLowerCase())
+    item?.name.toLowerCase().includes(userValue.toLowerCase())
   );
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -158,9 +161,9 @@ export const UnitTarget = () => {
   const currentItems = filterData.slice(indexOfFirstItem, indexOfLastItem);
 
   const filterUserdata = userdata.filter(item =>
-    item?.unit_detail?.name?.toLowerCase().includes(inputValue.toLowerCase())
+    item?.unit_detail?.name?.toLowerCase().includes(userValue.toLowerCase())
   );
-  console.log("filterUserdata", filterUserdata)
+
 
   const userindexOfLastItem = currentPage * itemsPerPage;
   const userindexOfFirstItem = indexOfLastItem - itemsPerPage;
@@ -168,7 +171,7 @@ export const UnitTarget = () => {
 
 
 
-  console.log("currentItems", currentItems)
+
 
   const fetchData = () => {
     const LogoutData = localStorage.getItem('login');
@@ -191,12 +194,13 @@ export const UnitTarget = () => {
         document.querySelector('.loaderBox').classList.add("d-none");
 
 
-        console.log(data?.data)
+
         setData(data?.data);
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error)
+
+
       })
   }
 
@@ -223,12 +227,12 @@ export const UnitTarget = () => {
         document.querySelector('.loaderBox').classList.add("d-none");
 
 
-        console.log(data?.data)
+
         setUserdata(data?.data);
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error)
+
       })
   }
 
@@ -256,11 +260,11 @@ export const UnitTarget = () => {
     //   key: "targetscore",
     //   title: "Target Score",
     // },
-    {
-      key: "status",
-      title: "Status",
-    },
-   
+    // {
+    //   key: "status",
+    //   title: "Status",
+    // },
+
     {
       key: "action",
       title: "Action",
@@ -294,59 +298,57 @@ export const UnitTarget = () => {
     //   key: "targetscore",
     //   title: "Target Score",
     // },
-    
-    {
-      key: "status",
-      title: "Status",
-    },
-    {
-      key: "score_target",
-      title: "SCORE TARGET",
-    },
+
+    // {
+    //   key: "status",
+    //   title: "Status",
+    // },
+    // {
+    //   key: "score_target",
+    //   title: "SCORE TARGET",
+    // },
     {
       key: "action",
       title: "Action",
     },
 
-  ]; 
+  ];
 
   const handleChange = (event) => {
     setInputValue(event.target.value);
     setuserInputValue(event.target.value)
     const { name, value } = event.target;
-    console.log('name' , name)
     if (name === 'unit_id') {
       setViewleads(value);
-    } 
-    
+    }
+
     setFormData((prevData) => ({
       ...prevData,
       [name]: value,
     }));
   };
-  // const handleChange = (event) => {
-  //   const { name, value } = event.target;
-  //   if (name === 'unit_id') {
-  //     setViewleads(value);
-  //   }
-  //   setFormData((prevData) => ({
-  //     ...prevData,
-  //     [name]: value,
-  //   }));
-    
-  // };
 
-  // const handleSubmit = (event) => {
-  //   event.preventDefault();
 
-  //   console.log(formData)
-  //   rolesLitingResponse(formData);
-  // }
 
+  const handleuserChange = (event) => {
+    setuserValue(event.target.value);
+    setuserInputValue(event.target.value)
+    const { name, value } = event.target;
+    if (name === 'unit_id') {
+      setViewleads(value);
+    }
+
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+  
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(formData)
+
+
 
     const LogoutData = localStorage.getItem('login');
     fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/set-unit-target`,
@@ -364,7 +366,7 @@ export const UnitTarget = () => {
         return response.json()
       })
       .then((data) => {
-        console.log(data)
+
         fetchData()
         setUser(false)
 
@@ -373,9 +375,55 @@ export const UnitTarget = () => {
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error);
+
       })
   }
+
+ const handleuserSubmit = (event) => {
+    event.preventDefault();
+
+
+
+    const LogoutData = localStorage.getItem('login');
+    fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/usertarget-add-edit`,
+      {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${LogoutData}`
+        },
+        body: JSON.stringify(formData)
+      },
+    )
+      .then((response) => {
+        return response.json()
+      })
+      .then((data) => {
+
+        fetchData()
+        fetchuserData()
+        setUsers(false)
+
+
+
+      })
+      .catch((error) => {
+        document.querySelector('.loaderBox').classList.add("d-none");
+
+      })
+  }
+
+
+
+
+
+
+
+
+
+
+
   const LogoutData = localStorage.getItem('login');
   const deleteTarget = async (id) => {
     try {
@@ -390,31 +438,24 @@ export const UnitTarget = () => {
       });
 
       const data = await response.json();
-      console.log(data);
 
-      // Assuming fetchData is an asynchronous function
+
       await fetchData();
 
-      // Assuming setUser is a function to update user state
       setUser(false);
     } catch (error) {
       document.querySelector('.loaderBox').classList.add("d-none");
-      console.error(error);
-      // Handle the error appropriately (e.g., display an error message to the user)
     }
   };
 
-
-
-
-  const [viewleads, setViewleads] = useState('');
+ const [viewleads, setViewleads] = useState('');
   const [useresdata, setUserData] = useState();
 
 
 
 
   const fetchUserData = () => {
-    console.log("unitid", viewleads)
+
     document.querySelector('.loaderBox').classList.remove("d-none");
     fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-units/${viewleads}`,
       {
@@ -431,21 +472,17 @@ export const UnitTarget = () => {
         response.json()
       )
       .then((data) => {
-        console.log('user', data?.data)
+
         document.querySelector('.loaderBox').classList.add("d-none");
         setUserData(data?.data)
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error)
+
       })
   }
-  console.log("usedataunitname", userdata)
 
-
-
-  console.log("useresdata", useresdata)
-  useEffect(() => {
+ useEffect(() => {
     fetchUserData();
   }, [viewleads]);
 
@@ -455,11 +492,7 @@ export const UnitTarget = () => {
     <>
       <DashboardLayout>
 
-
-
-
-
-        <div className="container-fluid">
+    <div className="container-fluid">
           <div className="row mb-3">
             <div className="col-12">
               <div className="dashCard">
@@ -487,7 +520,7 @@ export const UnitTarget = () => {
                               <CustomButton text="Add Unit Target" variant='primaryButton' onClick={() => {
                                 setUser(true)
                               }} />
-                              <CustomInput type="text" placeholder="Search Here..." value={inputValue} inputClass="mainInput" onChange={handleChange} />
+                              <CustomInput type="text" placeholder="Search Here..." value={userValue} inputClass="mainInput" onChange={handleuserChange} />
                             </div>
                           </div>
                         </div>
@@ -503,21 +536,14 @@ export const UnitTarget = () => {
                                 <td className="text-uppercase">
                                   {item?.name}
                                 </td>
-                                {/* <td>{item?.current_month_target?.target ? `$ ${item?.current_month_target?.target}` : '$0'}</td> */}
                                 <td>{item?.target_amount ? `$ ${item?.target_amount}` : '$0'}</td>
-                                {/* <td>{`$ ${item?.target_score}`}</td> */}
-                                {/* <td>{item?.current_month_target?.month}</td> */}
-                                <td className={item?.isAschived == 1 ? 'greenColor' : 'redColor'}>{item?.isAschived == 1 ? 'Acheived' : 'Not Acheived'}</td>
                                 <td>
                                   <Dropdown className="tableDropdown">
                                     <Dropdown.Toggle variant="transparent" className="notButton classicToggle">
                                       <FontAwesomeIcon icon={faEllipsisV} />
                                     </Dropdown.Toggle>
                                     <Dropdown.Menu align="end" className="tableDropdownMenu">
-                                      {/* <button onClick={() => {
-                                    editTarget(item?.id)
-                                  }} className="tableAction"><FontAwesomeIcon icon={faPencil} className="tableActionIcon" />Edit</button> */}
-
+                                  
                                       <Link className="tableAction" to={`target-detail/${item?.id}`}><FontAwesomeIcon icon={faEye} className="tableActionIcon" />View Details</Link>
                                     </Dropdown.Menu>
                                   </Dropdown>
@@ -533,6 +559,53 @@ export const UnitTarget = () => {
                           currentPage={currentPage}
                           onPageChange={handlePageChange}
                         />
+
+
+
+                        <CustomModal show={addUser} close={() => { setUser(false) }} heading="Set Target" >
+
+                          <SelectBox
+                            selectClass="mainInput"
+                            name="unit_id"
+                            label="Select Unit"
+                            labelClass='mainLabel'
+                            required
+                            value={formData.unit_id}
+                            option={unitValue}
+                            onChange={handleChange}
+
+                          />
+                          <CustomInput
+                            label="Set Target"
+                            type="number"
+                            placeholder="Set Target"
+                            required
+                            name="target"
+                            labelClass='mainLabel'
+                            inputClass='mainInput'
+                            value={formData.target}
+                            onChange={(event) => {
+                              setFormData({ ...formData, target: event.target.value });
+
+                            }}
+
+
+                          />
+                          <SelectBox
+                            selectClass="mainInput"
+                            name="month"
+                            labelClass='mainLabel'
+                            label="Select Month"
+                            required
+                            value={formData.month}
+                            option={monthList}
+                            onChange={handleChange}
+
+                          />
+                      
+
+                          <CustomButton variant='primaryButton' text='Add' type='button' onClick={handleSubmit} />
+                        </CustomModal>
                       </Tab>
 
 
@@ -544,9 +617,9 @@ export const UnitTarget = () => {
                           <div className="col-md-6 mb-2">
                             <div className="addUser">
                               <CustomButton text="Add User Target" variant='primaryButton' onClick={() => {
-                                setUser(true)
+                                setUsers(true)
                               }} />
-                              <CustomInput type="text" placeholder="Search Here..." value={inputValue} inputClass="mainInput" onChange={handleChange} />
+                              <CustomInput type="text" placeholder="Search Here..." value={userValue} inputClass="mainInput" onChange={handleuserChange} />
                             </div>
                           </div>
                         </div>
@@ -564,21 +637,15 @@ export const UnitTarget = () => {
                                 <td className="text-uppercase">
                                   {item?.unit_detail?.name}
                                 </td>
-                                {/* <td>{item?.current_month_target?.target ? `$ ${item?.current_month_target?.target}` : '$0'}</td> */}
+ 
                                 <td>{item?.target ? `$ ${item?.target}` : '$0'}</td>
-                                {/* <td>{`$ ${item?.target_score}`}</td> */}
-                                {/* <td>{item?.current_month_target?.month}</td> */}
-                                <td className={item?.isAschived == 1 ? 'greenColor' : 'redColor'}>{item?.isAschived == 1 ? 'Acheived' : 'Not Acheived'}</td>
-                                <td>{`$ ${item?.score_target}`}</td>
-                                <td>
+                                  <td>
                                   <Dropdown className="tableDropdown">
                                     <Dropdown.Toggle variant="transparent" className="notButton classicToggle">
                                       <FontAwesomeIcon icon={faEllipsisV} />
                                     </Dropdown.Toggle>
                                     <Dropdown.Menu align="end" className="tableDropdownMenu">
-                                      {/* <button onClick={() => {
-                                    editTarget(item?.id)
-                                  }} className="tableAction"><FontAwesomeIcon icon={faPencil} className="tableActionIcon" />Edit</button> */}
+   
 
                                       <Link className="tableAction" to={`usertarget-detail/${item?.id}`}><FontAwesomeIcon icon={faEye} className="tableActionIcon" />View Details</Link>
                                     </Dropdown.Menu>
@@ -595,6 +662,60 @@ export const UnitTarget = () => {
                           onPageChange={handlePageChange}
                         />
 
+                        <CustomModal show={addUsers} close={() => { setUsers(false) }} heading="Set Target" >
+
+                          <SelectBox
+                            selectClass="mainInput"
+                            name="unit_id"
+                            label="Select Unit"
+                            labelClass='mainLabel'
+                            required
+                            value={formData.unit_id}
+                            option={unitValue}
+                            onChange={handleChange}
+
+                          />
+                          <CustomInput
+                            label="Set Target"
+                            type="number"
+                            placeholder="Set Target"
+                            required
+                            name="target"
+                            labelClass='mainLabel'
+                            inputClass='mainInput'
+                            value={formData.target}
+                            onChange={(event) => {
+                              setFormData({ ...formData, target: event.target.value });
+
+                            }}
+
+
+                          />
+                          <SelectBox
+                            selectClass="mainInput"
+                            name="month"
+                            labelClass='mainLabel'
+                            label="Select Month"
+                            required
+                            value={formData.month}
+                            option={monthList}
+                            onChange={handleChange}
+
+                          />
+                          <SelectBox
+                            selectClass="mainInput"
+                            name="user_id"
+                            labelClass='mainLabel'
+                            label="Select User"
+                            required
+                            value={formData.user_id}
+                            option={useresdata}
+                            onChange={handleChange}
+                          />
+                 
+
+                          <CustomButton variant='primaryButton' text='Add' type='button' onClick={handleuserSubmit} />
+                        </CustomModal>
                       </Tab>
 
                     </Tabs>
@@ -612,72 +733,7 @@ export const UnitTarget = () => {
 
 
         </div>
-
-        <CustomModal show={addUser} close={() => { setUser(false) }} heading="Set Target" >
-
-          <SelectBox
-            selectClass="mainInput"
-            name="unit_id"
-            label="Select Unit"
-            labelClass='mainLabel'
-            required
-            value={formData.unit_id}
-            option={unitValue}
-            onChange={handleChange}
-
-          />
-          <CustomInput
-            label="Set Target"
-            type="number"
-            placeholder="Set Target"
-            required
-            name="target"
-            labelClass='mainLabel'
-            inputClass='mainInput'
-            value={formData.target}
-            onChange={(event) => {
-              setFormData({ ...formData, target: event.target.value });
-              console.log(formData);
-            }}
-
-
-          />
-          <SelectBox
-            selectClass="mainInput"
-            name="month"
-            labelClass='mainLabel'
-            label="Select Month"
-            required
-            value={formData.month}
-            option={monthList}
-            onChange={handleChange}
-
-          />
-          <SelectBox
-            selectClass="mainInput"
-            name="user_id"
-            labelClass='mainLabel'
-            label="Select User"
-            required
-            value={formData.user_id}
-            option={useresdata}
-            onChange={handleChange}
-          />
-          {/* <div class="inputWrapper">
-              <label class="mainLabel">Add brands<span>*</span></label>
-              <Select
-                value={formData.brands}
-                isMulti
-                required
-                options={SelectOptions}
-                onChange={handleChangeSelect}
-              />
-            </div> */}
-
-          <CustomButton variant='primaryButton' text='Add' type='button' onClick={handleSubmit} />
-        </CustomModal>
-
-        {/* Edit Target  */}
+ 
 
       </DashboardLayout>
     </>

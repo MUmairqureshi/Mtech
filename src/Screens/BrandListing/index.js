@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import { Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisV, faPencil, faCheck, faTimes, faFilter } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisV, faPencil, faCheck, faTimes, faFilter , faTrash } from "@fortawesome/free-solid-svg-icons";
 
 import { DashboardLayout } from "../../Components/Layout/DashboardLayout";
 import CustomTable from "../../Components/CustomTable";
@@ -63,7 +63,7 @@ export const BrandListing = () => {
   const currentItems = filterData.slice(indexOfFirstItem, indexOfLastItem);
 
 
-  const fetchData = () =>  {
+  const fetchData = () => {
     const LogoutData = localStorage.getItem('login');
     document.querySelector('.loaderBox').classList.remove("d-none");
 
@@ -83,18 +83,18 @@ export const BrandListing = () => {
       )
       .then((data) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(data)
+
         setData(data.brands);
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error)
+
       })
   }
 
   useEffect(() => {
     document.title = 'Mt Records | Brands Management';
-   
+
     fetchData()
 
   }, []);
@@ -123,7 +123,7 @@ export const BrandListing = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    console.log(formData)
+
     document.querySelector('.loaderBox').classList.remove("d-none");
     const LogoutData = localStorage.getItem('login');
     fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/brand-add-edit`,
@@ -141,7 +141,7 @@ export const BrandListing = () => {
         return response.json()
       })
       .then((data) => {
-        console.log(data)
+
         document.querySelector('.loaderBox').classList.add("d-none");
         setShowModal(true)
         setUser(false)
@@ -153,7 +153,7 @@ export const BrandListing = () => {
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error);
+
       })
   }
 
@@ -174,7 +174,7 @@ export const BrandListing = () => {
         return response.json()
       })
       .then((data) => {
-        console.log(data)
+
         document.querySelector('.loaderBox').classList.add("d-none");
         setIdUser(unitID)
         setFormData({
@@ -187,13 +187,13 @@ export const BrandListing = () => {
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error);
+
       })
   }
 
   const handleEditSubmit = (event) => {
     event.preventDefault();
-    console.log(formData)
+
     document.querySelector('.loaderBox').classList.remove("d-none");
     const LogoutData = localStorage.getItem('login');
     fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/brand-add-edit/${idUser}`,
@@ -211,7 +211,7 @@ export const BrandListing = () => {
         return response.json()
       })
       .then((data) => {
-        console.log(data)
+
         document.querySelector('.loaderBox').classList.add("d-none");
         setFormData({
           name: ''
@@ -223,14 +223,38 @@ export const BrandListing = () => {
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error);
       })
   }
 
 
 
-  console.log(formData)
 
+
+  const removeItem = (catId) => {
+    const LogoutData = localStorage.getItem('login');
+    document.querySelector('.loaderBox').classList.remove("d-none");
+    fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/delete-brand/${catId}`,
+      {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${LogoutData}`
+        },
+      }
+    )
+
+      .then(response =>
+        response.json()
+      )
+      .then((data) => {
+        fetchData()
+        document.querySelector('.loaderBox').classList.add("d-none");
+      })
+      .catch((error) => {
+        document.querySelector('.loaderBox').classList.add("d-none");
+      })
+  }
   return (
     <>
       <DashboardLayout>
@@ -275,6 +299,7 @@ export const BrandListing = () => {
                                     brandID(item.id)
                                     setUserFrom(true)
                                   }} className="tableAction"><FontAwesomeIcon icon={faPencil} className="tableActionIcon" />Edit</button>
+                                  <button type="button" className="bg-transparent border-0 ps-lg-3 pt-1" onClick={() => { removeItem(item?.id) }}><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon> Delete</button>
                                 </Dropdown.Menu>
                               </Dropdown>
                             </td>
@@ -308,7 +333,6 @@ export const BrandListing = () => {
               value={formData.name}
               onChange={(event) => {
                 setFormData({ ...formData, name: event.target.value });
-                console.log(formData);
               }}
 
             />
@@ -327,7 +351,6 @@ export const BrandListing = () => {
               value={formData.name}
               onChange={(event) => {
                 setFormData({ ...formData, name: event.target.value });
-                console.log(formData);
               }}
 
             />
@@ -341,7 +364,6 @@ export const BrandListing = () => {
               option={optionData}
               onChange={(event) => {
                 setFormData({ ...formData, status: event.target.value });
-                console.log(formData);
               }}
             />
             <CustomButton variant='primaryButton' text='Add' type='button' onClick={handleEditSubmit} />

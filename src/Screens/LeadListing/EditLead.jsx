@@ -6,7 +6,15 @@ import CustomModal from "../../Components/CustomModal";
 import CustomInput from '../../Components/CustomInput';
 import { SelectBox } from "../../Components/CustomSelect";
 import CustomButton from "../../Components/CustomButton";
+import { useNavigate } from "react-router";
+
 export const EditLead = () => {
+    const [remainingWords, setRemainingWords] = useState(100);
+
+    const [remainingNumber, setRemainingNumber] = useState(12);
+    const [status , setStatus] = useState()
+
+    const [successStatus, setSuccessStatus] = useState('Server Error!');
     const { id } = useParams();
     const [showModal, setShowModal] = useState(false);
     const [formData, setFormData] = useState({
@@ -17,12 +25,12 @@ export const EditLead = () => {
     const [brands, setBrands] = useState({});
     const [unit, setUnit] = useState({});
 
+   
 
-
-    const fectchBrandData = () => {
+    const fectchBrandData = (brandID) => {
         const LogoutData = localStorage.getItem('login');
         document.querySelector('.loaderBox').classList.remove("d-none");
-        fetch('https://custom3.mystagingserver.site/mtrecords/public/api/admin/brand-listing',
+        fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/unit-brands/${brandID}`,
             {
                 method: 'GET',
                 headers: {
@@ -37,13 +45,13 @@ export const EditLead = () => {
                 response.json()
             )
             .then((data) => {
-                console.log(data)
+
                 document.querySelector('.loaderBox').classList.add("d-none");
-                setBrands(data.brands);
+                setBrands(data?.data);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+
             })
     }
 
@@ -66,17 +74,20 @@ export const EditLead = () => {
                 response.json()
             )
             .then((data) => {
-                console.log(data)
+
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setUnit(data.units);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+
             })
     }
+    const navigate = useNavigate();
 
-
+    const goBack = () => {
+        navigate(-1)
+    };
     const getUserData = () => {
         const LogoutData = localStorage.getItem('login');
         document.querySelector('.loaderBox').classList.remove("d-none");
@@ -95,17 +106,18 @@ export const EditLead = () => {
                 response.json()
             )
             .then((data) => {
-                console.log(data)
+
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setFormData(data?.leads);
                 userData(data?.leads?.unit_id)
+                fectchBrandData(data?.leads?.unit_id)
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+
             })
     }
-
+ 
 
     const LogoutData = localStorage.getItem('login');
 
@@ -113,57 +125,63 @@ export const EditLead = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        // Create a new FormData object
+        for (const key in formData) {
+            if (
+                //    formData[key] == formData.source =='' ||
+            // formData.amount == '' ||
+                formData.brand === '' ||
+                formData.product === '' ||
+                formData.email === '' ||
+                formData.name === '' ||
+                formData.phone === '' ||
+                formData.description === '' 
+   
+            ) {
+              
+ 
+                return;
+            }
+        }
+
         const formDataMethod = new FormData();
         for (const key in formData) {
             formDataMethod.append(key, formData[key]);
         }
 
-        console.log(formData)
+
         document.querySelector('.loaderBox').classList.remove("d-none");
-        // Make the fetch request
-        fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/leads-add-edit/${id}`, {
+         fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/leads-add-edit/${id}`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Authorization': `Bearer ${LogoutData}`
             },
-            body: formDataMethod // Use the FormData object as the request body
+            body: formDataMethod  
         })
             .then((response) => {
                 return response.json();
             })
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
+                data?.status ? setSuccessStatus(data?.msg) : setSuccessStatus(data?.msg)
                 setShowModal(true)
-                console.log(data);
+                setStatus(data?.status)
+ 
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+
             })
     };
 
 
     useEffect(() => {
         getUserData()
-        fectchBrandData()
+        // fectchBrandData()
         fetchUnitData()
-        
+
     }, [])
-
-
-    const handleChange = (event) => {
-        const { name, value } = event.target;
-        if (name === 'unit_id') {
-            userData(value)
-        }
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
-        console.log(formData)
-    };
+ 
 
 
     const userData = (uniID) => {
@@ -183,16 +201,139 @@ export const EditLead = () => {
                 response.json()
             )
             .then((data) => {
-                console.log('user', data?.data)
+
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setUser(data?.data)
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+
             })
     }
-console.log("formData " , formData)
+
+
+    const sourcename = [
+        {
+            id: '1',
+            name: 'PPC'
+        },
+        {
+            id: '2',
+            name: 'Organic  '
+        },
+        {
+            id: '3',
+            name: 'SMS'
+        },
+        {
+            id: '4',
+            name: 'OB'
+        },
+        {
+            id: '5',
+            name: 'SMM'
+        },
+        {
+            id: '6',
+            name: 'Up-Sell'
+        },
+        {
+            id: '7',
+            name: 'Org-Up-Sell'
+        },
+        {
+            id: '8',
+            name: 'OB-Up-Sell'
+        },
+        {
+            id: '9',
+            name: 'SMM-Up-Sell'
+        }
+        ,
+        {
+            id: '10',
+            name: 'Other'
+        }
+
+    ]
+
+
+
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+
+        if (event.target.tagName === "TEXTAREA") {
+            const wordLimit = 100;
+            const wordCount = value.trim().split(/\s+/).length;
+
+            if (wordCount <= wordLimit) {
+                setFormData((prevData) => ({
+                    ...prevData,
+                    [name]: value,
+                }));
+                setRemainingWords(wordLimit - wordCount);
+            } else {
+                const truncatedText = value
+                    .trim()
+                    .split(/\s+/)
+                    .slice(0, wordLimit)
+                    .join(' ');
+
+                setFormData((prevData) => ({
+                    ...prevData,
+                    [name]: truncatedText,
+                }));
+
+                setRemainingWords(0);
+            }
+        } else {
+            if (name === 'unit_id') {
+
+                setFormData((prevData) => ({
+                    ...prevData,
+                    [name]: value,
+                }));
+                userData(value);
+                fectchBrandData(value)
+
+            } else if (name === 'email') {
+                // For 'email', set the value directly without word limit
+                setFormData((prevData) => ({
+                    ...prevData,
+                    [name]: value,
+                }));
+            } else if (
+                name === 'phone' ||
+                name === 'quoted_amount' ||
+                name === 'received' ||
+                name === 'recovery'
+            ) {
+                const characterLimit = 12;
+
+                if (value.length <= characterLimit) {
+                    setFormData((prevData) => ({
+                        ...prevData,
+                        [name]: value,
+                    }));
+                    setRemainingNumber(characterLimit - value.length);
+                } else {
+                    setRemainingNumber(0);
+                }
+            } else {
+                 const defaultCharacterLimit = 20;
+
+                if (value.length <= defaultCharacterLimit) {
+                    setFormData((prevData) => ({
+                        ...prevData,
+                        [name]: value,
+                    }));
+                  
+                }
+            }
+        }
+    };
+    const isReceivedEmpty = formData.received === '';
+    const isRecoveryEmpty = formData.recovery === '';
 
 
     return (
@@ -208,20 +349,23 @@ console.log("formData " , formData)
                         </div>
                     </div>
                     <div className="row">
+                      
                         <div className="col-md-4 mb-4">
-                            <CustomInput
-                                label='Source Name'
-                                required
-                                id='name'
+                            <SelectBox
                                 type='text'
-                                placeholder='Enter source'
-                                labelClass='mainLabel'
-                                inputClass='mainInput'
+                                selectClass="mainInput"
                                 name="source"
+                                label="Source Name"
+                                required
+
                                 value={formData?.source}
+
+                                option={sourcename}
                                 onChange={handleChange}
                             />
+
                         </div>
+
                         <div className="col-md-4 mb-4">
                             <CustomInput
                                 label='Enter Product'
@@ -260,7 +404,7 @@ console.log("formData " , formData)
                                 labelClass='mainLabel'
                                 inputClass='mainInput'
                                 name="name"
-                                value={formData?.name}
+                                value={formData?.id}
                                 onChange={handleChange}
                             />
                         </div>
@@ -280,11 +424,11 @@ console.log("formData " , formData)
                         </div>
                         <div className="col-md-4 mb-4">
                             <CustomInput
-                                label='Quoted Amount'
+                                label=' Amount'
                                 required
                                 id='amount'
                                 type='number'
-                                placeholder='Enter Quoted Amount'
+                                placeholder='Enter  Amount'
                                 labelClass='mainLabel'
                                 inputClass='mainInput'
                                 name="quoted_amount"
@@ -294,41 +438,35 @@ console.log("formData " , formData)
                         </div>
                         <div className="col-md-4 mb-4">
                             <CustomInput
-                                label='Amount Received'
-                                
-                                id='received'
-                                type='number'
-                                placeholder='Enter Received Amount'
-                                labelClass='mainLabel'
-                                inputClass='mainInput'
+                                label="Amount Received"
+                                id="received"
+                                required
+                                type="number"
+                                placeholder="Enter Received Amount"
+                                labelClass="mainLabel"
+                                inputClass="mainInput"
                                 name="received"
-                                value={formData?.received}
+                                value={formData.received}
                                 onChange={handleChange}
+                                disabled={!isRecoveryEmpty}
+
                             />
                         </div>
+
                         <div className="col-md-4 mb-4">
                             <CustomInput
-                                label='Amount Recovery'
-                                
-                                id='recovery'
-                                type='number'
-                                placeholder='Enter Recovery Amount'
-                                labelClass='mainLabel'
-                                inputClass='mainInput'
-                                name="recovery"
-                                value={formData?.recovery}
-                                onChange={handleChange}
-                            />
-                        </div>
-                        <div className="col-md-4 mb-4">
-                            <SelectBox
-                                selectClass="mainInput"
-                                name="brand"
-                                label="Brand"
                                 required
-                                value={formData?.brand}
-                                option={brands}
+                                label="Amount Recovery"
+                                id="recovery"
+
+                                type="number"
+                                placeholder="Enter Recovery Amount"
+                                labelClass="mainLabel"
+                                inputClass="mainInput"
+                                name="recovery"
+                                value={formData.recovery}
                                 onChange={handleChange}
+                                disabled={!isReceivedEmpty}
                             />
 
                         </div>
@@ -344,6 +482,20 @@ console.log("formData " , formData)
                             />
 
                         </div>
+                        <div className="col-md-4 mb-4">
+                            <SelectBox
+                                selectClass="mainInput"
+                                name="brand"
+                                label="Brand"
+                                required
+                                value={parseInt(formData?.brand)}
+                                option={brands}
+                                onChange={handleChange}
+                            />
+
+
+                        </div>
+
                         <div className="col-md-4 mb-4">
                             <SelectBox
                                 selectClass="mainInput"
@@ -369,19 +521,20 @@ console.log("formData " , formData)
                         </div>
                         <div className="col-md-12 mb-4">
                             <div className="inputWrapper">
+
                                 <div className="form-controls">
-                                    <label htmlFor="">Description</label>
+                                    <label htmlFor="description">Description</label>
                                     <textarea
                                         name="description"
                                         className="form-control shadow border-0"
-                                        id=""
+                                        id="description"
                                         cols="30"
                                         rows="10"
-                                        value={formData?.description}
+                                        value={formData.description}
                                         onChange={handleChange}
-                                    >
-
-                                    </textarea>
+                                    // disabled={remainingWords <= 0}
+                                    />
+                                    <p>Remaining words: {remainingWords}</p>
                                 </div>
                             </div>
 
@@ -392,7 +545,11 @@ console.log("formData " , formData)
                         </div>
                     </div>
                 </div>
-                <CustomModal show={showModal} close={() => { setShowModal(false) }} success heading='Lead Update Successfully.' />
+                <CustomModal   status={status} show={showModal} close={() => {
+                    setShowModal(false);
+                    goBack();
+                    
+                }} success     heading={successStatus} />
 
             </DashboardLayout>
         </>

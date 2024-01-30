@@ -47,14 +47,14 @@ export const ChargeBackDetail = () => {
                 return response.json()
             })
             .then((data) => {
-                console.log(data)
+                 
                 document.querySelector('.loaderBox').classList.add("d-none");
                 SetUser(data.data)
 
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error);
+             
             })
     }, [id]);
 
@@ -73,12 +73,7 @@ export const ChargeBackDetail = () => {
                     </div>
                     <div className="row mb-3">
                         <div className="col-12">
-                            {/* <div className="row mb-3 justify-content-end">
-                                <div className="col-lg-4 text-end order-1 order-lg-2 mb-3">
-                                <span className={`statusBadge ${user?.status == 1 ? 'statusBadgeActive' : 'statusBadgeInactive'}`}>{user?.status == 1 ? 'Active' : 'Inactive'}</span>
-                                </div>
-                            </div> */}
-
+                           
 
                             <div className="row">
                                 <div className="col-md-4 mb-4">

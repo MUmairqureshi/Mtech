@@ -5,10 +5,13 @@ import CustomModal from "../../Components/CustomModal";
 import CustomInput from '../../Components/CustomInput';
 import { SelectBox } from "../../Components/CustomSelect";
 import CustomButton from "../../Components/CustomButton";
+import { useNavigate } from "react-router";
+
 export const AddChargeBack = () => {
     const [initalRole, setrole] = useState({});
     const [initialunit, setUnit] = useState({});
     const [merchant, setMerchant] = useState()
+    const [status , setStatus] = useState()
     const [showModal, setShowModal] = useState(false)
     const [formData, setFormData] = useState({});
     const [successStatus, setSuccessStatus] = useState('Server Error!');
@@ -66,12 +69,11 @@ export const AddChargeBack = () => {
             )
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(data)
                 setMerchant(data?.data);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+
             })
     }
 
@@ -96,12 +98,12 @@ export const AddChargeBack = () => {
             )
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(data)
+                 
                 setrole(data.roles);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+               
             })
     }
 
@@ -124,13 +126,13 @@ export const AddChargeBack = () => {
                 response.json()
             )
             .then((data) => {
-                console.log(data)
+                 
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setUnit(data.units);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+               
             })
     }
 
@@ -148,7 +150,7 @@ export const AddChargeBack = () => {
             formDataMethod.append(key, formData[key]);
         }
 
-        console.log(formData)
+         
         document.querySelector('.loaderBox').classList.remove("d-none");
         // Make the fetch request
         fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/chargeback-add-edit`, {
@@ -163,14 +165,15 @@ export const AddChargeBack = () => {
                 return response.json();
             })
             .then((data) => {
-                console.log(data);
+                 ;
                 document.querySelector('.loaderBox').classList.add("d-none");
                 data?.status ? setSuccessStatus(data?.msg) : setSuccessStatus(data?.msg)
                 setShowModal(true)
+                setStatus(data?.status)
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+               
             })
     };
 
@@ -182,14 +185,7 @@ export const AddChargeBack = () => {
     }, [])
 
 
-    // const handleChange = (event) => {
-    //     const { name, value } = event.target;
-    //     setFormData((prevData) => ({
-    //         ...prevData,
-    //         [name]: value,
-    //     }));
-    //     console.log(formData)
-    // };
+ 
 
 
 
@@ -201,8 +197,11 @@ export const AddChargeBack = () => {
 
 
 
+    const navigate = useNavigate();
 
-
+    const goBack = () => {
+      navigate(-1)
+    };
 
 
 
@@ -220,9 +219,8 @@ export const AddChargeBack = () => {
     const [unitid, setUnitid] = useState();
 
 
-
     const userData = (uniID) => {
-        console.log("unitid", uniID)
+         
         // document.querySelector('.loaderBox').classList.remove("d-none");
         fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-units/${uniID}`,
             {
@@ -239,19 +237,17 @@ export const AddChargeBack = () => {
                 response.json()
             )
             .then((data) => {
-                console.log('user', data?.data)
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setUnitid(data?.data)
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+               
             })
     }
 
 
 
-    console.log("unitid", unitid)
 
 
 
@@ -262,12 +258,10 @@ export const AddChargeBack = () => {
 
 
 
-
+    const [viewl, setView] = useState('');
     const [viewleads, setViewleads] = useState('');
 
-
     const fetchData = async () => {
-        console.log("viewleads", viewleads)
         try {
             const response = await fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/view-leads/${viewleads}`, {
                 method: 'GET',
@@ -279,20 +273,19 @@ export const AddChargeBack = () => {
             });
 
             const data = await response.json();
-            console.log("data.leads.unit_id", data)
 
             if (data?.status) {
                 setMessageShow('Lead Verified')
                 setLeadStatus(true)
+                setView(data)
             } else {
                 setMessageShow('Lead not exist')
                 setLeadStatus(false);
             }
 
-            console.log("data.leads.unit_id", data?.leads)
+
             userData(data?.leads.unit_id);
-            // Process the data as needed
-            console.log(data);
+              ;
         } catch (error) {
             console.error('Error fetching data:', error);
             // userData(0);
@@ -301,12 +294,11 @@ export const AddChargeBack = () => {
 
     const handleChange = (event) => {
         const { name, value } = event.target;
-        console.log("name", name, value)
         setFormData((prevData) => ({
             ...prevData,
             [name]: value,
         }));
-        console.log(formData);
+         ;
     };
 
 
@@ -359,9 +351,53 @@ export const AddChargeBack = () => {
                                                 />
                                                 {
                                                     messgaeShow && (
-                                                        <p className={leadStatus ? 'text-success' : 'text-danger'}>{messgaeShow}</p>
+                                                        <p className={leadStatus ? 'text-dark' : 'text-danger'}>{messgaeShow}</p>
                                                     )
                                                 }
+                                            </div>
+                                           
+                                            <div className="col-md-4 mb-4">
+                                                <CustomInput
+                                                    label='Name'
+                                                    required
+                                                    id='name'
+                                                    type='text'
+                                                    placeholder='Enter Name'
+                                                    labelClass='mainLabel'
+                                                    inputClass='mainInput'
+                                                    name="name"
+                                                    value={viewl?.leads?.name}
+                                                    onChange={handleChange}
+                                                />
+                                            </div>
+                                            <div className="col-md-4 mb-4">
+                                                <CustomInput
+                                                    label='Enter Email'
+                                                    required
+                                                    id='amount'
+                                                     
+                                                    type='email'
+                                                    placeholder='Enter Email'
+                                                    labelClass='mainLabel'
+                                                    inputClass='mainInput'
+                                                    name="email"
+                                                    value={viewl?.leads?.email}
+                                                    onChange={handleChange}
+                                                />
+                                            </div>
+                                            <div className="col-md-4 mb-4">
+                                                <CustomInput
+                                                    label='Net Amount'
+                                                    required
+                                                    id='netamount'
+                                                    type='number'
+                                                    placeholder='Enter Net Amount'
+                                                    labelClass='mainLabel'
+                                                    inputClass='mainInput'
+                                                    name="net_amount"
+                                                    value={viewl?.leads?.gross}
+                                                    onChange={handleChange}
+                                                />
                                             </div>
                                             <div className="col-md-4 mb-4">
                                                 <CustomInput
@@ -391,18 +427,7 @@ export const AddChargeBack = () => {
                                                     onChange={handleChange}
                                                 />
                                             </div>
-                                            {/* <div className="col-md-4 mb-4">
-                                                <SelectBox
-                                                    selectClass="mainInput"
-                                                    name="user_id"
-                                                    label="User ID"
-                                                    required
-                                                    value={formData.user_id}
-                                                    option={initalRole}
-                                                    onChange={handleChange}
-                                                />
-
-                                            </div> */}
+                                        
 
                                             <div className="col-md-4 mb-4">
                                                 <SelectBox
@@ -472,7 +497,10 @@ export const AddChargeBack = () => {
                         </div>
                     </div>
                 </div>
-                <CustomModal show={showModal} close={() => { setShowModal(false) }} success heading={successStatus} />
+                <CustomModal status={status} show={showModal}  close={() => {
+          setShowModal(false);
+          goBack();  
+        }} success heading={successStatus} />
 
 
             </DashboardLayout>

@@ -3,7 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 
 import { Dropdown } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisV, faEye, faCheck, faTimes, faFilter, faEdit } from "@fortawesome/free-solid-svg-icons";
+import { faEllipsisV, faEye, faCheck, faTimes, faFilter, faEdit, faTrash , faCopy } from "@fortawesome/free-solid-svg-icons";
+
 
 import { DashboardLayout } from "../../Components/Layout/DashboardLayout";
 import CustomTable from "../../Components/CustomTable";
@@ -17,7 +18,7 @@ import CustomButton from "../../Components/CustomButton";
 import "./style.css";
 
 export const LeadListing = () => {
-
+  window.close();
   const [data, setData] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [showModal2, setShowModal2] = useState(false);
@@ -26,7 +27,8 @@ export const LeadListing = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(8);
   const [inputValue, setInputValue] = useState('');
-
+  const [copied, setCopied] = useState(false)
+  const [copiedId, setCopiedId] = useState(null);
   const navigate = useNavigate();
 
   const handlePageChange = (pageNumber) => {
@@ -36,6 +38,15 @@ export const LeadListing = () => {
   const hanldeRoute = () => {
     navigate('/add-lead')
   }
+  const coppied = (id, lead_code) => {
+    navigator.clipboard.writeText(`${lead_code}`);
+    setCopied(true);
+    setCopiedId(id);
+    setTimeout(() => {
+      setCopied(false);
+      setCopiedId(null);
+    }, 1000);
+  };
 
 
   const inActive = () => {
@@ -50,7 +61,6 @@ export const LeadListing = () => {
   const handleChange = (e) => {
     setInputValue(e.target.value);
   }
-
   const filterData = data.filter(item =>
     item.name.toLowerCase().includes(inputValue.toLowerCase())
   );
@@ -78,13 +88,13 @@ export const LeadListing = () => {
         response.json()
       )
       .then((data) => {
-        console.log(data)
+
         document.querySelector('.loaderBox').classList.add("d-none");
         setData(data.leads);
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error)
+
       })
 
   }
@@ -138,7 +148,7 @@ export const LeadListing = () => {
     },
     {
       key: "tamout",
-      title: "Quoted Amount",
+      title: " Amount",
     },
     {
       key: "received",
@@ -169,15 +179,42 @@ export const LeadListing = () => {
       key: "unit",
       title: "Unit",
     },
-   
+
     {
       key: "action",
       title: "Action",
     },
   ];
 
+  const removeItem = (catId) => {
+    const LogoutData = localStorage.getItem('login');
+    document.querySelector('.loaderBox').classList.remove("d-none");
+    fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/delete-leads/${catId}`,
+      {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${LogoutData}`
+        },
+      }
+    )
 
+      .then(response =>
+        response.json()
+      )
+      .then((data) => {
+        document.querySelector('.loaderBox').classList.add("d-none");
  
+        leadData()
+ 
+      })
+      .catch((error) => {
+        document.querySelector('.loaderBox').classList.add("d-none");
+       })
+  }
+
+
 
   return (
     <>
@@ -209,11 +246,22 @@ export const LeadListing = () => {
                             <td>{index + 1}</td>
                             <td className="text-capitalize">
                               {item?.code}
+                              <button
+                                onClick={() => coppied(item.id, item?.code)}
+                                className="bg-transparent border-0 text-secondary"
+                              >
+                                <FontAwesomeIcon icon={faCopy}></FontAwesomeIcon>
+                              </button>
+
+                              {copied && copiedId === item.id && (
+                                <span className="text-success px-3 py-1 rounded-pill">Copied</span>
+                              )}
+
                             </td>
                             <td className="text-capitalize">
                               {item?.date}
                             </td>
-                            <td>{item?.source}</td>
+                            <td>{item?.getsource.name}</td>
                             <td>{item.getbrand?.name}</td>
                             <td>{item?.product}</td>
                             <td className="text-capitalize">
@@ -227,14 +275,14 @@ export const LeadListing = () => {
 
                             <td>{item?.received === null ? '$ 0' : `$ ${item?.received}`}</td>
                             <td>{item?.recovery}</td>
-                            <td>{ item?.received + item?.recovery}</td>
-                            <td>{ item?.salesrep?.name}</td>
+                            <td>{item?.gross}</td>
+                            <td>{item?.salesrep?.name}</td>
 
-                            <td>{ item?.accountrepdetail?.name}</td>
-                            <td>{ item?.unitdetail.name}</td>
-                          
- 
- 
+                            <td>{item?.accountrepdetail?.name}</td>
+                            <td>{item?.unitdetail.name}</td>
+
+
+
                             {/* <td className={item.status == 1 ? 'greenColor' : "redColor"}>{item.status == 1 ? 'Active' : "Inactive"}</td> */}
                             <td>
                               <Dropdown className="tableDropdown">
@@ -244,6 +292,7 @@ export const LeadListing = () => {
                                 <Dropdown.Menu align="end" className="tableDropdownMenu">
                                   <Link to={`/lead-detail/${item?.code}`} className="tableAction"><FontAwesomeIcon icon={faEye} className="tableActionIcon" />View</Link>
                                   <Link to={`/edit-lead/${item?.code}`} className="tableAction"><FontAwesomeIcon icon={faEdit} className="tableActionIcon" />Edit</Link>
+                                  <button type="button" className="bg-transparent border-0 ps-lg-3 pt-1" onClick={() => { removeItem(item?.code) }}><FontAwesomeIcon icon={faTrash}></FontAwesomeIcon> Delete</button>
                                 </Dropdown.Menu>
                               </Dropdown>
                             </td>

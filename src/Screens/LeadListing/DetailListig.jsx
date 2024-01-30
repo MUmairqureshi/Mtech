@@ -48,14 +48,14 @@ export const DetailListing = () => {
             })
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(data)
+               
 
                 setLead(data.leads)
 
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error);
+             
             })
     }, [id]);
 
@@ -74,14 +74,7 @@ export const DetailListing = () => {
                     </div>
                     <div className="row mb-3">
                         <div className="col-12">
-                            {/* <div className="row mb-3 justify-content-end">
-                <div className="col-lg-4 text-end order-1 order-lg-2 mb-3">
-                  <button onClick={() => {
-                    lead?.status ? setShowModal(true) : setShowModal3(true)
-                  }} className="notButton primaryColor fw-bold text-decoration-underline">Mark as {lead?.status ? 'Inactive' : 'Active'}</button>
-                  <span className={`statusBadge ${lead?.status == 1 ? 'statusBadgeActive' : 'statusBadgeInactive'}`}>{lead?.status == 1 ? 'Active' : 'Inactive'}</span>
-                </div>
-              </div> */}
+                        
 
 
                             <div className="row">

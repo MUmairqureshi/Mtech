@@ -1,21 +1,16 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-
-import { Dropdown } from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEllipsisV, faPencil, faCheck, faTimes, faFilter } from "@fortawesome/free-solid-svg-icons";
-
+ 
+   
 import { DashboardLayout } from "../../Components/Layout/DashboardLayout";
 import CustomTable from "../../Components/CustomTable";
 import CustomModal from "../../Components/CustomModal";
 
-import CustomPagination from "../../Components/CustomPagination"
-import CustomInput from "../../Components/CustomInput";
-import CustomButton from "../../Components/CustomButton";
+ import CustomButton from "../../Components/CustomButton";
 import { SelectBox } from "../../Components/CustomSelect";
 
 
 import "./style.css";
+import Select from 'react-select'
 
 export const ReportManagement = () => {
 
@@ -30,18 +25,24 @@ export const ReportManagement = () => {
   const [idUser, setIdUser] = useState(0);
   const [formData, setFormData] = useState({});
   const [brands, setBrands] = useState({});
-  const [unit, setUnit] = useState({});
+   const [initialunit, setUnit] = useState({});
 
-  // const optionData = [
-  //   {
-  //     name: "Active",
-  //     code: "1"
-  //   },
-  //   {
-  //     name: "Inactive",
-  //     code: "0"
-  //   },
-  // ]
+
+  const SelectOptions = []
+  for (const key in initialunit) {
+    if (initialunit.hasOwnProperty(key)) {
+      const item = initialunit[key];
+
+
+      const option = {
+        value: item.id,
+        label: item.name,
+      };
+
+
+      SelectOptions.push(option);
+    }
+  }
 
   const handlePageChange = (pageNumber) => {
     setCurrentPage(pageNumber);
@@ -121,13 +122,13 @@ export const ReportManagement = () => {
         response.json()
       )
       .then((data) => {
-        console.log(data)
+
         document.querySelector('.loaderBox').classList.add("d-none");
         setBrands(data.brands);
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error)
+
       })
   }
 
@@ -150,13 +151,13 @@ export const ReportManagement = () => {
         response.json()
       )
       .then((data) => {
-        console.log(data)
+
         document.querySelector('.loaderBox').classList.add("d-none");
         setUnit(data.units);
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error)
+
       })
   }
 
@@ -169,8 +170,12 @@ export const ReportManagement = () => {
 
     const formDataMethod = new FormData();
     for (const key in formData) {
-      formDataMethod.append(key, formData[key]);
+      if (key == 'month') {
+        formDataMethod.append(key, formData[key]);
+      }
     }
+
+    formDataMethod.append('unit_id', JSON.stringify(formData?.unit_id));
 
     fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/unit-sheets-generate`,
       {
@@ -189,12 +194,12 @@ export const ReportManagement = () => {
       )
       .then((data) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(data)
+
         setData(data?.data);
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error)
+
       })
   }
 
@@ -254,11 +259,15 @@ export const ReportManagement = () => {
 
 
 
+  const handleChangeSelect = (selected) => {
+    setFormData({
+      ...formData, unit_id: selected
+    })
+    console.log(formData)
+  };
 
 
 
-
-  console.log("data" , data)
 
   return (
     <>
@@ -273,18 +282,18 @@ export const ReportManagement = () => {
                   </div>
                   <div className="col-md-8 mb-2">
                     <div className="addUser align-items-center">
-                      <SelectBox
-                        selectClass="mainInput"
-                        name="unit_id"
-                        label="Select Unit"
-                        value={formData.unit_id}
-                        required
-                        option={unit}
-                        onChange={(event) => {
-                          setFormData({ ...formData, unit_id: event.target.value });
-                          console.log(formData);
-                        }}
-                      />
+
+                      <div class="inputWrapper">
+                        <label class="mainLabel">Add Units<span>*</span></label>
+
+                        <Select
+                          value={formData.unit_id}
+                          isMulti
+                          required
+                          options={SelectOptions}
+                          onChange={handleChangeSelect}
+                        />
+                      </div>
 
                       <SelectBox
                         selectClass="mainInput"
@@ -295,16 +304,11 @@ export const ReportManagement = () => {
                         option={monthList}
                         onChange={(event) => {
                           setFormData({ ...formData, month: event.target.value });
-                          console.log(formData);
+
                         }}
                       />
 
-                      {/* <CustomInput type="text" placeholder="Enter Year" name="year" value={formData.year}
-                        label="Year"
-                        inputClass="mainInput" onChange={(event) => {
-                          setFormData({ ...formData, year: event.target.value });
-                          console.log(formData);
-                        }} /> */}
+                     
                       <CustomButton variant='primaryButton' text='Search' type='button' onClick={fetchData} />
                     </div>
                   </div>
@@ -335,28 +339,9 @@ export const ReportManagement = () => {
                         ))}
                       </tbody>
 
-                      {/* <tbody>
-                        <tr>
-                          <td className="text-capitalize">
-                            {data.unit_name}
-                          </td>
-
-                          <td>{data?.user_name}</td>
-                          <td>{data?.gross_sum}</td>
-                          <td>{data?.target}</td>
-                          <td>{data?.refunds}</td>
-                          <td>{data?.chargeback}</td>
-                          <td>{data?.purchase}</td>
-                          <td>{data?.net}</td>
-                        </tr>
-                      </tbody> */}
+ 
                     </CustomTable>
-                    {/* <CustomPagination
-                      itemsPerPage={itemsPerPage}
-                      totalItems={data.length}
-                      currentPage={currentPage}
-                      onPageChange={handlePageChange}
-                    /> */}
+                  
                   </div>
                 </div>
               </div>

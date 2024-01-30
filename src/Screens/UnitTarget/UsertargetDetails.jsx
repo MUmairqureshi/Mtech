@@ -34,10 +34,9 @@ export const UsertargetDetails = () => {
 
     const unitValue = [];
  
-console.log("userListing" , userListing )
 
     const username = []
-console.log("username" , username)
+ 
     
     useEffect(() => {
         setUser(userListing?.data)
@@ -61,7 +60,6 @@ console.log("username" , username)
         unitValue.push(option)
 
     }
-    console.log("unitListing" , unitValue )
 
     const month = [
         "",
@@ -109,7 +107,7 @@ console.log("username" , username)
             })
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(data)
+          
 
                 setLeadData(data.data)
                 setFormData(data.data)
@@ -117,7 +115,7 @@ console.log("username" , username)
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error);
+ 
             })
     }
 
@@ -125,7 +123,7 @@ console.log("username" , username)
         editDetailData()
     }, []);
 
-    console.log(formData , "formData")
+  
 
     const monthList = [
         {
@@ -178,8 +176,7 @@ console.log("username" , username)
     ]
 
 
-    console.log("formdata" , formData)
-
+ 
     const maleHeaders = [
         {
             key: "id",
@@ -193,10 +190,10 @@ console.log("username" , username)
             key: "target",
             title: "Target",
         },
-        {
-            key: "targetscore",
-            title: "Target Score",
-        },
+        // {
+        //     key: "targetscore",
+        //     title: "Target Score",
+        // },
         {
             key: "month",
             title: "Month"
@@ -218,7 +215,6 @@ console.log("username" , username)
 
 
     const LogoutData = localStorage.getItem('login');
-    console.log("leadData", leadData)
     const handleEdit = (event) => {
         event.preventDefault();
         const userId = leadData?.id
@@ -238,13 +234,11 @@ console.log("username" , username)
                 return response.json()
             })
             .then((data) => {
-                console.log(data)
                 editDetailData()
                 setEditModal(false)
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error);
             })
     }
     // console.log("leadDataUSER", leadData)
@@ -258,7 +252,7 @@ console.log("username" , username)
 
 
     const fetchUserData = () => {
-        console.log("unitid", viewleads)
+      
         document.querySelector('.loaderBox').classList.remove("d-none");
         fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-units/${formData?.unit_id}`,
             {
@@ -275,18 +269,18 @@ console.log("username" , username)
                 response.json()
             )
             .then((data) => {
-                console.log('user', data?.data)
+            
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setUserData(data?.data)
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+           
             })
     }
-    console.log("usedataunitname", useresdata)
+
  
-console.log("unitValue" , unitValue )
+ 
  
     useEffect(() => {
         fetchUserData();
@@ -327,10 +321,10 @@ console.log("unitValue" , unitValue )
                                     <p className="secondaryText">Set Target</p>
                                     <p>{`$ ${leadData?.target}`}</p>
                                 </div>
-                                <div className="col-md-4 mb-4">
+                                {/* <div className="col-md-4 mb-4">
                                     <p className="secondaryText">Score Target</p>
                                     <p>{`$ ${leadData?.score_target}`}</p>
-                                </div>
+                                </div> */}
                                 <div className="col-md-4 mb-4">
                                     <p className="secondaryText">Month</p>
                                     <p>{month[leadData?.month]}</p>

@@ -5,12 +5,16 @@ import BackButton from "../../Components/BackButton";
 import CustomModal from "../../Components/CustomModal";
 import CustomInput from '../../Components/CustomInput';
 import { SelectBox } from "../../Components/CustomSelect";
+import { useNavigate } from "react-router";
+
 import CustomButton from "../../Components/CustomButton";
 import Select from 'react-select'
 export const EditUser = () => {
     const { id } = useParams();
+    const [successStatus, setSuccessStatus] = useState('Server Error!');
     const [initalRole, setrole] = useState({});
     const [initialunit, setUnit] = useState({});
+    const [status , setStatus] = useState() 
     const [showModal, setShowModal] = useState(false);
     const [permission, setPermission] = useState(false)
     const [formData, setFormData] = useState({
@@ -20,6 +24,10 @@ export const EditUser = () => {
         unit_id: [],
         user_role: ''
     });
+    const navigate = useNavigate();
+    const goBack = () => {
+        navigate(-1)
+    };
 
 
     const SelectOptions = []
@@ -27,20 +35,17 @@ export const EditUser = () => {
         if (initialunit.hasOwnProperty(key)) {
             const item = initialunit[key];
 
-            console.log(item.id)
+          
 
-            // Create an object for each option with 'value' and 'label' properties
-            const option = {
+             const option = {
                 label: item.name,
                 value: item.id,
             };
-            // ...option
-
+ 
             SelectOptions.push(option);
         }
     }
 
-    console.log(SelectOptions)
 
     const handleChangeSelect = (selected) => {
         setFormData({
@@ -68,32 +73,18 @@ export const EditUser = () => {
                 response.json()
             )
             .then((data) => {
-                console.log("users", data)
+              
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setFormData(data.users);
                 data.users?.permission != null ? setPermission(true) : setPermission(false)
                 const abac = SelectOptions.filter(dataItem => data?.users?.unit_id?.includes(dataItem.id))
-                console.log('dsa', formData?.unit_id)
-
-                // data?.users?.unit_id.map((item) => {
-                //     const editData = {
-                //         value: item.id,
-                //         label: item.name,
-                //     };
-                //     editBrandList.push(editData)
-                // })
-
-                //   setFormData({
-                //     ...formData, 
-                //     unit_id: editBrandList,
-                
-                //   })
-
-                console.log('update', formData)
+              
+ 
+              
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+          
             })
     }
 
@@ -116,13 +107,13 @@ export const EditUser = () => {
                 response.json()
             )
             .then((data) => {
-                console.log(data)
+            
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setrole(data.roles);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+            
             })
     }
 
@@ -145,14 +136,14 @@ export const EditUser = () => {
                 response.json()
             )
             .then((data) => {
-                console.log(data)
+          
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setUnit(data.units);
 
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+           
             })
     }
 
@@ -164,8 +155,23 @@ export const EditUser = () => {
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        // Create a new FormData object
-        const formDataMethod = new FormData();
+        for (const key in formData) {
+            if (
+              
+                formData.name === '' ||
+                formData.product === '' ||
+                formData.email === '' ||
+                formData.user_role === '' 
+ 
+   
+            ) {
+              
+ 
+                return;
+            }
+        }
+
+         const formDataMethod = new FormData();
         for (const key in formData) {
             if (key == 'unit_id') {
                 formDataMethod.append(key, JSON.stringify(formData[key]))
@@ -174,10 +180,10 @@ export const EditUser = () => {
             }
         }
 
-        console.log(formData)
+      
+        
         document.querySelector('.loaderBox').classList.remove("d-none");
-        // Make the fetch request
-        fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-add-edit/${id}`, {
+         fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-add-edit/${id}`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -191,11 +197,12 @@ export const EditUser = () => {
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setShowModal(true)
-                console.log(data);
+                data?.status ? setSuccessStatus(data?.msg) : setSuccessStatus(data?.msg)
+                setStatus(data?.status)
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+        
             })
     };
 
@@ -234,7 +241,7 @@ export const EditUser = () => {
             ...prevData,
             [name]: value,
         }));
-        console.log(formData)
+        
     };
 
 
@@ -348,7 +355,7 @@ export const EditUser = () => {
                         </div>
                     </div>
                 </div>
-                <CustomModal show={showModal} close={() => { setShowModal(false) }} success heading='User Edit Successfully.' />
+                <CustomModal status={status}  show={showModal} close={() => { setShowModal(false) ; goBack() }} success heading={successStatus} />
 
             </DashboardLayout>
         </>

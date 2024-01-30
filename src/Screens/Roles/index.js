@@ -80,21 +80,17 @@ export const Roles = () => {
 
   useEffect(() => {
     setData(rolesListing?.roles);
-    // console.log(data)
   }, [rolesListing])
 
 
 
-  //  Add roles 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    console.log(formData)
     rolesLitingResponse(formData);
     roleData ? setShowModal(true) || setUser(false) : setShowModal(false)
   }
 
-  //  Edit Roles 
 
   const editUnit = (unitID) => {
     editDataParam(unitID);
@@ -103,7 +99,6 @@ export const Roles = () => {
 
   useEffect(() => {
     if (dataEdited) {
-      console.log(roleEditData);
       setIdUser(roleEditData?.roles.id)
       setEditUser(true)
       setFormData({
@@ -116,11 +111,9 @@ export const Roles = () => {
   }, [roleEditData, dataEdited])
 
 
-  // Update roles 
-
   const handleEditSubmit = (event) => {
     event.preventDefault();
-    console.log(formData)
+   
 
     updateDataParam(idUser);
     rolesUpdateResponse(formData);
@@ -131,7 +124,6 @@ export const Roles = () => {
     if (dataSubmitted) {
       setEditUser(false)
       setData(rolesListing?.roles)
-      console.log(data)
     }
   }, [roleUpdateData, dataSubmitted, rolesListing])
 
@@ -168,9 +160,7 @@ export const Roles = () => {
                   </div>
                   <div className="col-md-6 mb-2">
                     <div className="addUser">
-                      {/* <CustomButton text="Add Role" variant='primaryButton' onClick={() => {
-                        setUser(true)
-                      }} /> */}
+                    
                       <CustomInput type="text" placeholder="Search Here..." value={inputValue} inputClass="mainInput" onChange={handleChange} />
                       
                     </div>
@@ -224,7 +214,6 @@ export const Roles = () => {
               </div>
             </div>
           </div>
-          {/* add roles  */}
 
           <CustomModal show={addUser} close={() => { setUser(false) }} >
             <CustomInput
@@ -238,7 +227,7 @@ export const Roles = () => {
               value={formData.name}
               onChange={(event) => {
                 setFormData({ ...formData, name: event.target.value });
-                console.log(formData);
+         
               }}
 
             />
@@ -258,7 +247,7 @@ export const Roles = () => {
               value={formData.name}
               onChange={(event) => {
                 setFormData({ ...formData, name: event.target.value });
-                console.log(formData);
+          
               }}
 
             />
@@ -272,7 +261,7 @@ export const Roles = () => {
               option={optionData}
               onChange={(event) => {
                 setFormData({ ...formData, status: event.target.value });
-                console.log(formData);
+            
               }}
             />
             <CustomButton variant='primaryButton' text='Add' type='button' onClick={handleEditSubmit} />

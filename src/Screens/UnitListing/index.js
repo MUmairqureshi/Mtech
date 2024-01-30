@@ -15,9 +15,6 @@ import CustomButton from "../../Components/CustomButton";
 import { SelectBox } from "../../Components/CustomSelect";
 import Select from 'react-select'
 
-
-
-
 import "./style.css";
 
 export const UnitListing = () => {
@@ -79,13 +76,11 @@ export const UnitListing = () => {
         response.json()
       )
       .then((data) => {
-        console.log(data)
         document.querySelector('.loaderBox').classList.add("d-none");
         setBrands(data.brands);
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error)
       })
   }
 
@@ -122,12 +117,12 @@ export const UnitListing = () => {
       )
       .then((data) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(data.units)
+       
         setData(data.units);
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error)
+   
       })
   }
 
@@ -172,23 +167,20 @@ export const UnitListing = () => {
     if (brands.hasOwnProperty(key)) {
       const item = brands[key];
 
-      // Create an object for each option with 'value' and 'label' properties
+   
       const option = {
-        value: item.id, // Assuming 'item.name' represents the option's value
-        label: item.name, // Assuming 'item.name' also represents the option's label
+        value: item.id, 
+        label: item.name, 
       };
 
-      // Push the option object into the SelectOptions array
-      SelectOptions.push(option);
+    SelectOptions.push(option);
     }
   }
 
-  console.log(SelectOptions);
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
-    console.log(formData)
     document.querySelector('.loaderBox').classList.remove("d-none");
     const LogoutData = localStorage.getItem('login');
     fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/unit-add-edit`,
@@ -208,7 +200,6 @@ export const UnitListing = () => {
       .then((data) => {
         document.querySelector('.loaderBox').classList.add("d-none");
         setShowModal(true)
-        console.log(data)
         setUser(false)
         setFormData({
           name: ''
@@ -218,7 +209,6 @@ export const UnitListing = () => {
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error);
       })
   }
 
@@ -238,9 +228,9 @@ export const UnitListing = () => {
         return response.json()
       })
       .then((data) => {
-        console.log(data)
+    
         setIdUser(unitID)
-        console.log(idUser);
+ 
         data.unit[0].unit_brands.map((item)=>{
           const editData = {
             value: item.brands.id, 
@@ -259,13 +249,11 @@ export const UnitListing = () => {
 
       })
       .catch((error) => {
-        console.log(error);
       })
   }
 
   const handleEditSubmit = (event) => {
     event.preventDefault();
-    console.log(formData)
 
     const LogoutData = localStorage.getItem('login');
     fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/unit-add-edit/${idUser}`,
@@ -283,7 +271,6 @@ export const UnitListing = () => {
         return response.json()
       })
       .then((data) => {
-        console.log(data)
         setFormData({
           name: ''
         })
@@ -294,7 +281,7 @@ export const UnitListing = () => {
       })
       .catch((error) => {
         document.querySelector('.loaderBox').classList.add("d-none");
-        console.log(error);
+   
       })
   }
 
@@ -385,7 +372,7 @@ export const UnitListing = () => {
               value={formData.name}
               onChange={(event) => {
                 setFormData({ ...formData, name: event.target.value });
-                console.log(formData);
+        
               }}
 
 
@@ -416,7 +403,7 @@ export const UnitListing = () => {
               value={formData.name}
               onChange={(event) => {
                 setFormData({ ...formData, name: event.target.value });
-                console.log(formData);
+        
               }}
 
             />

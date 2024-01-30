@@ -4,6 +4,8 @@ import BackButton from "../../Components/BackButton";
 import CustomModal from "../../Components/CustomModal";
 import CustomInput from '../../Components/CustomInput';
 import { SelectBox } from "../../Components/CustomSelect";
+import { useNavigate } from "react-router";
+
 import CustomButton from "../../Components/CustomButton";
 import Select from 'react-select'
 import { json } from "react-router";
@@ -12,6 +14,8 @@ export const AddUser = () => {
     const [initialunit, setUnit] = useState({});
     const [showModal, setShowModal] = useState(false)
     const [permission, setPermission] = useState(false)
+    const [status, setStatus] = useState()
+    const [successStatus, setSuccessStatus] = useState('Server Error!');
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -19,6 +23,10 @@ export const AddUser = () => {
         unit_id: [],
         user_role: ''
     });
+    const navigate = useNavigate();
+    const goBack = () => {
+        navigate(-1)
+    };
 
     const userRole = [
         {
@@ -52,12 +60,11 @@ export const AddUser = () => {
             )
             .then((data) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(data)
                 setrole(data.roles);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+
             })
     }
 
@@ -80,13 +87,13 @@ export const AddUser = () => {
                 response.json()
             )
             .then((data) => {
-                console.log(data)
+
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setUnit(data.units);
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+
             })
     }
 
@@ -106,55 +113,67 @@ export const AddUser = () => {
         if (initialunit.hasOwnProperty(key)) {
             const item = initialunit[key];
 
-            // Create an object for each option with 'value' and 'label' properties
-            const option = {
-                value: item.id, // Assuming 'item.name' represents the option's value
-                label: item.name, // Assuming 'item.name' also represents the option's label
+             const option = {
+                value: item.id, 
+                label: item.name,  
             };
 
-            // Push the option object into the SelectOptions array
-            SelectOptions.push(option);
+             SelectOptions.push(option);
         }
     }
 
-    console.log("GHGHGH" ,SelectOptions)
+
 
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        // Create a new FormData object
+        for (const key in formData) {
+            if (
+
+                formData.name === '' ||
+                formData.product === '' ||
+                formData.email === '' ||
+                formData.user_role === ''
+
+
+            ) {
+
+
+                return;
+            }
+        }
         const formDataMethod = new FormData();
         for (const key in formData) {
-            if(key == 'unit_id') {
+            if (key == 'unit_id') {
                 formDataMethod.append(key, JSON.stringify(formData[key]))
             } else {
                 formDataMethod.append(key, formData[key]);
             }
         }
-        console.log("formDataMethod", formDataMethod)
-        console.log(formData)
+
+
         document.querySelector('.loaderBox').classList.remove("d-none");
-        // Make the fetch request
-        fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-add-edit`, {
+         fetch(`https://custom3.mystagingserver.site/mtrecords/public/api/admin/user-add-edit`, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
                 'Authorization': `Bearer ${LogoutData}`
             },
-            body: formDataMethod // Use the FormData object as the request body
+            body: formDataMethod  
         })
             .then((response) => {
                 return response.json();
             })
             .then((data) => {
-                console.log(data);
                 document.querySelector('.loaderBox').classList.add("d-none");
                 setShowModal(true)
+                data?.status ? setSuccessStatus(data?.msg) : setSuccessStatus(data?.msg)
+                setStatus(data?.status)
             })
             .catch((error) => {
                 document.querySelector('.loaderBox').classList.add("d-none");
-                console.log(error)
+
             })
     };
 
@@ -178,7 +197,8 @@ export const AddUser = () => {
             ...prevData,
             [name]: value,
         }));
-        console.log(formData)
+
+
     };
 
 
@@ -271,11 +291,11 @@ export const AddUser = () => {
                                                     </div>
                                                 )
                                             }
- 
+
                                             <div className="col-md-4 mb-4">
                                                 <div class="inputWrapper">
                                                     <label class="mainLabel">Add Units<span>*</span></label>
-                                           
+
                                                     <Select
                                                         value={formData.unit_id}
                                                         isMulti
@@ -295,7 +315,7 @@ export const AddUser = () => {
                         </div>
                     </div>
                 </div>
-                <CustomModal show={showModal} close={() => { setShowModal(false) }} success heading='User has been Successfully Added.' />
+                <CustomModal status={status} show={showModal} close={() => { setShowModal(false); goBack() }} success heading={successStatus} />
 
 
             </DashboardLayout>

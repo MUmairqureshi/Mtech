@@ -2,3 +2,14 @@
     color: var(--grayColor);
     font-size: 5rem;
 }
+
+
+
+
+svg.svg-inline--fa.fa-xmark.corsserror {
+    background: #37375e;
+    border-radius: 50%;
+    padding: 10px 17px;
+    font-size: 39px;
+    color: #fff;
+}
